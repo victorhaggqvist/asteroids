@@ -5,17 +5,19 @@ import java.util.TimerTask;
 
 /**
  * Name: Asteroids
- * Description: Loop
+ * Description: GameLoop
  *
  * @author: Victor Häggqvist
  * @since: 2/10/14
  * Package: com.ecsoft.asteroids.controller
  */
-public class Loop {
+public class GameLoop {
     private Timer timer;
+    private long timeout;
 
-    public Loop() {
+    public GameLoop(long timeout) {
 
+        this.timeout = timeout;
     }
 
     /**
@@ -43,6 +45,7 @@ public class Loop {
                 update();
                 draw();
             }
-        },100);
+        },timeout);
+
     }
 }

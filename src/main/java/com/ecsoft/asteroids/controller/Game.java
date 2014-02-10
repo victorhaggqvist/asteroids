@@ -9,7 +9,13 @@ package com.ecsoft.asteroids.controller;
  * Package: com.ecsoft.asteroids.controller
  */
 public class Game {
+    private GameLoop gameLoop;
+
     public Game() {
+        gameLoop = new GameLoop(50);
+    }
+
+    public void start() {
 
     }
 }

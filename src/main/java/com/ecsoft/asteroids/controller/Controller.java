@@ -12,6 +12,7 @@ import com.ecsoft.asteroids.view.View;
  */
 public class Controller {
     private final View view;
+    private Game game;
 
     public Controller(View view) {
 
@@ -20,5 +21,7 @@ public class Controller {
 
     public void start() {
         view.createWindow();
+        game = new Game();
+        game.start();
     }
 }
