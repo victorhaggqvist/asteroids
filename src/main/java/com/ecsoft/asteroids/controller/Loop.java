@@ -15,6 +15,28 @@ public class Loop {
     private Timer timer;
 
     public Loop() {
+
+    }
+
+    /**
+     * Update stuff
+     */
+    public void update(){
+
+    }
+
+    /**
+     * Drawing stuff
+     */
+    private void draw() {
+
+    }
+
+    public void kill(){
+        timer.cancel();
+    }
+
+    public void start(){
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -22,13 +44,5 @@ public class Loop {
                 draw();
             }
         },100);
-    }
-
-    private void draw() {
-
-    }
-
-    public void update(){
-
     }
 }
