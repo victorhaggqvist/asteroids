@@ -6,7 +6,7 @@ import java.awt.geom.Point2D;
  * Name: Asteroids
  * Description: Aseteroid
  *
- * @author: Victor Häggqvist
+ * @author: Albin Karlquist
  * @since: 2/10/14
  * Package: com.ecsoft.asteroids.controller
  */
@@ -15,6 +15,7 @@ public class Asteroid {
     private Point2D position;
     private Point2D velocity;
     private int size;
+    private Point2D polygon[] = new Point2D[8];
 
 
 
@@ -39,6 +40,14 @@ public class Asteroid {
         this.size = size;
         this.position = new Point2D.Float(x,y);
         this.velocity = new Point2D.Float((float)(Math.random()),(float)(Math.random()));
+    }
+
+    private void randomPolygon() {
+
+        int rectSize = this.size*25;
+        
+
+
     }
 
     /**
