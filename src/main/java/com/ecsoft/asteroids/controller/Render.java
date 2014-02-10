@@ -9,4 +9,5 @@ package com.ecsoft.asteroids.controller;
  * Package: com.ecsoft.asteroids.controller
  */
 public class Render {
+
 }

@@ -11,11 +11,14 @@ import com.ecsoft.asteroids.view.View;
  * Package: com.ecsoft.asteroids.controller
  */
 public class Controller {
+    private final View view;
+
     public Controller(View view) {
 
+        this.view = view;
     }
 
     public void start() {
-
+        view.createWindow();
     }
 }
