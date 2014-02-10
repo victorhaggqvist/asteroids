@@ -12,6 +12,7 @@ import com.ecsoft.asteroids.view.View;
  */
 public class Controller {
     public Controller(View view) {
+
     }
 
     public void start() {
