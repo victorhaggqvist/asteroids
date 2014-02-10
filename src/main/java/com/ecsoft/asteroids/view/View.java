@@ -1,5 +1,7 @@
 package com.ecsoft.asteroids.view;
 
+import com.ecsoft.asteroids.controller.Controller;
+
 /**
  * Name: Asteroids
  * Description: View
@@ -9,4 +11,6 @@ package com.ecsoft.asteroids.view;
  * Package: com.ecsoft.asteroids.view
  */
 public class View {
+    public View() {
+    }
 }
