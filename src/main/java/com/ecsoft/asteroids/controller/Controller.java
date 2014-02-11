@@ -21,17 +21,17 @@ public class Controller extends Observable {
 	
     public Controller() {
     	//Test att rita ut asteroid
-    	asteroid.add(new Asteroid(50, 50));
+    	asteroid.add(new Asteroid(500, 500));
     	
     	long time = System.currentTimeMillis();
-    	while(true) {
-    		if(System.currentTimeMillis()-time < 1000)
-    			continue;
-    		else {
-    			notifyObservers();
-    			System.out.println("Tick.");
-    			time = System.currentTimeMillis();
-    		}
-    	}
+//    	while(true) {
+//    		if(System.currentTimeMillis()-time < 1000)
+//    			continue;
+//    		else {
+//    			notifyObservers();
+//    			System.out.println("Tick.");
+//    			time = System.currentTimeMillis();
+//    		}
+//    	}
     }
 }

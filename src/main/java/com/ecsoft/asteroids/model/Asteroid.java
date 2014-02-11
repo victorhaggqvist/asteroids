@@ -86,14 +86,28 @@ public class Asteroid {
      * @return Returns a drawable polygon
      */
     public Polygon getPolygon() {
-        Polygon p = new Polygon();
         
-        p.npoints = 8;
+        int [] x = new int[8];
+        int [] y = new int[8];        
         //p.bounds = new Rectangle((int)position.getX(), (int)position.getY(), size*scale, size*scale);        
         
-        for (int i = 0; i < polygon.length; i++) {
-            p.addPoint((int)(position.getX() + polygon[i].getX()), (int)(position.getY() + polygon[i].getY()));
+        for (int i = 0; i < 3; i++) {
+            x[i] = (int)(position.getX() + polygon[i].getX());
+            y[i] =  (int)(position.getY() + polygon[i].getY());
         }
+        x[3] = (int)(position.getX() + polygon[4].getX());
+        y[3] = (int)(position.getY() + polygon[4].getY());
+        x[4] = (int)(position.getX() + polygon[7].getX());
+        y[4] = (int)(position.getY() + polygon[7].getY());
+        x[5] = (int)(position.getX() + polygon[6].getX());
+        y[5] = (int)(position.getY() + polygon[6].getY());
+        x[6] = (int)(position.getX() + polygon[5].getX());
+        y[6] = (int)(position.getY() + polygon[5].getY());
+        x[7] = (int)(position.getX() + polygon[3].getX());
+        y[7] = (int)(position.getY() + polygon[3].getY());
+        
+        Polygon p = new Polygon(x,y,8);
+        
         
         return p;
     }
