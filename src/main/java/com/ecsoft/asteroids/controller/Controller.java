@@ -22,7 +22,9 @@ public class Controller extends Observable {
     public Controller() {
     	//Test att rita ut asteroid
     	asteroid.add(new Asteroid(50, 50));
-    	
+    }
+    
+    public void start() {
     	long time = System.currentTimeMillis();
     	while(true) {
     		if(System.currentTimeMillis()-time < 1000)

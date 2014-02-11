@@ -41,7 +41,6 @@ public class View implements Observer{
 			@Override
         	protected void paintComponent(Graphics g) {
 				g.setColor(Color.black);
-        		g.fillOval(50, 50, 50, 50);
         		
         		for(Asteroid a : contr.asteroid)
         			g.drawPolygon(a.getPolygon());
