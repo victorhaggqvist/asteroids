@@ -59,7 +59,7 @@ public class View implements Observer{
         };
         frame.add(panel);
         //frame.add(startOverlay);
-        frame.setSize(1000,800);
+        frame.setSize(1000,600);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible( true );
         panel.repaint();
