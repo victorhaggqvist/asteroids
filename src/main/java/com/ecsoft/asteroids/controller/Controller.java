@@ -2,9 +2,14 @@ package com.ecsoft.asteroids.controller;
 
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.prefs.Preferences;
 
 import com.ecsoft.asteroids.model.Asteroid;
 import com.ecsoft.asteroids.model.Projectile;
+
+import com.ecsoft.asteroids.model.SettingsManager;
+import org.omg.DynamicAny._DynAnyFactoryStub;
+
 
 /**
  * Name: Asteroids
@@ -26,7 +31,11 @@ public class Controller extends Observable implements Runnable{
 
 	@Override
 	public void run() {
-		while(true) {
+        Preferences preferences = SettingsManager.getPreferences();
+        final String SAMPLE_KEY = "sampel_key";
+        preferences.put(SAMPLE_KEY, "saved stuff");
+        System.out.println("Sample setting: "+preferences.get(SAMPLE_KEY,""));
+        while(true) {
 			long time = System.currentTimeMillis();
 			
 			if(asteroids.size() < 10)

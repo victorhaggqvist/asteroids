@@ -11,16 +11,13 @@ import java.util.prefs.Preferences;
  * Package: com.ecsoft.asteroids.model
  */
 public class SettingsManager {
-    private SettingsManager settingsManager;
-    private Preferences preferences = Preferences.userNodeForPackage(com.ecsoft.asteroids.model.SettingsManager.class);;
+    private void SettingsManager() { }
 
-    private SettingsManager() {
-
+    /**
+     * Get a Preferences object
+     * @return a Preferences object
+     */
+    public static Preferences getPreferences() {
+        return Preferences.userNodeForPackage(com.ecsoft.asteroids.model.SettingsManager.class);
     }
-
-    public SettingsManager getSettingsManager(){
-        return new SettingsManager();
-    }
-
-
 }
