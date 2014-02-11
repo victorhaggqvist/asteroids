@@ -16,7 +16,7 @@ public class Projectile {
     
     private float x;
     private float y;
-    private Point2D 
+    private Point2D;
     private double direction;
     
 
