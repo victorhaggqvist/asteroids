@@ -20,9 +20,10 @@ public class Asteroid {
     private Point2D velocity;
     private int size;    
     private Point2D.Float polygon[] = new Point2D.Float[8];
+    private float rotateSpeed;
     
-    private static int screenWidth = 1000;
-    private static int screenHeight = 800;
+    private static final int screenWidth = 1000;
+    private static final int screenHeight = 600;
 
 
 
@@ -35,6 +36,8 @@ public class Asteroid {
         this.size = 4;
         this.position = new Point2D.Float((float)(Math.random()*x),(float)(Math.random()*y));
         this.velocity = new Point2D.Float((float)((Math.random()*2)-1),(float)((Math.random()*2)-1));
+        this.rotateSpeed = (float)(Math.random()/10)-0.05f;
+        
         randomPolygon();
     }
 
@@ -62,6 +65,7 @@ public class Asteroid {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 polygon[i][j] = new Point2D.Float((float)(Math.random()*sectorSize+(j*sectorSize)), (float)(Math.random()*sectorSize + (i*sectorSize)));
+                
             }
         }
 
@@ -75,6 +79,15 @@ public class Asteroid {
         for (int i = 0; i < 3; i++) {
             this.polygon[i+5] = polygon[2][i];
         }
+        
+        Point2D.Float sum = Matrix.Point2DSum(this.polygon);
+        Point2D.Float center = new Point2D.Float((float)sum.getX()/this.polygon.length,(float)sum.getY()/this.polygon.length);
+        for (int i = 0; i < this.polygon.length; i++) {
+            this.polygon[i].x -= center.x;
+            this.polygon[i].y -= center.y;
+        }
+        
+        
     }
 
     /**
@@ -85,24 +98,24 @@ public class Asteroid {
      */
     public void updatePos () {        
         position.setLocation(position.getX() + velocity.getX(), position.getY() + velocity.getY());
-        float transformationMatrix[][] = {{(float)Math.cos(Math.PI/30.0), (float)-Math.sin(Math.PI/30.0)}, {(float)Math.sin(Math.PI/30.0), (float)Math.cos(Math.PI/30.0)}};
+        float transformationMatrix[][] = {{(float)Math.cos(rotateSpeed), (float)-Math.sin(rotateSpeed)}, {(float)Math.sin(rotateSpeed), (float)Math.cos(rotateSpeed)}};
         polygon = Matrix.convert2DMatrixToPoint2DArray(Matrix.Transform(transformationMatrix, Matrix.convertPoint2DArrayTo2DMatrix(polygon)));
         
         //If the asteroid moves out of bounds
-        if(position.getX()<0) {
+        if(position.getX()<0-size*scale/2) {
             position.setLocation(screenWidth, position.getY());
         }
         
-        else if(position.getX()>screenWidth) {
-            position.setLocation(0, position.getY());
+        else if(position.getX()>screenWidth+size*scale/2) {
+            position.setLocation(0-size*scale/2, position.getY());
         }
         
-        else if(position.getY() < 0) {
-            position.setLocation(position.getX() , screenHeight);
+        else if(position.getY() < 0-size*scale/2) {
+            position.setLocation(position.getX() , screenHeight+size*scale/2);
         }
         
-        else if(position.getY() > screenHeight) {
-            position.setLocation(position.getX() , 0);
+        else if(position.getY() > screenHeight+size*scale/2) {
+            position.setLocation(position.getX() , 0-size*scale/2);
         }
         
     }

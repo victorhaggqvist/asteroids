@@ -8,6 +8,7 @@ import com.ecsoft.asteroids.model.Asteroid;
 import com.ecsoft.asteroids.model.BulletExpired;
 import com.ecsoft.asteroids.model.Player;
 import com.ecsoft.asteroids.model.Projectile;
+import com.ecsoft.asteroids.model.Saucer;
 import com.ecsoft.asteroids.model.SettingsManager;
 
 import org.omg.DynamicAny._DynAnyFactoryStub;
@@ -25,6 +26,7 @@ public class Controller extends Observable implements Runnable{
 	
 	public ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
 	public ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+	public ArrayList<Saucer> saucers = new ArrayList<Saucer>();
 	public Player player;
 	private final int TICK_DELAY = 33;
 	
@@ -43,13 +45,19 @@ public class Controller extends Observable implements Runnable{
 			long time = System.currentTimeMillis();
 			
 			if(asteroids.size() < 10)
-				asteroids.add(new Asteroid((int)(1000*Math.random()), (int)(800*Math.random())));
+				asteroids.add(new Asteroid((int)(1000*Math.random()), (int)(600*Math.random())));
 			
 			if(projectiles.size() < 10)
 			    projectiles.add(new Projectile((float)(1000*Math.random()), (float)(800*Math.random()), Math.random()*2*Math.PI));
 			
+			if(saucers.size() < 2)
+                saucers.add(new Saucer());
+			
 			for(Asteroid a : asteroids)
 				a.updatePos();
+			
+			for(Saucer a : saucers)
+                a.updatePos();
 			
 			for (int i = 0; i < projectiles.size(); i++) {
                 try {
