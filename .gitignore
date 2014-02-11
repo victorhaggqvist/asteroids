@@ -43,7 +43,7 @@ local.properties
 
 # Locally stored "Eclipse launch configurations"
 *.launch
-src/main/target/
+**/target/*
 
 # CDT-specific
 .cproject
