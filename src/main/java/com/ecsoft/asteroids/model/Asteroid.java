@@ -4,7 +4,7 @@ import java.awt.geom.Point2D;
 
 /**
  * Name: Asteroids
- * Description: Aseteroid
+ * Description: Asteroid
  *
  * @author: Albin Karlquist
  * @since: 2/10/14
@@ -22,13 +22,13 @@ public class Asteroid {
     /**
      * Creates a new asteroid at a random location with a random velocity
      * @param x Width of the game screen
-     * @param y Heght of the game screen
+     * @param y Height of the game screen
      */
-	public Asteroid(int x, int y) {
+    public Asteroid(int x, int y) {
         this.size = 4;
         this.position = new Point2D.Float((float)(Math.random()*x),(float)(Math.random()*y));
         this.velocity = new Point2D.Float((float)(Math.random()),(float)(Math.random()));
-	}
+    }
 
     /**
      * Creates a new asteroid at the specified location and size
@@ -42,12 +42,29 @@ public class Asteroid {
         this.velocity = new Point2D.Float((float)(Math.random()),(float)(Math.random()));
     }
 
+    /**
+     * Creates a randomized polygon around the center position
+     */
     private void randomPolygon() {
-
-        int rectSize = this.size*25;
         
+        Point2D polygon [][] = new Point2D[3][3];
+        
+        int sectorSize = (this.size*20)/3;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                polygon[i][j] = new Point2D.Float((float)Math.random()*sectorSize+(j*sectorSize), (float)Math.random()*sectorSize + (i*sectorSize));
+            }
+        }
 
-
+        //Reformats the polgyon to a single dimensional array and removes the middle point
+        for (int i = 0; i < 3; i++) {
+           this.polygon[i] = polygon[0][i];
+        }
+        this.polygon[3] = polygon[1][0];
+        this.polygon[4] = polygon[1][2];
+        for (int i = 0; i < 3; i++) {
+            this.polygon[i] = polygon[2][i];
+        }
     }
 
     /**
