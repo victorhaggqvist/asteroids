@@ -1,6 +1,7 @@
 package com.ecsoft.asteroids.model;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 /**
@@ -13,14 +14,18 @@ import java.awt.*;
  */
 public class startOverlay extends JPanel {
     public startOverlay() {
-        setBackground(Color.BLACK);
+        setSize(400,400);
         setLayout(new BorderLayout());
 
         JPanel panel = new JPanel();
+        //panel.setBackground(Color.BLACK);
 
-        JLabel levelLable = new JLabel("Lavel");
-        panel.add(levelLable);
+        JLabel levelLabel = new JLabel("Lavel");
+        //levelLabel.setForeground(Color.WHITE);
+        panel.add(levelLabel);
         JComboBox<String> level = new JComboBox<String>(new String[]{"Easy","Normal","Hardcore"});
+        //level.setBackground(Color.BLACK);
+        //level.setForeground(Color.WHITE);
         panel.add(level);
 
         add(panel,BorderLayout.CENTER);

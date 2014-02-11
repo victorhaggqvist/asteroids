@@ -6,9 +6,10 @@ import java.util.prefs.Preferences;
 
 import com.ecsoft.asteroids.model.Asteroid;
 import com.ecsoft.asteroids.model.BulletExpired;
+import com.ecsoft.asteroids.model.Player;
 import com.ecsoft.asteroids.model.Projectile;
-
 import com.ecsoft.asteroids.model.SettingsManager;
+
 import org.omg.DynamicAny._DynAnyFactoryStub;
 
 
@@ -24,10 +25,11 @@ public class Controller extends Observable implements Runnable{
 	
 	public ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
 	public ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+	public Player player;
 	private final int TICK_DELAY = 33;
 	
     public Controller() {
-
+    	player = new Player(350, 350);
     }
 
 	@Override
