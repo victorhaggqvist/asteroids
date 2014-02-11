@@ -20,6 +20,9 @@ public class Asteroid {
     private Point2D velocity;
     private int size;    
     private Point2D polygon[] = new Point2D[8];
+    
+    private static int screenWidth = 1000;
+    private static int screenHeight = 800;
 
 
 
@@ -77,9 +80,25 @@ public class Asteroid {
     /**
      * Updates the position of the asteroid
      */
-    public void updatePos () {
-        position.setLocation(position.getX() + velocity.getX(), position.getY() + velocity.getY());
+    public void updatePos () {        
+        position.setLocation(position.getX() + velocity.getX(), position.getY() + velocity.getY());        
         
+        //If the asteroid moves out of bounds
+        if(position.getX()<0) {
+            position.setLocation(screenWidth, position.getY());
+        }
+        
+        else if(position.getX()>screenWidth) {
+            position.setLocation(0, position.getY());
+        }
+        
+        else if(position.getY() < 0) {
+            position.setLocation(position.getX() , screenHeight);
+        }
+        
+        else if(position.getY() > screenHeight) {
+            position.setLocation(position.getX() , 0);
+        }
         
     }
     
