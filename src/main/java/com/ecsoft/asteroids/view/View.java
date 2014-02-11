@@ -1,7 +1,6 @@
 package com.ecsoft.asteroids.view;
 
 import com.ecsoft.asteroids.controller.Controller;
-import com.ecsoft.asteroids.controller.Game;
 import com.ecsoft.asteroids.model.*;
 
 import javax.swing.*;
@@ -24,11 +23,11 @@ import java.util.Observer;
 public class View implements Observer{
 
 	JPanel panel;
-	Game game;
+	Controller contr;
 	
-    public View(Game game) {
-    	this.game = game;
-    	game.addObserver(this);
+    public View(Controller contr) {
+    	this.contr = contr;
+    	contr.addObserver(this);
     	createWindow();
     }
 
@@ -43,6 +42,9 @@ public class View implements Observer{
         	protected void paintComponent(Graphics g) {
 				g.setColor(Color.black);
         		g.fillOval(50, 50, 50, 50);
+        		
+        		for(Asteroid a : contr.asteroid)
+        			g.drawPolygon(a.getPolygon());
         	}
         	
         	

@@ -1,7 +1,6 @@
 package com.ecsoft.asteroids.startup;
 
 import com.ecsoft.asteroids.controller.Controller;
-import com.ecsoft.asteroids.controller.Game;
 import com.ecsoft.asteroids.view.View;
 
 /**
@@ -15,7 +14,7 @@ import com.ecsoft.asteroids.view.View;
 public class Startup {
     public static void main(String[] args) {
         System.out.println("Asteroids");
-        Game game = new Game();
-        View view = new View(game);
+        Controller contr = new Controller();
+        View view = new View(contr);
     }
 }
