@@ -27,17 +27,15 @@ public class Controller extends Observable implements Runnable{
 	public void run() {
 		while(true) {
 			long time = System.currentTimeMillis();
+			
 			asteroids.add(new Asteroid((int)(1000*Math.random()), (int)(800*Math.random())));
+			
 			super.setChanged();
 			super.notifyObservers();
 			
 			try {
-				long elapsedTime = System.currentTimeMillis() - time;
-				if(elapsedTime < tickDelay)
-					Thread.sleep(tickDelay-(System.currentTimeMillis()-time));
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+				Thread.sleep(tickDelay-(System.currentTimeMillis()-time));
+			} catch (Exception e){}
 		}
 	}
 }
