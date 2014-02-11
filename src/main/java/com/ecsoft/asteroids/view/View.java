@@ -7,6 +7,7 @@ import javax.swing.*;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Observable;
@@ -22,7 +23,7 @@ import java.util.Observer;
  */
 public class View implements Observer{
 
-	JPanel panel;
+	JPanel panel, startOverlay;
 	Controller contr;
 	
     public View(Controller contr) {
@@ -36,6 +37,7 @@ public class View implements Observer{
         JFrame frame = new JFrame( "Asteroids" );
         frame.setJMenuBar(createMenu());
 
+        startOverlay = new startOverlay();
         panel = new JPanel(){
         	
 			private static final long serialVersionUID = 1L;
@@ -43,18 +45,20 @@ public class View implements Observer{
 			@Override
         	protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.setColor(Color.black);	
+				this.setBackground(Color.black);
+				g.setColor(Color.white);	
   	
         		for(Asteroid a : contr.asteroids)
         			g.drawPolygon(a.getPolygon());
         		
         		for(Projectile a : contr.projectiles)
-                    g.drawOval((int)a.getPos().getX(), (int)a.getPos().getY(), 10, 10);
+                    g.drawOval((int) a.getPos().getX(), (int) a.getPos().getY(), 10, 10);
         	}
         	
         	
         };
         frame.add(panel);
+        //frame.add(startOverlay);
         frame.setSize(1000,800);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible( true );
@@ -69,6 +73,14 @@ public class View implements Observer{
         JMenu game = new JMenu("Game");
         JMenuItem ne = new JMenuItem("New");
         game.add(ne);
+        JMenuItem settings = new JMenuItem("Settings");
+        game.add(settings);
+        settings.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new SettingBox().setVisible(true);
+            }
+        });
         JMenuItem quit = new JMenu("Quit");
         game.add(quit);
         menuBar.add(game);

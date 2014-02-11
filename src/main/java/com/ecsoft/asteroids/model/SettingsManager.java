@@ -11,6 +11,7 @@ import java.util.prefs.Preferences;
  * Package: com.ecsoft.asteroids.model
  */
 public class SettingsManager {
+    // [todo] - create test for preferences
     private void SettingsManager() { }
 
     /**
