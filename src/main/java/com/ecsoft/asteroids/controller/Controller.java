@@ -15,11 +15,13 @@ import com.ecsoft.asteroids.view.View;
  * @since: 2/10/14
  * Package: com.ecsoft.asteroids.controller
  */
-public class Controller extends Observable {
+public class Controller extends Observable implements Runnable{
 	
-	public ArrayList<Asteroid> asteroid = new ArrayList<Asteroid>();
+	public ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
+	private final int tickDelay = 1000;
 	
     public Controller() {
+<<<<<<< HEAD
     	//Test att rita ut asteroid
     	asteroid.add(new Asteroid(500, 500));
     	
@@ -33,5 +35,23 @@ public class Controller extends Observable {
 //    			time = System.currentTimeMillis();
 //    		}
 //    	}
+=======
+>>>>>>> f88d337682265e4b364c825c3d27c3c4ecc51ff7
     }
+
+	@Override
+	public void run() {
+		while(true) {
+			long time = System.currentTimeMillis();
+			
+			asteroids.add(new Asteroid((int)(1000*Math.random()), (int)(800*Math.random())));
+			
+			super.setChanged();
+			super.notifyObservers();
+			
+			try {
+				Thread.sleep(tickDelay-(System.currentTimeMillis()-time));
+			} catch (Exception e){}
+		}
+	}
 }
