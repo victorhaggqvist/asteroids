@@ -1,8 +1,8 @@
 package com.ecsoft.asteroids.model;
 
 import java.awt.Polygon;
-import java.awt.Rectangle;
 import java.awt.geom.Point2D;
+import com.ecsoft.asteroids.mathematics.*;
 
 /**
  * Name: Asteroids
@@ -78,7 +78,9 @@ public class Asteroid {
      * Updates the position of the asteroid
      */
     public void updatePos () {
-        position.setLocation(position.getX() + velocity.getX(), position.getY() + velocity.getY());                        
+        position.setLocation(position.getX() + velocity.getX(), position.getY() + velocity.getY());
+        
+        
     }
     
     /**
