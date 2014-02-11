@@ -5,6 +5,7 @@ import java.util.Observable;
 import java.util.prefs.Preferences;
 
 import com.ecsoft.asteroids.model.Asteroid;
+import com.ecsoft.asteroids.model.BulletExpired;
 import com.ecsoft.asteroids.model.Projectile;
 
 import com.ecsoft.asteroids.model.SettingsManager;
@@ -47,8 +48,14 @@ public class Controller extends Observable implements Runnable{
 			for(Asteroid a : asteroids)
 				a.updatePos();
 			
-			for(Projectile a : projectiles)
-                a.updatePos();
+			for (int i = 0; i < projectiles.size(); i++) {
+                try {
+                    projectiles.get(i).updatePos();
+                } catch (BulletExpired e) {
+                    projectiles.remove(i);
+                    System.out.println("Bullet expired");
+                }
+			}
 			
 			super.setChanged();
 			super.notifyObservers();

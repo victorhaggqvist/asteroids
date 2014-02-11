@@ -15,6 +15,7 @@ public class Projectile {
     private static double velocity = 20;
     private static int screenWidth = 1000;
     private static int screenHeight = 800;
+    private static int timeToLive = 3000;
    
     private Point2D position;
     private Point2D point2D;
@@ -34,7 +35,16 @@ public class Projectile {
         time = System.currentTimeMillis();
     }
     
-    public void updatePos() {
+    /**
+     * Updates the bullet position
+     * @throws BulletExpired if the bullet has expired
+     */
+    public void updatePos() throws BulletExpired {
+        
+        if (System.currentTimeMillis() - time > timeToLive) {
+            throw new BulletExpired();
+        }
+        
         double x = position.getX() + Math.cos(direction)*velocity;
         double y = position.getY() + Math.sin(direction)*velocity;
         position.setLocation(x,y);
@@ -54,11 +64,13 @@ public class Projectile {
         
         else if(position.getY() > screenHeight) {
             position.setLocation(position.getX() , 0);
-        }
-        
+        }        
         
     }
     
+    /**
+     * @return Returns the bullets position
+     */
     public Point2D getPos() {
         return position;
     }
