@@ -15,8 +15,9 @@ public class Projectile {
     private static double velocity = 20;
     private static int screenWidth = 1000;
     private static int screenHeight = 800;
-    
+   
     private Point2D position;
+    private Point2D point2D;
     private double direction;
     private long time;
     
