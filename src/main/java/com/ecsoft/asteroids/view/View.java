@@ -52,7 +52,7 @@ public class View implements Observer{
         			g.drawPolygon(a.getPolygon());
         		
         		for(Projectile a : contr.projectiles)
-                    g.drawOval((int) a.getPos().getX(), (int) a.getPos().getY(), 10, 10);
+                    g.fillOval((int) a.getPos().getX(), (int) a.getPos().getY(), 5, 5);
         	}
         	
         	
