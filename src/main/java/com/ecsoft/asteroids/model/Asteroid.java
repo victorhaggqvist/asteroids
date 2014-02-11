@@ -1,5 +1,7 @@
 package com.ecsoft.asteroids.model;
 
+import java.awt.Polygon;
+import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 
 /**
@@ -11,10 +13,12 @@ import java.awt.geom.Point2D;
  * Package: com.ecsoft.asteroids.controller
  */
 public class Asteroid {
+    
+    private static int scale = 20;
 
     private Point2D position;
     private Point2D velocity;
-    private int size;
+    private int size;    
     private Point2D polygon[] = new Point2D[8];
 
 
@@ -28,6 +32,7 @@ public class Asteroid {
         this.size = 4;
         this.position = new Point2D.Float((float)(Math.random()*x),(float)(Math.random()*y));
         this.velocity = new Point2D.Float((float)(Math.random()),(float)(Math.random()));
+        randomPolygon();
     }
 
     /**
@@ -40,30 +45,32 @@ public class Asteroid {
         this.size = size;
         this.position = new Point2D.Float(x,y);
         this.velocity = new Point2D.Float((float)(Math.random()),(float)(Math.random()));
+        randomPolygon();
     }
 
     /**
-     * Creates a randomized polygon around the center position
+     * Creates a randomized polygon
      */
-    private void randomPolygon() {
+    private void randomPolygon() {        
         
         Point2D polygon [][] = new Point2D[3][3];
         
         int sectorSize = (this.size*20)/3;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                polygon[i][j] = new Point2D.Float((float)Math.random()*sectorSize+(j*sectorSize), (float)Math.random()*sectorSize + (i*sectorSize));
+                polygon[i][j] = new Point2D.Float((float)(Math.random()*sectorSize+(j*sectorSize)), (float)(Math.random()*sectorSize + (i*sectorSize)));
             }
         }
 
-        //Reformats the polgyon to a single dimensional array and removes the middle point
+        //Reformats the polygon to a single dimensional array and removes the middle point
         for (int i = 0; i < 3; i++) {
-           this.polygon[i] = polygon[0][i];
+           this.polygon[i] = polygon[0][i]; 
         }
+        
         this.polygon[3] = polygon[1][0];
         this.polygon[4] = polygon[1][2];
         for (int i = 0; i < 3; i++) {
-            this.polygon[i] = polygon[2][i];
+            this.polygon[i] = polygon[2][i+5];
         }
     }
 
@@ -71,7 +78,24 @@ public class Asteroid {
      * Updates the position of the asteroid
      */
     public void updatePos () {
-        position.setLocation(position.getX() + velocity.getX(), position.getY() + velocity.getY());
+        position.setLocation(position.getX() + velocity.getX(), position.getY() + velocity.getY());                        
+    }
+    
+    /**
+     * 
+     * @return Returns a drawable polygon
+     */
+    public Polygon getPolygon() {
+        Polygon p = new Polygon();
+        
+        p.npoints = 8;
+        //p.bounds = new Rectangle((int)position.getX(), (int)position.getY(), size*scale, size*scale);        
+        
+        for (int i = 0; i < polygon.length; i++) {
+            p.addPoint((int)(position.getX() + polygon[i].getX()), (int)(position.getY() + polygon[i].getY()));
+        }
+        
+        return p;
     }
 
 
