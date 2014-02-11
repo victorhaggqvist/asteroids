@@ -9,7 +9,7 @@ import com.ecsoft.asteroids.mathematics.*;
  * Description: Asteroid
  *
  * @author: Albin Karlquist
- * @since: 2/10/14
+ * @since: 2/11/14
  * Package: com.ecsoft.asteroids.controller
  */
 public class Asteroid {
@@ -19,7 +19,7 @@ public class Asteroid {
     private Point2D position;
     private Point2D velocity;
     private int size;    
-    private Point2D polygon[] = new Point2D[8];
+    private Point2D.Float polygon[] = new Point2D.Float[8];
     
     private static int screenWidth = 1000;
     private static int screenHeight = 800;
@@ -56,7 +56,7 @@ public class Asteroid {
      */
     private void randomPolygon() {        
         
-        Point2D polygon [][] = new Point2D[3][3];
+        Point2D.Float polygon [][] = new Point2D.Float[3][3];
         
         int sectorSize = (this.size*20)/3;
         for (int i = 0; i < 3; i++) {
@@ -79,9 +79,14 @@ public class Asteroid {
 
     /**
      * Updates the position of the asteroid
+     * 
+     * @editor: Peter Lundberg
+     * @since: 2/11/14
      */
     public void updatePos () {        
-        position.setLocation(position.getX() + velocity.getX(), position.getY() + velocity.getY());        
+        position.setLocation(position.getX() + velocity.getX(), position.getY() + velocity.getY());
+        float transformationMatrix[][] = {{(float)Math.cos(Math.PI/30.0), (float)-Math.sin(Math.PI/30.0)}, {(float)Math.sin(Math.PI/30.0), (float)Math.cos(Math.PI/30.0)}};
+        polygon = Matrix.convert2DMatrixToPoint2DArray(Matrix.Transform(transformationMatrix, Matrix.convertPoint2DArrayTo2DMatrix(polygon)));
         
         //If the asteroid moves out of bounds
         if(position.getX()<0) {
