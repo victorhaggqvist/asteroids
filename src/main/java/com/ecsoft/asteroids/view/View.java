@@ -34,6 +34,8 @@ public class View implements Observer{
     public void createWindow() {
 
         JFrame frame = new JFrame( "Asteroids" );
+        frame.setJMenuBar(createMenu());
+
         panel = new JPanel(){
         	
 			private static final long serialVersionUID = 1L;
@@ -59,7 +61,25 @@ public class View implements Observer{
 
     }
 
-	@Override
+    private JMenuBar createMenu() {
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenu game = new JMenu("Game");
+        JMenuItem ne = new JMenuItem("New");
+        game.add(ne);
+        JMenuItem quit = new JMenu("Quit");
+        game.add(quit);
+        menuBar.add(game);
+
+        JMenu help = new JMenu("Help");
+        JMenuItem about = new JMenuItem("About");
+        help.add(about);
+        menuBar.add(help);
+
+        return menuBar;
+    }
+
+    @Override
 	public void update(Observable o, Object obj) {
 		panel.repaint();
 	}
