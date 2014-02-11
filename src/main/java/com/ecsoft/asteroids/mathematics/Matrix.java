@@ -67,6 +67,23 @@ public class Matrix {
     	return matrix;
     }
     
+    public static Point2D.Float[] convert2DMatrixToPoint2DArray(float[][] x) {
+    	
+    	int rows = x.length;
+    	
+    	Point2D.Float[] array = new Point2D.Float[rows];
+    	for(int i = 0; i < rows; i++)
+    		array[i] = new Point2D.Float(0, 0);
+    	
+    	for(int i = 0; i < rows; i++) {
+    			array[i].x = x[i][0];
+    			array[i].y = x[i][1];
+    			
+    	}
+    	
+    	return array;
+    }
+    
     
     //M . x = b     Transformation
     public static float[][] Transform(float[][] m, float[][] x){
@@ -190,6 +207,24 @@ public class Matrix {
         return matrix;
         
     }
+    
+    
+    //Point2D Array Summation
+    public static Point2D.Float Point2DSum(Point2D.Float[] x) {
+    	
+    	Point2D.Float ret = new Point2D.Float(0, 0);
+    	
+    	for(int i = 0; i < x.length; i++) {
+    		ret.x += x[i].x;
+    		ret.y += x[i].y;
+    	}
+    	
+    	
+    	return ret;
+    	
+    }
+    
+    
     
     //R^a -> R^(a+1) Add homogeneous coordinates to a figure
     public static double[][] AddHomogeneousCoordinates(double[][] x){
