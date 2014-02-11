@@ -17,7 +17,7 @@ import com.ecsoft.asteroids.view.View;
  */
 public class Controller extends Observable {
 	
-	public ArrayList<Asteroid> asteroid;
+	public ArrayList<Asteroid> asteroid = new ArrayList<Asteroid>();
 	
     public Controller() {
     	//Test att rita ut asteroid

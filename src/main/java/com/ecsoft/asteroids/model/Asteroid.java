@@ -70,7 +70,7 @@ public class Asteroid {
         this.polygon[3] = polygon[1][0];
         this.polygon[4] = polygon[1][2];
         for (int i = 0; i < 3; i++) {
-            this.polygon[i] = polygon[2][i+5];
+            this.polygon[i+5] = polygon[2][i];
         }
     }
 
