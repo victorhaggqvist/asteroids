@@ -21,22 +21,7 @@ public class Controller extends Observable implements Runnable{
 	private final int tickDelay = 1000;
 	
     public Controller() {
-<<<<<<< HEAD
-    	//Test att rita ut asteroid
-    	asteroid.add(new Asteroid(500, 500));
-    	
-    	long time = System.currentTimeMillis();
-//    	while(true) {
-//    		if(System.currentTimeMillis()-time < 1000)
-//    			continue;
-//    		else {
-//    			notifyObservers();
-//    			System.out.println("Tick.");
-//    			time = System.currentTimeMillis();
-//    		}
-//    	}
-=======
->>>>>>> f88d337682265e4b364c825c3d27c3c4ecc51ff7
+
     }
 
 	@Override
