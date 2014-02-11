@@ -2,6 +2,7 @@ package com.ecsoft.asteroids.controller;
 
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Date;
 
 import com.ecsoft.asteroids.model.Asteroid;
 import com.ecsoft.asteroids.view.View;
@@ -21,6 +22,16 @@ public class Controller extends Observable {
     public Controller() {
     	//Test att rita ut asteroid
     	asteroid.add(new Asteroid(50, 50));
-    	notifyObservers();
+    	
+    	long time = System.currentTimeMillis();
+    	while(true) {
+    		if(System.currentTimeMillis()-time < 1000)
+    			continue;
+    		else {
+    			notifyObservers();
+    			System.out.println("Tick.");
+    			time = System.currentTimeMillis();
+    		}
+    	}
     }
 }
