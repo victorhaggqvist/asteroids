@@ -2,10 +2,8 @@ package com.ecsoft.asteroids.controller;
 
 import java.util.ArrayList;
 import java.util.Observable;
-import java.util.Date;
 
 import com.ecsoft.asteroids.model.Asteroid;
-import com.ecsoft.asteroids.view.View;
 
 /**
  * Name: Asteroids
@@ -18,7 +16,7 @@ import com.ecsoft.asteroids.view.View;
 public class Controller extends Observable implements Runnable{
 	
 	public ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
-	private final int tickDelay = 33;
+	private final int TICK_DELAY = 33;
 	
     public Controller() {
 
@@ -39,7 +37,7 @@ public class Controller extends Observable implements Runnable{
 			super.notifyObservers();
 			
 			try {
-				Thread.sleep(tickDelay-(System.currentTimeMillis()-time));
+				Thread.sleep(TICK_DELAY -(System.currentTimeMillis()-time));
 			} catch (Exception e){}
 		}
 	}
