@@ -11,14 +11,13 @@ import java.awt.geom.Point2D;
  * Package: com.ecsoft.asteroids.model
  */
 public class Projectile {
-    
+
     private static double velocity = 20;
     private static int screenWidth = 1000;
     private static int screenHeight = 800;
     private static int timeToLive = 3000;
    
     private Point2D position;
-    private Point2D point2D;
     private double direction;
     private long time;
     
