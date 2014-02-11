@@ -31,7 +31,7 @@ public class Asteroid {
     public Asteroid(int x, int y) {
         this.size = 4;
         this.position = new Point2D.Float((float)(Math.random()*x),(float)(Math.random()*y));
-        this.velocity = new Point2D.Float((float)(Math.random()),(float)(Math.random()));
+        this.velocity = new Point2D.Float((float)((Math.random()*2)-1),(float)((Math.random()*2)-1));
         randomPolygon();
     }
 
