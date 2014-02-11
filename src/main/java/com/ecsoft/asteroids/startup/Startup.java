@@ -16,6 +16,7 @@ public class Startup {
         System.out.println("Asteroids");
         Controller contr = new Controller();
         View view = new View(contr);
-        contr.start();
+        Thread loop = new Thread(contr);
+        loop.start();
     }
 }
