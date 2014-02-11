@@ -31,6 +31,7 @@ public class Controller extends Observable implements Runnable{
 
 	@Override
 	public void run() {
+        // [todo] - remove sample
         Preferences preferences = SettingsManager.getPreferences();
         final String SAMPLE_KEY = "sampel_key";
         preferences.put(SAMPLE_KEY, "saved stuff");
