@@ -19,6 +19,7 @@ public class Player {
     private double velocity;
     private double degree;
     
+    
    /**
     * Creates a player-controlled ship at the center position
     * @param x The width of the gamescreen

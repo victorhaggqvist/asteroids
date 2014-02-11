@@ -42,7 +42,7 @@ public class Controller extends Observable implements Runnable{
 				asteroids.add(new Asteroid((int)(1000*Math.random()), (int)(800*Math.random())));
 			
 			if(projectiles.size() < 10)
-			    projectiles.add(new Projectile((float)(1000*Math.random()), (float)(800*Math.random()), Math.PI-Math.PI/2));
+			    projectiles.add(new Projectile((float)(1000*Math.random()), (float)(800*Math.random()), Math.random()*2*Math.PI));
 			
 			for(Asteroid a : asteroids)
 				a.updatePos();

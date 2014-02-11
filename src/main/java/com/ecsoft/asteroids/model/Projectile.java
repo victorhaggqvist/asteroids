@@ -16,6 +16,7 @@ public class Projectile {
     
     private float x;
     private float y;
+    private Point2D 
     private double direction;
     
 
@@ -34,6 +35,25 @@ public class Projectile {
     public void updatePos() {
         this.x += Math.cos(direction)*velocity;
         this.y += Math.sin(direction)*velocity;
+        
+        //If the asteroid moves out of bounds
+        if(position.getX()<0) {
+            position.setLocation(screenWidth, position.getY());
+        }
+        
+        else if(position.getX()>screenWidth) {
+            position.setLocation(0, position.getY());
+        }
+        
+        else if(position.getY() < 0) {
+            position.setLocation(position.getX() , screenHeight);
+        }
+        
+        else if(position.getY() > screenHeight) {
+            position.setLocation(position.getX() , 0);
+        }
+        
+        
     }
     
     public Point2D.Float getPos() {
