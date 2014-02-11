@@ -12,12 +12,13 @@ import java.awt.geom.Point2D;
  */
 public class Projectile {
     
-    private static double velocity = 10;
+    private static double velocity = 20;
+    private static int screenWidth = 1000;
+    private static int screenHeight = 800;
     
-    private float x;
-    private float y;
-    private Point2D 
+    private Point2D position;
     private double direction;
+    private long time;
     
 
     /**
@@ -27,14 +28,15 @@ public class Projectile {
      * @param direction The direction specified in radians
      */
     public Projectile(float x, float y, double direction) {
-        this.x = x;
-        this.y = y;
-        this.direction = direction;        
+        position = new Point2D.Float(x,y);
+        this.direction = direction;
+        time = System.currentTimeMillis();
     }
     
     public void updatePos() {
-        this.x += Math.cos(direction)*velocity;
-        this.y += Math.sin(direction)*velocity;
+        double x = position.getX() + Math.cos(direction)*velocity;
+        double y = position.getY() + Math.sin(direction)*velocity;
+        position.setLocation(x,y);
         
         //If the asteroid moves out of bounds
         if(position.getX()<0) {
@@ -56,7 +58,7 @@ public class Projectile {
         
     }
     
-    public Point2D.Float getPos() {
-        return new Point2D.Float(x,y);
+    public Point2D getPos() {
+        return position;
     }
 }
