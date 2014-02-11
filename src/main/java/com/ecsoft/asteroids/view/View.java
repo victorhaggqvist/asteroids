@@ -47,6 +47,9 @@ public class View implements Observer{
   	
         		for(Asteroid a : contr.asteroids)
         			g.drawPolygon(a.getPolygon());
+        		
+        		for(Projectile a : contr.projectiles)
+                    g.drawOval((int)a.getPos().getX(), (int)a.getPos().getY(), 10, 10);
         	}
         	
         	
