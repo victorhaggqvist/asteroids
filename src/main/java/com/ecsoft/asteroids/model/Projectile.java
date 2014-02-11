@@ -6,10 +6,11 @@ import java.awt.geom.Point2D;
  * Name: Asteroids
  * Description: Projectile
  *
- * @author: Victor Häggqvist
+ * @author: Albin Karlquist
  * @since: 2/10/14
  * Package: com.ecsoft.asteroids.model
  */
+
 public class Projectile {
 
     private static double velocity = 20;
@@ -39,6 +40,7 @@ public class Projectile {
      * @throws BulletExpired if the bullet has expired
      */
     public void updatePos() throws BulletExpired {
+
         
         if (System.currentTimeMillis() - time > timeToLive) {
             throw new BulletExpired();
@@ -48,7 +50,7 @@ public class Projectile {
         double y = position.getY() + Math.sin(direction)*velocity;
         position.setLocation(x,y);
         
-        //If the asteroid moves out of bounds
+        //If the projectile moves out of bounds
         if(position.getX()<0) {
             position.setLocation(screenWidth, position.getY());
         }

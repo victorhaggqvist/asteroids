@@ -43,13 +43,14 @@ public class View implements Observer{
 			@Override
         	protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.setColor(Color.black);	
+				this.setBackground(Color.black);
+				g.setColor(Color.white);	
   	
         		for(Asteroid a : contr.asteroids)
         			g.drawPolygon(a.getPolygon());
         		
         		for(Projectile a : contr.projectiles)
-                    g.drawOval((int)a.getPos().getX(), (int)a.getPos().getY(), 10, 10);
+                    g.fillOval((int)a.getPos().getX(), (int)a.getPos().getY(), 5, 5);
         	}
         	
         	

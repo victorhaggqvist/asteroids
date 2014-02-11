@@ -53,7 +53,6 @@ public class Controller extends Observable implements Runnable{
                     projectiles.get(i).updatePos();
                 } catch (BulletExpired e) {
                     projectiles.remove(i);
-                    System.out.println("Bullet expired");
                 }
 			}
 			
