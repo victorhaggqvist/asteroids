@@ -1,8 +1,12 @@
 package com.ecsoft.asteroids.view;
 
 import com.ecsoft.asteroids.controller.Controller;
+import com.ecsoft.asteroids.model.*;
 
 import javax.swing.*;
+
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -23,9 +27,24 @@ public class View {
     public void createWindow() {
 
         JFrame frame = new JFrame( "Asteroids" );
+        JPanel panel = new JPanel(){
+        	
+			private static final long serialVersionUID = 1L;
+
+			@Override
+        	protected void paintComponent(Graphics g) {
+				g.setColor(Color.black);
+        		g.fillOval(50, 50, 50, 50);
+        	}
+        	
+        	
+        };
+        frame.add(panel);
         frame.setSize(1000,800);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible( true );
+        panel.repaint();
+        
 
     }
 }
