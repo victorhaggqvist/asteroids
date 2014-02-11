@@ -25,6 +25,7 @@ public class View implements Observer{
 
 	JPanel panel, startOverlay;
 	Controller contr;
+    boolean startOverlayOntop = true;
 	
     public View(Controller contr) {
     	this.contr = contr;
@@ -35,9 +36,10 @@ public class View implements Observer{
     public void createWindow() {
 
         JFrame frame = new JFrame( "Asteroids" );
-        frame.setJMenuBar(createMenu());
+        //frame.setJMenuBar(createMenu());
 
         startOverlay = new startOverlay();
+
         panel = new JPanel(){
         	
 			private static final long serialVersionUID = 1L;
@@ -58,10 +60,12 @@ public class View implements Observer{
         	
         };
         frame.add(panel);
-        //frame.add(startOverlay);
-        frame.setSize(1000,800);
+        if (!startOverlayOntop)
+            frame.add(startOverlay);
+        frame.setSize(1000, 800);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setVisible( true );
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
         panel.repaint();
         
 
