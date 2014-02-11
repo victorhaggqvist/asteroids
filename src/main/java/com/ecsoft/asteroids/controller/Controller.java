@@ -18,7 +18,7 @@ import com.ecsoft.asteroids.view.View;
 public class Controller extends Observable implements Runnable{
 	
 	public ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
-	private final int tickDelay = 1000;
+	private final int tickDelay = 33;
 	
     public Controller() {
 
@@ -29,7 +29,11 @@ public class Controller extends Observable implements Runnable{
 		while(true) {
 			long time = System.currentTimeMillis();
 			
-			asteroids.add(new Asteroid((int)(1000*Math.random()), (int)(800*Math.random())));
+			if(asteroids.size() < 10)
+				asteroids.add(new Asteroid((int)(1000*Math.random()), (int)(800*Math.random())));
+			
+			for(Asteroid a : asteroids)
+				a.updatePos();
 			
 			super.setChanged();
 			super.notifyObservers();
