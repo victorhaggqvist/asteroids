@@ -11,16 +11,13 @@ import com.ecsoft.asteroids.view.View;
  * Package: com.ecsoft.asteroids.controller
  */
 public class Controller {
-    private final View view;
     private Game game;
 
-    public Controller(View view) {
+    public Controller() {
 
-        this.view = view;
     }
 
     public void start() {
-        view.createWindow();
         game = new Game();
         game.start();
     }

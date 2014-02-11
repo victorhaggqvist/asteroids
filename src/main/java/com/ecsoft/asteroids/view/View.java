@@ -1,6 +1,7 @@
 package com.ecsoft.asteroids.view;
 
 import com.ecsoft.asteroids.controller.Controller;
+import com.ecsoft.asteroids.controller.Game;
 import com.ecsoft.asteroids.model.*;
 
 import javax.swing.*;
@@ -9,6 +10,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Name: Asteroids
@@ -18,16 +21,21 @@ import java.awt.event.WindowEvent;
  * @since: 2/10/14
  * Package: com.ecsoft.asteroids.view
  */
-public class View {
+public class View implements Observer{
 
-    public View() {
-
+	JPanel panel;
+	Game game;
+	
+    public View(Game game) {
+    	this.game = game;
+    	game.addObserver(this);
+    	createWindow();
     }
 
     public void createWindow() {
 
         JFrame frame = new JFrame( "Asteroids" );
-        JPanel panel = new JPanel(){
+        panel = new JPanel(){
         	
 			private static final long serialVersionUID = 1L;
 
@@ -47,4 +55,9 @@ public class View {
         
 
     }
+
+	@Override
+	public void update(Observable o, Object obj) {
+		panel.repaint();
+	}
 }
