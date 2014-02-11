@@ -53,9 +53,13 @@ public class View implements Observer{
         		for(Asteroid a : contr.asteroids)
         			g.drawPolygon(a.getPolygon());
         		
-        		g.drawPolygon(contr.player.getPolygon());
-   
+        		g.drawPolygon(contr.player.getPolygon()); 
         		
+        		g.setColor(Color.red);  
+        		for(Saucer a : contr.saucers)
+                    g.drawPolygon(a.getPolygon());
+        		
+        		g.setColor(Color.green);  
         		for(Projectile a : contr.projectiles)
                     g.fillOval((int)a.getPos().getX(), (int)a.getPos().getY(), 5, 5);
         	}

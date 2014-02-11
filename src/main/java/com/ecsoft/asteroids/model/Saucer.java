@@ -13,7 +13,7 @@ import java.awt.geom.Point2D;
 public class Saucer {
     
     private static final float velocity = 3;
-    private static final int size = 30;
+    private static final int size = 20;
     private static final int SCREEN_WIDTH = 1000;
     private static final int SCREEN_HEIGHT = 600;
     

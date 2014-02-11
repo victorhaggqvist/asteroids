@@ -103,7 +103,7 @@ public class Asteroid {
         
         //If the asteroid moves out of bounds
         if(position.getX()<0-size*scale/2) {
-            position.setLocation(screenWidth+size*scale/2, position.getY());
+            position.setLocation(screenWidth, position.getY());
         }
         
         else if(position.getX()>screenWidth+size*scale/2) {
