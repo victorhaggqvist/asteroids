@@ -29,6 +29,7 @@ atlassian-ide-plugin.xml
 .metadata
 .gradle
 bin/
+target/
 tmp/
 *.tmp
 *.bak
