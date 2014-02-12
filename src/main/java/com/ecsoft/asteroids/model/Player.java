@@ -156,9 +156,31 @@ public class Player {
     	return this.position;
     }
     
-    public void takeDamage() {
+    /**
+     * @author Albin Karlquist
+     * player takes damage and respawns
+     * @throws NoHPLeftException if HP is 0
+     */
+    public void takeDamage() throws NoHPLeftException{
+    	System.out.println(health);
         this.health--;
-        //Throws exception if health = 0
+        respawn();
+        if (health == 0) {
+        	throw new NoHPLeftException();
+        }
+    }
+    
+    /**
+     * @author Albin Karlquist
+     * respawns the player, returning it to the starting position. Grants invincibility for 3 seconds
+     */
+    private void respawn() {
+    	
+    	this.position.setLocation(350, 350);
+    	this.velocity = 0;
+    	
+    	//TODO: invincibility
+    	
     }
 
 }

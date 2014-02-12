@@ -100,6 +100,10 @@ public class Saucer {
         return new Polygon(x,y,6);
     }
     
+    /**
+     * @author Albin Karlquist
+     * @return returns the position of the saucer
+     */
     public Point2D.Float getPosition() {
     	return this.position;
     }

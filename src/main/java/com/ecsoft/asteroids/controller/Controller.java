@@ -9,6 +9,7 @@ import com.ecsoft.asteroids.mathematics.Collision;
 import com.ecsoft.asteroids.mathematics.Trigonometry;
 import com.ecsoft.asteroids.model.Asteroid;
 import com.ecsoft.asteroids.model.BulletExpired;
+import com.ecsoft.asteroids.model.NoHPLeftException;
 import com.ecsoft.asteroids.model.Player;
 import com.ecsoft.asteroids.model.Projectile;
 import com.ecsoft.asteroids.model.Saucer;
@@ -101,12 +102,7 @@ public class Controller extends Observable implements Runnable{
             asteroids.add(new Asteroid(1000, 600));
         while(true) {
 			long time = System.currentTimeMillis();
-			
-			
-			
-//			if(projectiles.size() < 10)
-//			    projectiles.add(new Projectile((float)(1000*Math.random()), (float)(800*Math.random()), Math.random()*2*Math.PI));
-			
+				
 			if(saucers.size() < 2)
                 saucers.add(new Saucer());
 			
@@ -128,6 +124,7 @@ public class Controller extends Observable implements Runnable{
 			for (int i = 0; i < projectiles.size(); i++) {
                 try {
                     projectiles.get(i).updatePos();
+                    //Removes the projectile if it catches a BulletExpired Exception
                 } catch (BulletExpired e) {
                     projectiles.remove(i);
                 }
@@ -138,8 +135,12 @@ public class Controller extends Observable implements Runnable{
 			    		    
                 if (player.getPolygon().intersects(asteroids.get(i).getPolygon().getBounds2D())) {                 
                     if(Collision.collide(player.getPolygon(), asteroids.get(i).getPolygon())) {
-                        //Catch noHPLeft exception
-                        player = new Player(350, 350);
+                        try {
+							player.takeDamage();
+							//Game Over if exception is catched
+						} catch (NoHPLeftException e) {
+							System.out.println("Game Over");
+						}
                     } 
                 }
             }
@@ -158,7 +159,12 @@ public class Controller extends Observable implements Runnable{
 			//Checks for collision between projectiles and asteroids
 			for (int i = 0; i < asteroids.size(); i++) {
                 for (int j = 0; j < projectiles.size(); j++) {
+                	
+                	//Checks if a bullet has collided with an asteroid
                     if(asteroids.get(i).getPolygon().contains(projectiles.get(j).getPos())) {
+                    	
+                    	//Removes the bullet and asteroid. Then creates two new smaller asteroids.
+                    	//[BUG] new asteroids get the same direction angle
                         projectiles.remove(j);
                         int size = asteroids.get(i).getSize();
                         Point2D.Float pos = asteroids.get(i).getPosition();

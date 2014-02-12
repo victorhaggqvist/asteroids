@@ -1,7 +1,7 @@
 package com.ecsoft.asteroids.model;
 /**
  * 
- * @author Albin
+ * @author Albin Karlquist
  *
  */
 public class BulletExpired extends Exception{
