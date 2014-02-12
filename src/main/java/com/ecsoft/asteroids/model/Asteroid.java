@@ -28,22 +28,7 @@ public class Asteroid {
     private static final int screenWidth = 1000;
     private static final int screenHeight = 600;
 
-
-
-    /**
-     * Creates a new asteroid at a random location with a random velocity
-     * @param x Width of the game screen
-     * @param y Height of the game screen
-     */
-    public Asteroid(int x, int y) {
-        this.size = 4;
-        this.position = new Point2D.Float((float)(Math.random()*x),(float)(Math.random()*y));
-        this.velocity = new Point2D.Float((float)((Math.random()*2)-1),(float)((Math.random()*2)-1));
-        this.rotateSpeed = (float)(Math.random()/10)-0.05f;
-        
-        randomPolygon();
-    }
-
+    
     /**
      * Creates a new asteroid at the specified location and size
      * @param pos Position of the asteroid
@@ -56,7 +41,6 @@ public class Asteroid {
         rnd = new Random();
         
         this.velocity = new Point2D.Float((float)((rnd.nextFloat()*2)-1),(float)((rnd.nextFloat()*2)-1));
-        System.out.println(velocity);
         this.rotateSpeed = (float)(Math.random()/10)-0.05f;
         randomPolygon();
     }

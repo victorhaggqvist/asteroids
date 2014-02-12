@@ -176,7 +176,7 @@ public class Player {
      */
     private void respawn() {
     	
-    	this.position.setLocation(350, 350);
+    	this.position.setLocation(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
     	this.velocity = 0;
     	
     	//TODO: invincibility

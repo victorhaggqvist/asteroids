@@ -28,6 +28,10 @@ import org.omg.DynamicAny._DynAnyFactoryStub;
  * Package: com.ecsoft.asteroids.controller
  */
 public class Controller extends Observable implements Runnable{
+
+	private static final int SCREEN_WIDTH = 1000;
+	private static final int SCREEN_HEIGHT = 600;
+	private static final int NMBR_OF_ASTEROIDS = 10;
 	
 	public ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
 	public ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
@@ -36,7 +40,8 @@ public class Controller extends Observable implements Runnable{
 	private final int TICK_DELAY = 33;
 	
     public Controller() {
-    	player = new Player(350, 350);
+    	//Spawns a player at the center of the screen
+    	player = new Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
     }
     
     /**
@@ -98,8 +103,25 @@ public class Controller extends Observable implements Runnable{
         preferences.put(SAMPLE_KEY, "saved stuff");
         System.out.println("Sample setting: "+preferences.get(SAMPLE_KEY,""));
         
-        while(asteroids.size() < 10)
-            asteroids.add(new Asteroid(1000, 600));
+        //Creates asteroids at random positions, but not too close to the player starting position (center)
+        while(asteroids.size() < NMBR_OF_ASTEROIDS) {
+        	int x = SCREEN_WIDTH/2;
+        	int y = SCREEN_HEIGHT/2;
+        	
+        	//Randomize until value isn't too close to the center
+        	while(x > (SCREEN_WIDTH/2)-100 && x < (SCREEN_WIDTH/2)+100) {
+        		x = (int)(Math.random()*SCREEN_WIDTH);
+        	}
+        	
+        	while(y > (SCREEN_HEIGHT/2)-100 && y < (SCREEN_HEIGHT/2)+100) {
+        		y = (int)(Math.random()*SCREEN_HEIGHT);
+        	}
+        	
+            asteroids.add(new Asteroid(new Point2D.Float(x,y) , 4));
+            
+        }
+        
+        
         while(true) {
 			long time = System.currentTimeMillis();
 				
