@@ -70,21 +70,17 @@ public class Asteroid {
         }
 
         //Reformats the polygon to a single dimensional array and removes the middle point
-        for (int i = 0; i < 3; i++) {
-           this.polygon[i] = polygon[0][i]; 
-        }
+        System.arraycopy(polygon[0], 0, this.polygon, 0, 3);
         
         this.polygon[3] = polygon[1][0];
         this.polygon[4] = polygon[1][2];
-        for (int i = 0; i < 3; i++) {
-            this.polygon[i+5] = polygon[2][i];
-        }
+        System.arraycopy(polygon[2], 0, this.polygon, 5, 3);
         
         Point2D.Float sum = Matrix.Point2DSum(this.polygon);
         Point2D.Float center = new Point2D.Float((float)sum.getX()/this.polygon.length,(float)sum.getY()/this.polygon.length);
-        for (int i = 0; i < this.polygon.length; i++) {
-            this.polygon[i].x -= center.x;
-            this.polygon[i].y -= center.y;
+        for (Point2D.Float aPolygon : this.polygon) {
+            aPolygon.x -= center.x;
+            aPolygon.y -= center.y;
         }
         
         
@@ -144,11 +140,9 @@ public class Asteroid {
         y[6] = (int)(position.getY() + polygon[5].getY());
         x[7] = (int)(position.getX() + polygon[3].getX());
         y[7] = (int)(position.getY() + polygon[3].getY());
-        
-        Polygon p = new Polygon(x,y,8);
-        
-        
-        return p;
+
+
+        return new Polygon(x,y,8);
     }
 
 
