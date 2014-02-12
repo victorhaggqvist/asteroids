@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.prefs.Preferences;
 
+import com.ecsoft.asteroids.mathematics.Collision;
 import com.ecsoft.asteroids.model.Asteroid;
 import com.ecsoft.asteroids.model.BulletExpired;
 import com.ecsoft.asteroids.model.Player;
@@ -93,11 +94,13 @@ public class Controller extends Observable implements Runnable{
         final String SAMPLE_KEY = "sampel_key";
         preferences.put(SAMPLE_KEY, "saved stuff");
         System.out.println("Sample setting: "+preferences.get(SAMPLE_KEY,""));
+        
+        while(asteroids.size() < 10)
+            asteroids.add(new Asteroid(1000, 600));
         while(true) {
 			long time = System.currentTimeMillis();
 			
-			if(asteroids.size() < 10)
-				asteroids.add(new Asteroid((int)(1000*Math.random()), (int)(600*Math.random())));
+			
 			
 //			if(projectiles.size() < 10)
 //			    projectiles.add(new Projectile((float)(1000*Math.random()), (float)(800*Math.random()), Math.random()*2*Math.PI));
@@ -124,8 +127,14 @@ public class Controller extends Observable implements Runnable{
 			//Check for collision between player and asteroids
 			for (int i = 0; i < asteroids.size(); i++) {
 			    		    
-                if (player.getPolygon().intersects(asteroids.get(i).getPolygon().getBounds2D())) {
-                    System.out.println("collision with asteroid #" + i);
+                if (player.getPolygon().intersects(asteroids.get(i).getPolygon().getBounds2D())) {                 
+                    if(Collision.collide(player.getPolygon(), asteroids.get(i).getPolygon())) {
+                        //Catch noHPLeft exception
+                        player = new Player(350, 350);
+                    }
+                        
+                    
+                    
                 }
             }
 			
@@ -136,10 +145,11 @@ public class Controller extends Observable implements Runnable{
                         projectiles.remove(j);
                         int size = asteroids.get(i).getSize();
                         Point2D.Float pos = asteroids.get(i).getPosition();
-                        asteroids.add(new Asteroid(pos,size-1));
-                        asteroids.add(new Asteroid(pos,size-1));
-                        
                         asteroids.remove(i);
+                        if(size > 1) {
+                            asteroids.add(new Asteroid(pos, size-1));
+                            asteroids.add(new Asteroid(pos, size-1));      
+                        }
                     }                        
                 }
             }

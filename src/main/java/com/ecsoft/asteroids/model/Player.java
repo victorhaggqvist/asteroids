@@ -139,8 +139,7 @@ public class Player {
      * 
      * @return Polygon based on the ships corners.
      */
-    public Polygon getPolygon() {
-    	
+    public Polygon getPolygon() {    	
     	int[] x = new int[3];
     	int[] y = new int[3];
     	
@@ -152,6 +151,11 @@ public class Player {
     	y[2] = (int)(position.getY() + corners[2].getY());
 
     	return new Polygon(x, y, x.length);
+    }
+    
+    public void takeDamage() {
+        this.health--;
+        //Throws exception if health = 0
     }
 
 }
