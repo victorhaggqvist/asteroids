@@ -136,7 +136,6 @@ public class Player {
     
     /**
      * Returns a polygon based on the ships corners for drawing.
-     * 
      * @return Polygon based on the ships corners.
      */
     public Polygon getPolygon() {    	
@@ -151,6 +150,10 @@ public class Player {
     	y[2] = (int)(position.getY() + corners[2].getY());
 
     	return new Polygon(x, y, x.length);
+    }
+    
+    public Point2D.Float getPosition() {
+    	return this.position;
     }
     
     public void takeDamage() {

@@ -6,11 +6,13 @@ import java.util.Observable;
 import java.util.prefs.Preferences;
 
 import com.ecsoft.asteroids.mathematics.Collision;
+import com.ecsoft.asteroids.mathematics.Trigonometry;
 import com.ecsoft.asteroids.model.Asteroid;
 import com.ecsoft.asteroids.model.BulletExpired;
 import com.ecsoft.asteroids.model.Player;
 import com.ecsoft.asteroids.model.Projectile;
 import com.ecsoft.asteroids.model.Saucer;
+import com.ecsoft.asteroids.model.SaucerShootException;
 import com.ecsoft.asteroids.model.SettingsManager;
 
 import org.omg.DynamicAny._DynAnyFactoryStub;
@@ -111,8 +113,15 @@ public class Controller extends Observable implements Runnable{
 			for(Asteroid a : asteroids)
 				a.updatePos();
 			
-			for(Saucer a : saucers)
-                a.updatePos();
+			for(Saucer a : saucers) {
+                try {
+					a.updatePos();
+				} catch (SaucerShootException e) {
+					//Add a projectile at the location of the saucer going towards the player
+					double angle = Trigonometry.angle(a.getPosition(), player.getPosition());
+					projectiles.add(new Projectile((float)e.getSaucerPos().getX(), (float)e.getSaucerPos().getY(), angle));
+				}
+			}
 			
 			player.updatePos();			
 			
@@ -131,10 +140,18 @@ public class Controller extends Observable implements Runnable{
                     if(Collision.collide(player.getPolygon(), asteroids.get(i).getPolygon())) {
                         //Catch noHPLeft exception
                         player = new Player(350, 350);
-                    }
-                        
-                    
-                    
+                    } 
+                }
+            }
+			
+			//Check for collision between player and saucer
+			for (int i = 0; i < saucers.size(); i++) {
+			    		    
+                if (player.getPolygon().intersects(saucers.get(i).getPolygon().getBounds2D())) {                 
+                    if(Collision.collide(player.getPolygon(), saucers.get(i).getPolygon())) {
+                        //Catch noHPLeft exception
+                        player = new Player(350, 350);
+                    } 
                 }
             }
 			

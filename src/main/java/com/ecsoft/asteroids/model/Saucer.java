@@ -39,7 +39,7 @@ public class Saucer {
      * @author Albin Karlquist
      * Updates the position of the saucer.
      */
-    public void updatePos() {   
+    public void updatePos() throws SaucerShootException{   
         
         double x = position.getX() + Math.cos(direction)*velocity;
         double y = position.getY() + Math.sin(direction)*velocity;
@@ -48,7 +48,7 @@ public class Saucer {
         //Shoots at the player every 2 seconds. 
         if (System.currentTimeMillis()-shootTimer>2000) {
             shootTimer = System.currentTimeMillis();
-            //Notify Controller ......
+            throw new SaucerShootException(this.position);
         }
         
         //Changes direction every 3 seconds
@@ -98,6 +98,10 @@ public class Saucer {
         y[5] = (int)this.position.y+size/2;
         
         return new Polygon(x,y,6);
+    }
+    
+    public Point2D.Float getPosition() {
+    	return this.position;
     }
 
 }
