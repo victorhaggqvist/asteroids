@@ -98,7 +98,10 @@ public class Asteroid {
      */
     public void updatePos () {        
         position.setLocation(position.getX() + velocity.getX(), position.getY() + velocity.getY());
-        float transformationMatrix[][] = {{(float)Math.cos(rotateSpeed), (float)-Math.sin(rotateSpeed)}, {(float)Math.sin(rotateSpeed), (float)Math.cos(rotateSpeed)}};
+        float transformationMatrix[][] ={
+        									{(float)Math.cos(rotateSpeed), (float)-Math.sin(rotateSpeed)}, 
+        									{(float)Math.sin(rotateSpeed), (float)Math.cos(rotateSpeed)}
+        								};
         polygon = Matrix.convert2DMatrixToPoint2DArray(Matrix.Transform(transformationMatrix, Matrix.convertPoint2DArrayTo2DMatrix(polygon)));
         
         //If the asteroid moves out of bounds
