@@ -33,7 +33,58 @@ public class Controller extends Observable implements Runnable{
     public Controller() {
     	player = new Player(350, 350);
     }
+    
+    /**
+     * @author Albin Karlquist
+     * moves the player forward
+     */
+    public void moveForward() {
+        player.accelerating = true;
+    }
+    
+    /**
+     * @author Albin Karlquist
+     * stops thrusting
+     */
+    public void stopMove() {
+        player.accelerating = false;
+    }
 
+    /**
+     * @author Albin Karlquist
+     * Begin rotating left
+     */
+    public void rotateLeft() {
+        player.turningR = false;
+        player.turningL = true;        
+    }
+     
+    /**
+     * @author Albin Karlquist
+     * Begin rotating right
+     */
+    public void rotateRight() {
+        player.turningL = false;
+        player.turningR = true;
+    }
+    
+    /**
+     * @author Albin Karlquist
+     * Stop rotating
+     */
+    public void stopRotate() {
+        player.turningL = false;
+        player.turningR = false;
+    }
+    
+    /**
+     * @author Albin Karlquist
+     * Shoots a projectile
+     */
+    public void shoot() {
+        projectiles.add(player.shoot());        
+    }
+    
 	@Override
 	public void run() {
         // [todo] - remove sample
@@ -47,8 +98,8 @@ public class Controller extends Observable implements Runnable{
 			if(asteroids.size() < 10)
 				asteroids.add(new Asteroid((int)(1000*Math.random()), (int)(600*Math.random())));
 			
-			if(projectiles.size() < 10)
-			    projectiles.add(new Projectile((float)(1000*Math.random()), (float)(800*Math.random()), Math.random()*2*Math.PI));
+//			if(projectiles.size() < 10)
+//			    projectiles.add(new Projectile((float)(1000*Math.random()), (float)(800*Math.random()), Math.random()*2*Math.PI));
 			
 			if(saucers.size() < 2)
                 saucers.add(new Saucer());
@@ -58,6 +109,8 @@ public class Controller extends Observable implements Runnable{
 			
 			for(Saucer a : saucers)
                 a.updatePos();
+			
+			player.updatePos();
 			
 			for (int i = 0; i < projectiles.size(); i++) {
                 try {

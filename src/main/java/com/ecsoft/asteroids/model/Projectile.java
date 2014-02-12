@@ -13,10 +13,10 @@ import java.awt.geom.Point2D;
 
 public class Projectile {
 
-    private static double velocity = 20;
+    private static double velocity = 25;
     private static int screenWidth = 1000;
     private static int screenHeight = 600;
-    private static int timeToLive = 3000;
+    private static int timeToLive = 1000;
    
     private Point2D position;
     private double direction;

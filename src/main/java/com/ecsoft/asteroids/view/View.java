@@ -8,6 +8,8 @@ import javax.swing.*;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Observable;
@@ -75,8 +77,36 @@ public class View implements Observer{
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
         panel.repaint();
+        frame.addKeyListener(new KeyListener());
+    }
+    
+    private class KeyListener extends KeyAdapter {
         
-
+        public void keyPressed(KeyEvent e) {            
+            int key = e.getKeyCode();
+            switch(key){
+                case KeyEvent.VK_LEFT: contr.rotateLeft();
+                break;
+                case KeyEvent.VK_RIGHT: contr.rotateRight();
+                break;
+                case KeyEvent.VK_UP: contr.moveForward();
+                break;
+                case KeyEvent.VK_SPACE: contr.shoot();
+                break;
+            }
+        }
+        
+        public void keyReleased(KeyEvent e) {
+            int key = e.getKeyCode();
+            switch(key){
+                case KeyEvent.VK_LEFT: contr.stopRotate();
+                break;
+                case KeyEvent.VK_RIGHT: contr.stopRotate();
+                break;
+                case KeyEvent.VK_UP: contr.stopMove();
+                break;
+            }
+        }
     }
 
     private JMenuBar createMenu() {
