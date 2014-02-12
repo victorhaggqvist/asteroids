@@ -1,5 +1,6 @@
 package com.ecsoft.asteroids.controller;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.prefs.Preferences;
@@ -110,7 +111,7 @@ public class Controller extends Observable implements Runnable{
 			for(Saucer a : saucers)
                 a.updatePos();
 			
-			player.updatePos();
+			player.updatePos();			
 			
 			for (int i = 0; i < projectiles.size(); i++) {
                 try {
@@ -119,6 +120,30 @@ public class Controller extends Observable implements Runnable{
                     projectiles.remove(i);
                 }
 			}
+			
+			//Check for collision between player and asteroids
+			for (int i = 0; i < asteroids.size(); i++) {
+			    		    
+                if (player.getPolygon().intersects(asteroids.get(i).getPolygon().getBounds2D())) {
+                    System.out.println("collision with asteroid #" + i);
+                }
+            }
+			
+			//Checks for collision between projectiles and asteroids
+			for (int i = 0; i < asteroids.size(); i++) {
+                for (int j = 0; j < projectiles.size(); j++) {
+                    if(asteroids.get(i).getPolygon().contains(projectiles.get(j).getPos())) {
+                        projectiles.remove(j);
+                        int size = asteroids.get(i).getSize();
+                        Point2D.Float pos = asteroids.get(i).getPosition();
+                        asteroids.add(new Asteroid(pos,size-1));
+                        asteroids.add(new Asteroid(pos,size-1));
+                        
+                        asteroids.remove(i);
+                    }                        
+                }
+            }
+			
 			
 			super.setChanged();
 			super.notifyObservers();

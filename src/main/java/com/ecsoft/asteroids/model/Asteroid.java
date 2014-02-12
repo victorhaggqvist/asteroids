@@ -2,6 +2,8 @@ package com.ecsoft.asteroids.model;
 
 import java.awt.Polygon;
 import java.awt.geom.Point2D;
+import java.util.Random;
+
 import com.ecsoft.asteroids.mathematics.*;
 
 /**
@@ -14,13 +16,14 @@ import com.ecsoft.asteroids.mathematics.*;
  */
 public class Asteroid {
     
-    private static int scale = 20;
+    private static int SCALE = 30;
 
     private Point2D position;
     private Point2D velocity;
     private int size;    
     private Point2D.Float polygon[] = new Point2D.Float[8];
     private float rotateSpeed;
+    private Random rnd;
     
     private static final int screenWidth = 1000;
     private static final int screenHeight = 600;
@@ -43,14 +46,14 @@ public class Asteroid {
 
     /**
      * Creates a new asteroid at the specified location and size
-     * @param x X-position of the asteroid
-     * @param y Y-position of the asteroid
+     * @param pos Position of the asteroid
      * @param size Size of the asteroid
      */
-    public Asteroid(int x, int y, int size) {
+    public Asteroid(Point2D pos, int size) {
         this.size = size;
-        this.position = new Point2D.Float(x,y);
-        this.velocity = new Point2D.Float((float)(Math.random()),(float)(Math.random()));
+        this.position = pos;
+        this.velocity = new Point2D.Float((float)((Math.random()*2)-1),(float)((Math.random()*2)-1));
+        this.rotateSpeed = (float)(Math.random()/10)-0.05f;
         randomPolygon();
     }
 
@@ -61,7 +64,7 @@ public class Asteroid {
         
         Point2D.Float polygon [][] = new Point2D.Float[3][3];
         
-        int sectorSize = (this.size*20)/3;
+        int sectorSize = (this.size*SCALE)/3;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 polygon[i][j] = new Point2D.Float((float)(Math.random()*sectorSize+(j*sectorSize)), (float)(Math.random()*sectorSize + (i*sectorSize)));
@@ -101,20 +104,20 @@ public class Asteroid {
         polygon = Matrix.convert2DMatrixToPoint2DArray(Matrix.Transform(transformationMatrix, Matrix.convertPoint2DArrayTo2DMatrix(polygon)));
         
         //If the asteroid moves out of bounds
-        if(position.getX()<0-size*scale/2) {
+        if(position.getX()<0-size*SCALE/2) {
             position.setLocation(screenWidth, position.getY());
         }
         
-        else if(position.getX()>screenWidth+size*scale/2) {
-            position.setLocation(0-size*scale/2, position.getY());
+        else if(position.getX()>screenWidth+size*SCALE/2) {
+            position.setLocation(0-size*SCALE/2, position.getY());
         }
         
-        else if(position.getY() < 0-size*scale/2) {
-            position.setLocation(position.getX() , screenHeight+size*scale/2);
+        else if(position.getY() < 0-size*SCALE/2) {
+            position.setLocation(position.getX() , screenHeight+size*SCALE/2);
         }
         
-        else if(position.getY() > screenHeight+size*scale/2) {
-            position.setLocation(position.getX() , 0-size*scale/2);
+        else if(position.getY() > screenHeight+size*SCALE/2) {
+            position.setLocation(position.getX() , 0-size*SCALE/2);
         }
         
     }
@@ -144,8 +147,19 @@ public class Asteroid {
         x[7] = (int)(position.getX() + polygon[3].getX());
         y[7] = (int)(position.getY() + polygon[3].getY());
 
-
         return new Polygon(x,y,8);
+    }
+    
+    /**
+     * @author Albin Karlquist
+     * @return Returns the size of the asteroid
+     */
+    public int getSize() {
+        return this.size;
+    }
+    
+    public Point2D.Float getPosition() {
+        return (Point2D.Float) this.position;
     }
 
 

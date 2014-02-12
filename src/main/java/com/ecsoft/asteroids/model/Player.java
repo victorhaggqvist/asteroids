@@ -19,7 +19,7 @@ public class Player {
     private final double friction = 0.95;
     private final double MAX_SPEED = 10;
     private final double ACC = 0.2;
-    private final double TURN_SPEED = 0.1;
+    private final double TURN_SPEED = 0.2;
     private final int SHIP_SIZE = 20;
     private static final int SCREEN_WIDTH = 1000;
     private static final int SCREEN_HEIGHT = 600;
