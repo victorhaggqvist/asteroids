@@ -8,8 +8,9 @@ import java.util.prefs.Preferences;
 import com.ecsoft.asteroids.mathematics.Collision;
 import com.ecsoft.asteroids.mathematics.Trigonometry;
 import com.ecsoft.asteroids.model.Asteroid;
-import com.ecsoft.asteroids.model.BulletExpired;
 import com.ecsoft.asteroids.model.NoHPLeftException;
+import com.ecsoft.asteroids.model.ObjectExpiredException;
+import com.ecsoft.asteroids.model.Particle;
 import com.ecsoft.asteroids.model.Player;
 import com.ecsoft.asteroids.model.Projectile;
 import com.ecsoft.asteroids.model.Saucer;
@@ -32,10 +33,12 @@ public class Controller extends Observable implements Runnable{
 	private static final int SCREEN_WIDTH = 1000;
 	private static final int SCREEN_HEIGHT = 600;
 	private static final int NMBR_OF_ASTEROIDS = 10;
+	private static final int EXPLOSION_SIZE = 10;
 	
 	public ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
 	public ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 	public ArrayList<Saucer> saucers = new ArrayList<Saucer>();
+	public ArrayList<Particle> particles = new ArrayList<Particle>();
 	public Player player;
 	private final int TICK_DELAY = 33;
 	
@@ -119,6 +122,7 @@ public class Controller extends Observable implements Runnable{
         	
             asteroids.add(new Asteroid(new Point2D.Float(x,y) , 4));
             
+            
         }
         
         
@@ -143,14 +147,25 @@ public class Controller extends Observable implements Runnable{
 			
 			player.updatePos();			
 			
+			//Updates projectiles
 			for (int i = 0; i < projectiles.size(); i++) {
                 try {
                     projectiles.get(i).updatePos();
-                    //Removes the projectile if it catches a BulletExpired Exception
-                } catch (BulletExpired e) {
+                    //Removes the projectile if it catches Exception
+                } catch (ObjectExpiredException e) {
                     projectiles.remove(i);
                 }
 			}
+			
+			//Updates particles
+			for (int i = 0; i < particles.size(); i++) {
+                try {
+                    particles.get(i).updatePos();
+                    //Removes the particle if it catches Exception
+                } catch (ObjectExpiredException e) {
+                    particles.remove(i);
+                }
+            }
 			
 			//Check for collision between player and asteroids
 			for (int i = 0; i < asteroids.size(); i++) {
@@ -158,8 +173,9 @@ public class Controller extends Observable implements Runnable{
                 if (player.getPolygon().intersects(asteroids.get(i).getPolygon().getBounds2D())) {                 
                     if(Collision.collide(player.getPolygon(), asteroids.get(i).getPolygon())) {
                         try {
-							player.takeDamage();
-							//Game Over if exception is catched
+							player.takeDamage();							
+							
+							//Game Over if NoHPLeftException is catched
 						} catch (NoHPLeftException e) {
 							System.out.println("Game Over");
 						}
@@ -183,18 +199,25 @@ public class Controller extends Observable implements Runnable{
                 for (int j = 0; j < projectiles.size(); j++) {
                 	
                 	//Checks if a bullet has collided with an asteroid
+                    //[BUG] : Causes IndexOutOfBoundsException in some cases
                     if(asteroids.get(i).getPolygon().contains(projectiles.get(j).getPos())) {
                     	
+                      //Creates particles for explosion effect
+                        for (int k = 0; k < EXPLOSION_SIZE; k++) {
+                            particles.add(new Particle(new Point2D.Float(((int)projectiles.get(j).getPos().getX()),(int)projectiles.get(j).getPos().getY())));
+                        }
+                        
                     	//Removes the bullet and asteroid. Then creates two new smaller asteroids.
-                    	//[BUG] new asteroids get the same direction angle
                         projectiles.remove(j);
                         int size = asteroids.get(i).getSize();
-                        Point2D.Float pos = asteroids.get(i).getPosition();
-                        asteroids.remove(i);
+                    
                         if(size > 1) {
-                            asteroids.add(new Asteroid(pos, size-1));
-                            asteroids.add(new Asteroid(pos, size-1));      
+                            asteroids.add(new Asteroid(new Point2D.Float((int)asteroids.get(i).getPosition().getX(), (int)asteroids.get(i).getPosition().getY()), size-1));
+                            asteroids.add(new Asteroid(new Point2D.Float((int)asteroids.get(i).getPosition().getX(), (int)asteroids.get(i).getPosition().getY()), size-1));      
                         }
+                        asteroids.remove(i);
+                        
+                      
                     }                        
                 }
             }

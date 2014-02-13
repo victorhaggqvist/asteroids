@@ -18,7 +18,7 @@ public class Projectile {
     private static int screenHeight = 600;
     private static int timeToLive = 1000;
    
-    private Point2D position;
+    private Point2D.Float position;
     private double direction;
     private long time;
     
@@ -39,11 +39,11 @@ public class Projectile {
      * Updates the bullet position
      * @throws BulletExpired if the bullet has expired
      */
-    public void updatePos() throws BulletExpired {
+    public void updatePos() throws ObjectExpiredException {
 
         
         if (System.currentTimeMillis() - time > timeToLive) {
-            throw new BulletExpired();
+            throw new ObjectExpiredException();
         }
         
         double x = position.getX() + Math.cos(direction)*velocity;
@@ -72,7 +72,7 @@ public class Projectile {
     /**
      * @return Returns the bullets position
      */
-    public Point2D getPos() {
+    public Point2D.Float getPos() {
         return position;
     }
 }

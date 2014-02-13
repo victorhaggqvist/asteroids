@@ -66,6 +66,12 @@ public class View implements Observer{
         		g.setColor(Color.green);  
         		for(Projectile a : contr.projectiles)
                     g.fillOval((int)a.getPos().getX(), (int)a.getPos().getY(), 5, 5);
+        		
+        		g.setColor(Color.white); 
+        		for (int i = 0; i < contr.particles.size(); i++) {
+        		    Particle a = contr.particles.get(i);
+                    g.fillOval((int)(a.getPos().getX()+Math.random()), (int)(a.getPos().getY()+Math.random()), 4, 4);
+                }
         	}
         	
         	
