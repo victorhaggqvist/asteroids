@@ -57,7 +57,14 @@ public class View implements Observer{
         			//g.drawRect((int)a.getPolygon().getBounds2D().getX(),(int)a.getPolygon().getBounds2D().getY(),(int)a.getPolygon().getBounds2D().getWidth(),(int)a.getPolygon().getBounds2D().getHeight());
         		}       		
         		
-        		g.drawPolygon(contr.player.getPolygon()); 
+        		
+        		//Draw player
+        		g.drawPolygon(contr.player.getPolygon());
+        		//If player is ininvcible, draw a fabulous circle around it
+        		if(contr.player.getInincibility()) {
+        		    g.setColor(Color.blue);
+        		    g.drawOval((int)contr.player.getPosition().getX()-50, (int)contr.player.getPosition().getY()-50, 100, 100);
+        		}
         		
         		g.setColor(Color.red);  
         		for(Saucer a : contr.saucers)

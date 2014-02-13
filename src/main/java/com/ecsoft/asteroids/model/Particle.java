@@ -38,11 +38,8 @@ public class Particle {
         
         position.setLocation(this.position.getX() + this.velocity.getX(), this.position.getY() + this.velocity.getY());        
         //If the particle has expired
-        if(System.currentTimeMillis()-time > timeToLive){
-            System.out.println("Expired");
+        if(System.currentTimeMillis()-time > timeToLive)
             throw new ObjectExpiredException();
-            
-        }
     }
     
     public Point2D.Float getPos() {

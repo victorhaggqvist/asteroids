@@ -129,8 +129,8 @@ public class Controller extends Observable implements Runnable{
         while(true) {
 			long time = System.currentTimeMillis();
 				
-			if(saucers.size() < 2)
-                saucers.add(new Saucer());
+//			if(saucers.size() < 2)
+//                saucers.add(new Saucer());
 			
 			for(Asteroid a : asteroids)
 				a.updatePos();
@@ -188,8 +188,13 @@ public class Controller extends Observable implements Runnable{
 			    		    
                 if (player.getPolygon().intersects(saucers.get(i).getPolygon().getBounds2D())) {                 
                     if(Collision.collide(player.getPolygon(), saucers.get(i).getPolygon())) {
-                        //Catch noHPLeft exception
-                        player = new Player(350, 350);
+                        try {
+                            player.takeDamage();                            
+                            
+                            //Game Over if NoHPLeftException is catched
+                        } catch (NoHPLeftException e) {
+                            System.out.println("Game Over");
+                        }
                     } 
                 }
             }

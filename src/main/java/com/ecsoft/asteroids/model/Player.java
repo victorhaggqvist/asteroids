@@ -21,12 +21,15 @@ public class Player {
     private final double ACC = 0.2;
     private final double TURN_SPEED = 0.2;
     private final int SHIP_SIZE = 20;
+    private final int RESPAWN_PROTECTION_TIME = 3000;
     private static final int SCREEN_WIDTH = 1000;
     private static final int SCREEN_HEIGHT = 600;
     
     private double velocity;
     private double rotation;
     private int health;
+    private boolean invincible;
+    private long respawnTime;
     
     private Point2D.Float position;
     
@@ -50,6 +53,7 @@ public class Player {
         turningL = false;
         turningR = false;
         accelerating = false;
+        invincible = false;
     }
     
     /**
@@ -122,6 +126,12 @@ public class Player {
         else if(position.getY() > SCREEN_HEIGHT) {
             position.setLocation(position.getX() , 0);
         }
+        
+        //Checks the respawnTime
+        if (System.currentTimeMillis() - respawnTime > RESPAWN_PROTECTION_TIME) {
+            respawnTime = 0;
+            this.invincible=false;
+        }
     }
     
     /**
@@ -153,6 +163,8 @@ public class Player {
     }
     
     public Point2D.Float getPosition() {
+        Point2D.Float sum = Matrix.Point2DSum(this.corners);
+        Point2D.Float center = new Point2D.Float((float)sum.getX()/this.corners.length,(float)sum.getY()/this.corners.length);
     	return this.position;
     }
     
@@ -162,25 +174,35 @@ public class Player {
      * @throws NoHPLeftException if HP is 0
      */
     public void takeDamage() throws NoHPLeftException{
-    	System.out.println(health);
-        this.health--;
-        respawn();
-        if (health == 0) {
-        	throw new NoHPLeftException();
+        if(!invincible) {
+        	System.out.println(health);
+            this.health--;
+            respawn();
+            if (health == 0) {
+            	throw new NoHPLeftException();
+            }
         }
+        
     }
     
     /**
      * @author Albin Karlquist
      * respawns the player, returning it to the starting position. Grants invincibility for 3 seconds
      */
-    private void respawn() {
-    	
+    private void respawn() {    	
+        this.invincible = true;
     	this.position.setLocation(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
     	this.velocity = 0;
-    	
-    	//TODO: invincibility
-    	
+    	this.respawnTime = System.currentTimeMillis();
+    	    	   	
+    }
+    
+    /**
+     * @author Albin Karlquist
+     * @return Returns if the player is inincible or not
+     */
+    public boolean getInincibility() {
+        return this.invincible;
     }
 
 }
