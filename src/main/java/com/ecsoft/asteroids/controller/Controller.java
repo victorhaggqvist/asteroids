@@ -129,8 +129,8 @@ public class Controller extends Observable implements Runnable{
         while(true) {
 			long time = System.currentTimeMillis();
 				
-//			if(saucers.size() < 2)
-//                saucers.add(new Saucer());
+			if(saucers.size() < 2)
+                saucers.add(new Saucer());
 			
 			for(Asteroid a : asteroids)
 				a.updatePos();
@@ -222,7 +222,30 @@ public class Controller extends Observable implements Runnable{
                         }
                         asteroids.remove(i);
                         
-                      
+                        //Break to prevent IndexOutOfBoundsException
+                        break;
+                    }                        
+                }
+            }
+			
+			//Checks for collisions between projectiles and saucers
+			for (int i = 0; i < saucers.size(); i++) {
+                for (int j = 0; j < projectiles.size(); j++) {
+                    
+                    //Checks if a bullet has collided with an asteroid
+                    //[BUG] : Causes IndexOutOfBoundsException in some cases
+                    if(saucers.get(i).getPolygon().contains(projectiles.get(j).getPos())) {
+                        
+                      //Creates particles for explosion effect
+                        for (int k = 0; k < EXPLOSION_SIZE; k++) {
+                            particles.add(new Particle(new Point2D.Float(((int)projectiles.get(j).getPos().getX()),(int)projectiles.get(j).getPos().getY())));
+                        }                        
+                        //Removes the saucer
+                        saucers.remove(i);
+                        projectiles.remove(j);
+                        
+                        //Break to prevent IndexOutOfBoundsException
+                        break;
                     }                        
                 }
             }
