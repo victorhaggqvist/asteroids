@@ -34,17 +34,22 @@ public class Controller extends Observable implements Runnable{
 	private static final int SCREEN_HEIGHT = 600;
 	private static final int NMBR_OF_ASTEROIDS = 10;
 	private static final int EXPLOSION_SIZE = 10;
+	private static final int ASTEROID_HEALTH = 3;
 	
 	public ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
 	public ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 	public ArrayList<Saucer> saucers = new ArrayList<Saucer>();
 	public ArrayList<Particle> particles = new ArrayList<Particle>();
 	public Player player;
+	public boolean gameStarted;
+	
 	private final int TICK_DELAY = 33;
 	
     public Controller() {
     	//Spawns a player at the center of the screen
+        gameStarted=false;
     	player = new Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+    	
     }
     
     /**
@@ -120,7 +125,7 @@ public class Controller extends Observable implements Runnable{
         		y = (int)(Math.random()*SCREEN_HEIGHT);
         	}
         	
-            asteroids.add(new Asteroid(new Point2D.Float(x,y) , 4));
+            asteroids.add(new Asteroid(new Point2D.Float(x,y) , ASTEROID_HEALTH));
             
             
         }
@@ -209,7 +214,7 @@ public class Controller extends Observable implements Runnable{
                     	
                       //Creates particles for explosion effect
                         for (int k = 0; k < EXPLOSION_SIZE; k++) {
-                            particles.add(new Particle(new Point2D.Float(((int)projectiles.get(j).getPos().getX()),(int)projectiles.get(j).getPos().getY())));
+                            particles.add(new Particle(new Point2D.Float(((int)projectiles.get(j).getPos().getX()),(int)projectiles.get(j).getPos().getY()),5));
                         }
                         
                     	//Removes the bullet and asteroid. Then creates two new smaller asteroids.
@@ -238,7 +243,7 @@ public class Controller extends Observable implements Runnable{
                         
                       //Creates particles for explosion effect
                         for (int k = 0; k < EXPLOSION_SIZE; k++) {
-                            particles.add(new Particle(new Point2D.Float(((int)projectiles.get(j).getPos().getX()),(int)projectiles.get(j).getPos().getY())));
+                            particles.add(new Particle(new Point2D.Float(((int)projectiles.get(j).getPos().getX()),(int)projectiles.get(j).getPos().getY()),5));
                         }                        
                         //Removes the saucer
                         saucers.remove(i);

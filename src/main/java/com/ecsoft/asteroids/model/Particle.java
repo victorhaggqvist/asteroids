@@ -17,16 +17,18 @@ public class Particle {
     private Point2D.Float position, velocity; 
     private float timeToLive;
     private long time;
+    private int size;
     
     /**
      * Creates a new particle at the specified location with a random velocity
      * @param pos Position of particle
      */
-    public Particle(Point2D.Float pos) {
+    public Particle(Point2D.Float pos, int size) {
        this.position = pos;
        this.velocity = new Point2D.Float((float)(MAX_VELOCITY*Math.random()-MAX_VELOCITY/2), ((float)(MAX_VELOCITY*Math.random()-MAX_VELOCITY/2)));
        timeToLive = (float)Math.random()*MAX_TIME_TO_LIVE;
        time = System.currentTimeMillis();
+       this.size = size;
     }
     
    /**
