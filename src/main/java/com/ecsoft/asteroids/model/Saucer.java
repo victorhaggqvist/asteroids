@@ -24,11 +24,14 @@ public class Saucer {
     
     /**
      * @author Albin Karlquist
-     * Spawns an evil saucer at a random location.
+     * 
+     * @param x X-coordinate of the saucer
+     * @param y Y-coordinate of the saucer
+     * Spawns an evil saucer at the specifed location.
      */
-    public Saucer() {       
+    public Saucer(int x, int y) {       
         
-        this.position = new Point2D.Float(500,300);
+        this.position = new Point2D.Float(x,y);
         this.direction = Math.random()*2*Math.PI;        
         this.shootTimer = System.currentTimeMillis();
         this.turnTimer = System.currentTimeMillis();

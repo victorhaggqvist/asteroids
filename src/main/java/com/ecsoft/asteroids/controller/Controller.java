@@ -37,10 +37,12 @@ public class Controller extends Observable implements Runnable{
 	private static final int ASTEROID_HEALTH = 3;
 	private static final int ASTEROID_SCORE = 100;
 	private static final int SAUCER_SCORE = 250;
+	private static final int SAUCER_SPAWN_RATE = 10000;
 	
 	public ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
 	public ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 	public ArrayList<Saucer> saucers = new ArrayList<Saucer>();
+	public long saucerTimer;
 	public ArrayList<Particle> particles = new ArrayList<Particle>();
 	public Player player;
 	public boolean gameStarted;
@@ -49,7 +51,8 @@ public class Controller extends Observable implements Runnable{
 	
     public Controller() {
     	//Spawns a player at the center of the screen
-        gameStarted=false;    	
+        gameStarted=false;
+        saucerTimer = 0;
         initiateGame(0);
     	
     }
@@ -131,9 +134,10 @@ public class Controller extends Observable implements Runnable{
       asteroids.clear();
       projectiles.clear();
       saucers.clear();
+      saucerTimer = 0;
       particles.clear();
       player = new Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
-      //Creates asteroids at random positions, but not too close to the player starting position (center)
+      //Creates asteroids at random positions, but not too close to the player's starting position (center)
         while(asteroids.size() < NMBR_OF_ASTEROIDS) {
             int x = SCREEN_WIDTH/2;
             int y = SCREEN_HEIGHT/2;
@@ -161,13 +165,20 @@ public class Controller extends Observable implements Runnable{
              
         
         while(true) {
-			long time = System.currentTimeMillis();
-				
-			if(saucers.size() < 2)
-                saucers.add(new Saucer());
+			long time = System.currentTimeMillis();			
+			
 			
 			for(Asteroid a : asteroids)
 				a.updatePos();
+			
+			//Spawn a saucer every x second where x = SAUCER_SPAWN_RATE
+			if (System.currentTimeMillis()-saucerTimer > SAUCER_SPAWN_RATE) {
+				saucerTimer = System.currentTimeMillis();
+				//Spawning a saucer far outside the map, which instantly moves it to a random corner ("out of bounds"-mechanic)
+				saucers.add(new Saucer(10000,10000));
+			}
+                
+			
 			
 			for(Saucer a : saucers) {
                 try {

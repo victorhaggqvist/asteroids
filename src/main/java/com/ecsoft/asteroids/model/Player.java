@@ -104,6 +104,7 @@ public class Player {
     		float transformationMatrix[][] = {{(float)Math.cos(TURN_SPEED), (float)-Math.sin(TURN_SPEED)}, {(float)Math.sin(TURN_SPEED), (float)Math.cos(TURN_SPEED)}};
             corners = Matrix.convert2DMatrixToPoint2DArray(Matrix.Transform(transformationMatrix, Matrix.convertPoint2DArrayTo2DMatrix(corners)));
     	}
+    	
     	rotation %= 2*Math.PI;
     	
     	

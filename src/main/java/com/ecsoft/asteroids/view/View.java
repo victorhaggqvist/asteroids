@@ -101,8 +101,8 @@ public class View implements Observer{
                 FontMetrics fm = getFontMetrics( g.getFont() );
                 g.setColor(Color.WHITE);
                 
-                int width = 0;
                 //Draws start screen
+                int width = 0;
                 if (!optionScreen) { 
                     for (int i = 0; i < menuItems.length; i++) {
                         width = fm.stringWidth(menuItems[i]);
