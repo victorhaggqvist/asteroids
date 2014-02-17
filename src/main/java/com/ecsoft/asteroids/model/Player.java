@@ -22,6 +22,8 @@ public class Player {
     private final double TURN_SPEED = 0.2;
     private final int SHIP_SIZE = 20;
     private final int RESPAWN_PROTECTION_TIME = 3000;
+    private final int START_HEALTH = 3;
+    
     private static final int SCREEN_WIDTH = 1000;
     private static final int SCREEN_HEIGHT = 600;
     
@@ -48,7 +50,7 @@ public class Player {
     public Player(int x, int y) {
     	createPlayerPoints(SHIP_SIZE);
     	position = new Point2D.Float(x,y);
-    	health = 3;
+    	health = START_HEALTH;
     	score = 0;
         velocity = 0;
         rotation = 0;

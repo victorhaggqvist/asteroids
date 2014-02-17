@@ -66,6 +66,9 @@ public class View implements Observer{
     }
     
     public void createStartPanel() {
+    	
+    	contr.initiateGame(0);
+    	
         startPanel = new JPanel(){            
             private static final long serialVersionUID = 1L;
             
@@ -81,22 +84,27 @@ public class View implements Observer{
                     //g.drawRect((int)a.getPolygon().getBounds2D().getX(),(int)a.getPolygon().getBounds2D().getY(),(int)a.getPolygon().getBounds2D().getWidth(),(int)a.getPolygon().getBounds2D().getHeight());
                 }
                 
+                //Draw saucers
                 g.setColor(Color.red);  
                 for(Saucer a : contr.saucers)
                     g.drawPolygon(a.getPolygon());
                 
+                //Draw projectiles
                 g.setColor(Color.green);  
                 for(Projectile a : contr.projectiles)
                     g.fillOval((int)a.getPos().getX(), (int)a.getPos().getY(), 5, 5);
                 
+                //Draw particles
                 g.setColor(Color.white); 
                 for (int i = 0; i < contr.particles.size(); i++) {
                     Particle a = contr.particles.get(i);
                     g.fillOval((int)(a.getPos().getX()+Math.random()), (int)(a.getPos().getY()+Math.random()), 4, 4);
                 }
                 
+                //
+                //MENU
+                //
                 
-                //Draws the menu
                 g.setFont(new Font("Arial", Font.BOLD, 20));
                 FontMetrics fm = getFontMetrics( g.getFont() );
                 g.setColor(Color.WHITE);
@@ -162,7 +170,25 @@ public class View implements Observer{
         	protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				this.setBackground(Color.black);
-				g.setColor(Color.white);	
+				g.setColor(Color.white);
+				
+				g.setFont(new Font("Arial", Font.BOLD, 20));
+                FontMetrics fm = getFontMetrics( g.getFont() );
+                g.setColor(Color.WHITE); 
+                int width = 0;            
+                
+                //Draws game over text if nescessary
+                if (contr.getGameOver()) {
+                	width = fm.stringWidth("GAME OVER");
+                    g.drawString("GAME OVER", (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-20));
+                }
+                
+                //Draw current level
+                g.setFont(new Font("Arial", Font.BOLD, 15));
+                fm = getFontMetrics( g.getFont() );
+                width = fm.stringWidth("LEVEL " + contr.getLevel());
+                g.drawString("LEVEL " + contr.getLevel(), (SCREEN_WIDTH/2)-width/2 , 30);
+                
   	
         		for(Asteroid a : contr.asteroids) {
         			g.drawPolygon(a.getPolygon());
@@ -204,7 +230,8 @@ public class View implements Observer{
         		
         		//Draw score
         		g.setColor(Color.white);
-        		g.drawString("SCORE: " + contr.getScore() , SCREEN_WIDTH-100, 25);
+        		g.setFont(new Font("Arial", Font.BOLD, 15));
+        		g.drawString("SCORE: " + contr.getScore() , SCREEN_WIDTH-150, 25);
         		
         		
         	}
@@ -272,15 +299,18 @@ public class View implements Observer{
                     else
                         menuSelector = 0;
                     break;
+                    
                 case KeyEvent.VK_ENTER:
                     if (menuSelector == 0) {
+                    	contr.initiateGame(1);
                         createGamePanel();
-                        gameStarted = true;
-                        contr.initiateGame(1);
+                        gameStarted = true;                        
                     }
+                    
                     else if(menuSelector == 1) {
                         optionScreen = true;
                     }
+                    
                     else if(menuSelector == 3) {
                         System.exit(0);
                     }
