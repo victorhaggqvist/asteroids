@@ -35,6 +35,8 @@ public class Controller extends Observable implements Runnable{
 	private static final int NMBR_OF_ASTEROIDS = 10;
 	private static final int EXPLOSION_SIZE = 10;
 	private static final int ASTEROID_HEALTH = 3;
+	private static final int ASTEROID_SCORE = 100;
+	private static final int SAUCER_SCORE = 250;
 	
 	public ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
 	public ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
@@ -47,8 +49,8 @@ public class Controller extends Observable implements Runnable{
 	
     public Controller() {
     	//Spawns a player at the center of the screen
-        gameStarted=false;
-    	player = new Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+        gameStarted=false;    	
+        initiateGame(0);
     	
     }
     
@@ -103,6 +105,52 @@ public class Controller extends Observable implements Runnable{
         projectiles.add(player.shoot());        
     }
     
+    /**
+     * @author Albin Karlquist
+     * @return Returns the remaing health
+     */
+    public int getHP() {
+        return player.getHP();
+    }
+    
+    /**
+     * @author Albin Karlquist
+     * @return Returns the player's score
+     */
+    public int getScore() {
+        return player.getScore();
+    }
+
+    
+    /**
+     * @author Albin Karlquist
+     * Iniatate game. Spawns asteroids at random positions and a player in the center
+     * @param level The current level. 0 for menu.
+     */
+    public void initiateGame(int level) {
+      asteroids.clear();
+      projectiles.clear();
+      saucers.clear();
+      particles.clear();
+      player = new Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+      //Creates asteroids at random positions, but not too close to the player starting position (center)
+        while(asteroids.size() < NMBR_OF_ASTEROIDS) {
+            int x = SCREEN_WIDTH/2;
+            int y = SCREEN_HEIGHT/2;
+            
+            //Randomize until value isn't too close to the center
+            while(x > (SCREEN_WIDTH/2)-100 && x < (SCREEN_WIDTH/2)+100) {
+                x = (int)(Math.random()*SCREEN_WIDTH);
+            }
+            
+            while(y > (SCREEN_HEIGHT/2)-100 && y < (SCREEN_HEIGHT/2)+100) {
+                y = (int)(Math.random()*SCREEN_HEIGHT);
+            }
+            
+            asteroids.add(new Asteroid(new Point2D.Float(x,y) , ASTEROID_HEALTH));
+        }
+    }
+    
 	@Override
 	public void run() {
         // [todo] - remove sample
@@ -110,26 +158,7 @@ public class Controller extends Observable implements Runnable{
         final String SAMPLE_KEY = "sampel_key";
         preferences.put(SAMPLE_KEY, "saved stuff");
         System.out.println("Sample setting: "+preferences.get(SAMPLE_KEY,""));
-        
-        //Creates asteroids at random positions, but not too close to the player starting position (center)
-        while(asteroids.size() < NMBR_OF_ASTEROIDS) {
-        	int x = SCREEN_WIDTH/2;
-        	int y = SCREEN_HEIGHT/2;
-        	
-        	//Randomize until value isn't too close to the center
-        	while(x > (SCREEN_WIDTH/2)-100 && x < (SCREEN_WIDTH/2)+100) {
-        		x = (int)(Math.random()*SCREEN_WIDTH);
-        	}
-        	
-        	while(y > (SCREEN_HEIGHT/2)-100 && y < (SCREEN_HEIGHT/2)+100) {
-        		y = (int)(Math.random()*SCREEN_HEIGHT);
-        	}
-        	
-            asteroids.add(new Asteroid(new Point2D.Float(x,y) , ASTEROID_HEALTH));
-            
-            
-        }
-        
+             
         
         while(true) {
 			long time = System.currentTimeMillis();
@@ -214,7 +243,7 @@ public class Controller extends Observable implements Runnable{
                     	
                       //Creates particles for explosion effect
                         for (int k = 0; k < EXPLOSION_SIZE; k++) {
-                            particles.add(new Particle(new Point2D.Float(((int)projectiles.get(j).getPos().getX()),(int)projectiles.get(j).getPos().getY()),5));
+                            particles.add(new Particle(new Point2D.Float(((int)projectiles.get(j).getPos().getX()),(int)projectiles.get(j).getPos().getY())));
                         }
                         
                     	//Removes the bullet and asteroid. Then creates two new smaller asteroids.
@@ -226,6 +255,8 @@ public class Controller extends Observable implements Runnable{
                             asteroids.add(new Asteroid(new Point2D.Float((int)asteroids.get(i).getPosition().getX(), (int)asteroids.get(i).getPosition().getY()), size-1));      
                         }
                         asteroids.remove(i);
+                        
+                        player.increaseScore(ASTEROID_SCORE);
                         
                         //Break to prevent IndexOutOfBoundsException
                         break;
@@ -243,11 +274,13 @@ public class Controller extends Observable implements Runnable{
                         
                       //Creates particles for explosion effect
                         for (int k = 0; k < EXPLOSION_SIZE; k++) {
-                            particles.add(new Particle(new Point2D.Float(((int)projectiles.get(j).getPos().getX()),(int)projectiles.get(j).getPos().getY()),5));
+                            particles.add(new Particle(new Point2D.Float(((int)projectiles.get(j).getPos().getX()),(int)projectiles.get(j).getPos().getY())));
                         }                        
                         //Removes the saucer
                         saucers.remove(i);
                         projectiles.remove(j);
+                        
+                        player.increaseScore(SAUCER_SCORE);
                         
                         //Break to prevent IndexOutOfBoundsException
                         break;

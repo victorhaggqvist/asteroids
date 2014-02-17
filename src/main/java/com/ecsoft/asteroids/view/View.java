@@ -20,6 +20,7 @@ import javax.swing.WindowConstants;
 
 import com.ecsoft.asteroids.controller.Controller;
 import com.ecsoft.asteroids.model.Asteroid;
+import com.ecsoft.asteroids.model.Heart;
 import com.ecsoft.asteroids.model.Particle;
 import com.ecsoft.asteroids.model.Projectile;
 import com.ecsoft.asteroids.model.Saucer;
@@ -177,19 +178,33 @@ public class View implements Observer{
         		    g.drawOval((int)contr.player.getPosition().getX()-50, (int)contr.player.getPosition().getY()-50, 100, 100);
         		}
         		
+        		//Draw saucers
         		g.setColor(Color.red);  
         		for(Saucer a : contr.saucers)
                     g.drawPolygon(a.getPolygon());
         		
+        		//Draw projectiles
         		g.setColor(Color.green);  
         		for(Projectile a : contr.projectiles)
                     g.fillOval((int)a.getPos().getX(), (int)a.getPos().getY(), 5, 5);
         		
+        		//Draw particles
         		g.setColor(Color.white); 
         		for (int i = 0; i < contr.particles.size(); i++) {
         		    Particle a = contr.particles.get(i);
-                    g.fillOval((int)(a.getPos().getX()+Math.random()), (int)(a.getPos().getY()+Math.random()), 4, 4);
+                    g.fillOval((int)(a.getPos().getX()+Math.random()), (int)(a.getPos().getY()+Math.random()), a.getSize(), a.getSize());
                 }
+        		
+        		//Draw HP left
+        		g.setColor(Color.red);
+        		for (int i = 0; i < contr.getHP(); i++) {
+                    //g.fillOval(50+50*i, 25, 25, 25);
+        		    g.fillPolygon(new Heart(25+25*i, 25, 1));
+                }
+        		
+        		//Draw score
+        		g.setColor(Color.white);
+        		g.drawString("SCORE: " + contr.getScore() , SCREEN_WIDTH-100, 25);
         		
         		
         	}
@@ -211,6 +226,7 @@ public class View implements Observer{
         public void keyPressed(KeyEvent e) {            
             int key = e.getKeyCode();
             
+            //Option menu
             if (optionScreen) {
                 switch (key) {
                 case KeyEvent.VK_UP:
@@ -241,6 +257,7 @@ public class View implements Observer{
                 }
             }
             
+            //Main menu
             else {
             switch(key){
                 case KeyEvent.VK_UP:
@@ -259,6 +276,7 @@ public class View implements Observer{
                     if (menuSelector == 0) {
                         createGamePanel();
                         gameStarted = true;
+                        contr.initiateGame(1);
                     }
                     else if(menuSelector == 1) {
                         optionScreen = true;

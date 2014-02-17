@@ -28,6 +28,7 @@ public class Player {
     private double velocity;
     private double rotation;
     private int health;
+    private int score;
     private boolean invincible;
     private long respawnTime;
     
@@ -48,6 +49,7 @@ public class Player {
     	createPlayerPoints(SHIP_SIZE);
     	position = new Point2D.Float(x,y);
     	health = 3;
+    	score = 0;
         velocity = 0;
         rotation = 0;
         turningL = false;
@@ -204,5 +206,31 @@ public class Player {
     public boolean getInincibility() {
         return this.invincible;
     }
+    
+    /**
+     * @author Albin Karlquist
+     * @return Returns the remaing health
+     */
+    public int getHP() {
+        return this.health;
+    }
+    
+    /**
+     * @author Albin Karlquist
+     * @return Returns the current score
+     */
+    public int getScore() {
+        return score;
+    }
+    
+    /**
+     * @author Albin Karlquist
+     * Increament The player's score
+     * @param score Amount of score to add
+     */
+    public void increaseScore(int score) {
+        this.score += score;
+    }
+    
 
 }
