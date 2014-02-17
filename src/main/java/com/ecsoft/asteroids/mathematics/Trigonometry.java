@@ -35,5 +35,18 @@ public class Trigonometry {
 		
 		return angle;		
 	}
+	
+	/**
+	 * Calculates the vector between two points
+	 * @param p1 First point
+	 * @param p2 Second point
+	 * @return Returns the vector as a point
+	 */
+	public static Point2D.Float getVector (Point2D.Float p1, Point2D.Float p2) {
+		float x = (float)(p1.getX()-p2.getX())%1;
+		float y = (float)(p1.getY()-p2.getY())%1;	
+		
+		return new Point2D.Float(x, y);		
+	}
 
 }

@@ -32,6 +32,7 @@ public class Controller extends Observable implements Runnable {
 	private static final int NMBR_OF_ASTEROIDS = 10;
 	private static final int EXPLOSION_SIZE = 15;
 	private static final int ASTEROID_HEALTH = 3;
+	private static final double ASTEROID_BASE_VELOCITY = 1.5;
 	private static final int ASTEROID_SCORE = 100;
 	private static final int SAUCER_SCORE = 250;
 	private static final int SAUCER_SPAWN_RATE = 10000;
@@ -54,6 +55,7 @@ public class Controller extends Observable implements Runnable {
 		// Spawns a player at the center of the screen
 		gameStarted = false;
 		saucerTimer = 0;
+		player = new Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 		initiateGame(0);
 
 	}
@@ -151,7 +153,7 @@ public class Controller extends Observable implements Runnable {
 		saucers.clear();
 		saucerTimer = 0;
 		particles.clear();
-		player = new Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+		player.setPosition(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 		gameOver = false;
 		this.level = level;
 
@@ -161,7 +163,7 @@ public class Controller extends Observable implements Runnable {
 				int x = (int) (Math.random() * SCREEN_WIDTH);
 				int y = (int) (Math.random() * SCREEN_HEIGHT);
 				asteroids.add(new Asteroid(new Point2D.Float(x, y),
-						ASTEROID_HEALTH));
+						ASTEROID_HEALTH, ASTEROID_BASE_VELOCITY));
 			}
 		}
 
@@ -185,7 +187,7 @@ public class Controller extends Observable implements Runnable {
 					y = (int) (Math.random() * SCREEN_HEIGHT);
 				}
 				asteroids.add(new Asteroid(new Point2D.Float(x, y),
-						ASTEROID_HEALTH));
+						ASTEROID_HEALTH, ASTEROID_BASE_VELOCITY+(level*0.2)));
 			}
 		}
 	}
@@ -292,6 +294,23 @@ public class Controller extends Observable implements Runnable {
 					}
 				}
 			}
+			
+			//Checks for collision between asteroids
+			for (int i = 0; i < asteroids.size()-1; i++) {
+				for (int j = i+1; j < asteroids.size(); j++) {
+					if (asteroids.get(i).getPolygon().intersects(
+							asteroids.get(j).getPolygon().getBounds2D())) {
+						if (Collision.collide(asteroids.get(i).getPolygon(), asteroids.get(j)
+								.getPolygon())) {
+							Point2D.Float velocity = Trigonometry.getVector(asteroids.get(i).getPosition(), asteroids.get(j).getPosition());
+							asteroids.get(i).setVelocity(velocity);
+							velocity = Trigonometry.getVector(asteroids.get(j).getPosition(), asteroids.get(i).getPosition());
+							asteroids.get(j).setVelocity(velocity);
+						}
+						
+					}
+				}				
+			}
 
 			// Checks for collision between projectiles and asteroids
 			for (int i = 0; i < asteroids.size(); i++) {
@@ -302,31 +321,33 @@ public class Controller extends Observable implements Runnable {
 					if (asteroids.get(i).getPolygon()
 							.contains(projectiles.get(j).getPos())) {
 
+						
 						// Creates particles for explosion effect
 						for (int k = 0; k < EXPLOSION_SIZE; k++) {
 							particles.add(new Particle(new Point2D.Float(
 									((int) projectiles.get(j).getPos().getX()),
 									(int) projectiles.get(j).getPos().getY())));
 						}
-
-						// Removes the bullet and asteroid. Then creates two new
-						// smaller asteroids.
+						
 						projectiles.remove(j);
+						// Removes the bullet and asteroid. Then creates two new
+						// smaller asteroids next to each other.
+						
 						int size = asteroids.get(i).getSize();
 
 						if (size > 1) {
 							asteroids.add(new Asteroid(
 									new Point2D.Float((int) asteroids.get(i)
-											.getPosition().getX(),
+											.getPosition().getX()+10*size,
 											(int) asteroids.get(i)
 													.getPosition().getY()),
-									size - 1));
+									size - 1, ASTEROID_BASE_VELOCITY+(level*0.2)));
 							asteroids.add(new Asteroid(
 									new Point2D.Float((int) asteroids.get(i)
-											.getPosition().getX(),
+											.getPosition().getX()-10*size,
 											(int) asteroids.get(i)
 													.getPosition().getY()),
-									size - 1));
+									size - 1, ASTEROID_BASE_VELOCITY+(level*0.2)));
 						}
 						asteroids.remove(i);
 

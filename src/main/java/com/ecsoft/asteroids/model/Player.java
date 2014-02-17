@@ -173,6 +173,10 @@ public class Player {
     	return this.position;
     }
     
+    public void setPosition(int x, int y) {
+    	this.position = new Point2D.Float(x,y);
+    }
+    
     /**
      * @author Albin Karlquist
      * player takes damage and respawns

@@ -19,7 +19,8 @@ public class Asteroid {
     private static int SCALE = 30;
 
     private Point2D position;
-    private Point2D velocity;
+    private Point2D velocityVector;
+    private double velocity;
     private int size;    
     private Point2D.Float polygon[] = new Point2D.Float[8];
     private float rotateSpeed;
@@ -33,14 +34,15 @@ public class Asteroid {
      * Creates a new asteroid at the specified location and size
      * @param pos Position of the asteroid
      * @param size Size of the asteroid
+     * @param size Velocity of the asteroid
      */
-    public Asteroid(Point2D pos, int size) {
+    public Asteroid(Point2D pos, int size, double velocity) {
         this.size = size;
         this.position = pos;
-        
+        this.velocity = 1.5;
         rnd = new Random();
         
-        this.velocity = new Point2D.Float((float)((rnd.nextFloat()*2)-1),(float)((rnd.nextFloat()*2)-1));
+        this.velocityVector = new Point2D.Float((float)((rnd.nextFloat()*2)-1),(float)((rnd.nextFloat()*2)-1));
         this.rotateSpeed = (float)(Math.random()/10)-0.05f;
         randomPolygon();
     }
@@ -76,15 +78,22 @@ public class Asteroid {
         
         
     }
+    
+    public void setVelocity(Point2D.Float p) {
+    	float x = (float)p.getX();
+    	float y = (float)p.getY();
+    	this.velocityVector = new Point2D.Float(x , y);
+    }
 
     /**
+     * @author Albin Karlquist
      * Updates the position of the asteroid
      * 
      * @editor: Peter Lundberg
      * @since: 2/11/14
      */
     public void updatePos () {        
-        position.setLocation(position.getX() + velocity.getX(), position.getY() + velocity.getY());
+        position.setLocation(position.getX() + velocityVector.getX()*velocity, position.getY() + velocityVector.getY()*velocity);
         float transformationMatrix[][] ={
         									{(float)Math.cos(rotateSpeed), (float)-Math.sin(rotateSpeed)}, 
         									{(float)Math.sin(rotateSpeed), (float)Math.cos(rotateSpeed)}
@@ -111,7 +120,7 @@ public class Asteroid {
     }
     
     /**
-     * 
+     * @author Albin Karlquist
      * @return Returns a drawable polygon
      */
     public Polygon getPolygon() {
