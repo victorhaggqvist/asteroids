@@ -295,6 +295,19 @@ public class Controller extends Observable implements Runnable {
 				}
 			}
 			
+			//Check for collision between player and projectiles
+			for (int j = 0; j < projectiles.size(); j++) {
+				if (player.getPolygon().contains(projectiles.get(j).getPos())) {
+					try {
+						player.takeDamage();
+						// Game Over if NoHPLeftException is catched
+					} catch (NoHPLeftException e) {
+						gameOver();
+					}
+				}
+			}
+			
+			
 			//Checks for collision between asteroids
 			for (int i = 0; i < asteroids.size()-1; i++) {
 				for (int j = i+1; j < asteroids.size(); j++) {
@@ -311,13 +324,14 @@ public class Controller extends Observable implements Runnable {
 					}
 				}				
 			}
+			
+			
 
 			// Checks for collision between projectiles and asteroids
 			for (int i = 0; i < asteroids.size(); i++) {
 				for (int j = 0; j < projectiles.size(); j++) {
 
 					// Checks if a bullet has collided with an asteroid
-					// [BUG] : Causes IndexOutOfBoundsException in some cases
 					if (asteroids.get(i).getPolygon()
 							.contains(projectiles.get(j).getPos())) {
 

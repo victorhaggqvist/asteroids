@@ -48,24 +48,7 @@ public class Projectile {
         
         double x = position.getX() + Math.cos(direction)*velocity;
         double y = position.getY() + Math.sin(direction)*velocity;
-        position.setLocation(x,y);
-        
-        //If the projectile moves out of bounds
-        if(position.getX()<0) {
-            position.setLocation(screenWidth, position.getY());
-        }
-        
-        else if(position.getX()>screenWidth) {
-            position.setLocation(0, position.getY());
-        }
-        
-        else if(position.getY() < 0) {
-            position.setLocation(position.getX() , screenHeight);
-        }
-        
-        else if(position.getY() > screenHeight) {
-            position.setLocation(position.getX() , 0);
-        }        
+        position.setLocation(x,y);       
         
     }
     

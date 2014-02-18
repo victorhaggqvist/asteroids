@@ -13,6 +13,7 @@ public class Particle {
     
     private static final float MAX_TIME_TO_LIVE = 3000;
     private static final float MAX_VELOCITY = 2;
+    private static final int PARTICLE_SIZE = 4;
     
     private Point2D.Float position, velocity; 
     private float timeToLive;
@@ -28,7 +29,7 @@ public class Particle {
        this.velocity = new Point2D.Float((float)(MAX_VELOCITY*Math.random()-MAX_VELOCITY/2), ((float)(MAX_VELOCITY*Math.random()-MAX_VELOCITY/2)));
        timeToLive = (float)Math.random()*MAX_TIME_TO_LIVE;
        time = System.currentTimeMillis();
-       this.size = 5;
+       this.size = PARTICLE_SIZE;
     }
     
    /**
@@ -43,15 +44,15 @@ public class Particle {
         //Increase the sie of the particle as its lifetime increases for effect
         long lifeTime = System.currentTimeMillis()-time;
         if(lifeTime<timeToLive*0.8) {
-            this.size = 4;
+            this.size = PARTICLE_SIZE;
             if(lifeTime<timeToLive*0.6) {
-                this.size = 3;
+                this.size = PARTICLE_SIZE-1;
                 if(lifeTime<timeToLive*0.4) {
-                    this.size=3;
+                    this.size=PARTICLE_SIZE-2;
                     if(lifeTime<timeToLive*0.2) {
-                        this.size=2;
+                        this.size=PARTICLE_SIZE-3;
                         if(lifeTime<timeToLive*0.1) {
-                            this.size=1;
+                            this.size=PARTICLE_SIZE-4;
                         }
                     }
                 }
