@@ -39,6 +39,7 @@ public class Controller extends Observable implements Runnable {
 	private static final int SAUCER_SCORE = 250;
 	private static final int SAUCER_SPAWN_RATE = 10000;
 	private static final int PLAYER_TRAIL_INTENSITY = 10;
+	private static final int PLAYER_SHOOTING_DELAY = 200;
 
 	public ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
 	public ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
@@ -46,13 +47,16 @@ public class Controller extends Observable implements Runnable {
 	public long saucerTimer;
 	public ArrayList<Particle> particles = new ArrayList<Particle>();
 	
-	public Player player;
+	public Player player;	
 	private long trailTimer;
+	private long shootTimer;
 
 	private int level;
 
 	public boolean gameStarted;
 	private boolean gameOver;
+	
+	boolean shooting = false;
 
 	private final int TICK_DELAY = 33;
 
@@ -61,6 +65,7 @@ public class Controller extends Observable implements Runnable {
 		gameStarted = false;
 		saucerTimer = 0;
 		trailTimer = 0;
+		shootTimer = 0;
 		player = new Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 		initiateGame(0);		
 
@@ -105,10 +110,24 @@ public class Controller extends Observable implements Runnable {
 	}
 
 	/**
-	 * @author Albin Karlquist Shoots a projectile
+	 * Start firing projectiles
+	 * @author Albin Karlquist 
 	 */
-	public void shoot() {
-		projectiles.add(player.shoot());
+	public void startShoot() {
+		if (!shooting) {
+			projectiles.add(player.shoot());
+			shootTimer = System.currentTimeMillis();	
+			shooting = true;
+		}
+	}
+	
+	/**
+	 * Stop firing projectiles
+	 * @author Albin Karlquist 
+	 */
+	public void stopShoot() {
+		shootTimer = 0;
+		shooting = false;
 	}
 
 	/**
@@ -246,6 +265,15 @@ public class Controller extends Observable implements Runnable {
 
 			// Updates position of player
 			player.updatePos();
+			
+			//Shoot if space is pressed down
+			if (shootTimer != 0) {
+				if (System.currentTimeMillis()-shootTimer > PLAYER_SHOOTING_DELAY) {
+					shootTimer = System.currentTimeMillis();
+					projectiles.add(player.shoot());
+				}				
+			}
+			
 
 			// Updates projectiles
 			for (int i = 0; i < projectiles.size(); i++) {

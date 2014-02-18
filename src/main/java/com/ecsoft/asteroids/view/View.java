@@ -349,7 +349,7 @@ public class View implements Observer{
                 break;
                 case KeyEvent.VK_UP: contr.moveForward();
                 break;
-                case KeyEvent.VK_SPACE: contr.shoot();
+                case KeyEvent.VK_SPACE: contr.startShoot();
                 break;                
                 case KeyEvent.VK_ESCAPE:
                     //createStartPanel();
@@ -367,6 +367,8 @@ public class View implements Observer{
                 case KeyEvent.VK_RIGHT: contr.stopRotate();
                 break;
                 case KeyEvent.VK_UP: contr.stopMove();
+                break;
+                case KeyEvent.VK_SPACE: contr.stopShoot();
                 break;
             }
         }

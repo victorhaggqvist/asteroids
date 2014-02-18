@@ -40,6 +40,7 @@ public class Player {
     public boolean turningR;
     public boolean accelerating;
     
+    
     Point2D.Float[] corners;
     
    /**
