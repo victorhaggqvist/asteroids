@@ -62,9 +62,7 @@ public class Player {
     
     /**
      * Creates the three corners of the player ship.
-     * 
-     * @param x Player position center, x-value 
-     * @param y Player position center, y-value
+     *
      * @param size Length between points
      */
     private void createPlayerPoints(double size) {
@@ -77,9 +75,9 @@ public class Player {
     	Point2D.Float sum = Matrix.Point2DSum(this.corners);
         Point2D.Float center = new Point2D.Float((float)sum.getX()/this.corners.length,(float)sum.getY()/this.corners.length);
         System.out.println(center);
-        for (int i = 0; i < this.corners.length; i++) {
-            this.corners[i].x -= center.x;
-            this.corners[i].y -= center.y;
+        for (Point2D.Float corner : this.corners) {
+            corner.x -= center.x;
+            corner.y -= center.y;
         }
     }
     
@@ -171,7 +169,7 @@ public class Player {
     
     public Point2D.Float getPosition() {
         Point2D.Float sum = Matrix.Point2DSum(this.corners);
-        Point2D.Float center = new Point2D.Float((float)sum.getX()/this.corners.length,(float)sum.getY()/this.corners.length);
+        //Point2D.Float center = new Point2D.Float((float)sum.getX()/this.corners.length,(float)sum.getY()/this.corners.length);
     	return this.position;
     }
     
