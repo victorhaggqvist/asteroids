@@ -32,6 +32,7 @@ import com.ecsoft.asteroids.model.SettingsManager;
  * Description: View
  *
  * @author: Victor Häggqvist
+ * @editor Albin Karlquist
  * @since: 2/10/14
  * Package: com.ecsoft.asteroids.view
  */
@@ -56,6 +57,8 @@ public class View implements Observer{
     public View(Controller contr) {
         settings = new SettingsManager();
         frame = new JFrame( "Asteroids" );
+        frame.addKeyListener(new KeyListener());
+        frame.addKeyListener(new menuListener());
         gameStarted = false;
         optionScreen = false;
     	this.contr = contr;
@@ -65,7 +68,7 @@ public class View implements Observer{
     	
     }
     
-    public void createStartPanel() {
+    private void createStartPanel() {
     	
     	contr.initiateGame(0);
     	
@@ -144,7 +147,6 @@ public class View implements Observer{
                     yPoints[2] = yPoints[0]+10;
                     
                     g.fillPolygon(xPoints, yPoints, xPoints.length);        
-                    //g.fillOval((SCREEN_WIDTH/2)-fm.stringWidth(menuItems[menuSelector])/2 - 20, ((SCREEN_HEIGHT/2)-70)+40*menuSelector , 5, 5);
                 
             }
             
@@ -155,29 +157,42 @@ public class View implements Observer{
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
-        startPanel.repaint();
-        frame.addKeyListener(new menuListener());
+        startPanel.repaint();        
     }
     
     
-    public void createGamePanel() {         
+    private void createGamePanel() {         
         
         gamePanel = new JPanel(){
         	
 			private static final long serialVersionUID = 1L;
-
+			
+			//used for calculating FPS
+			long time = System.currentTimeMillis();
+			long fps = 0;
+			
 			@Override
         	protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				this.setBackground(Color.black);
-				g.setColor(Color.white);
-				
-				g.setFont(new Font("Arial", Font.BOLD, 20));
+			    
+			    super.paintComponent(g);
+                this.setBackground(Color.black);
+                g.setColor(Color.white);
+                
+              	fps = 1000/(System.currentTimeMillis()-time); 		        
+		        time = System.currentTimeMillis();
+		        
+			    			    
+				           
+			    //Draw FPS
+			    g.setFont(new Font("Arial", Font.PLAIN, 10));
+                g.drawString("FPS: " + fps, SCREEN_WIDTH/2, SCREEN_HEIGHT-50);
+			    
+                //Draws game over text if nescessary
+			    g.setFont(new Font("Arial", Font.BOLD, 20));
                 FontMetrics fm = getFontMetrics( g.getFont() );
                 g.setColor(Color.WHITE); 
-                int width = 0;            
+                int width = 0; 			    
                 
-                //Draws game over text if nescessary
                 if (contr.getGameOver()) {
                 	width = fm.stringWidth("GAME OVER");
                     g.drawString("GAME OVER", (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-20));
@@ -245,7 +260,7 @@ public class View implements Observer{
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
         gamePanel.repaint();
-        frame.addKeyListener(new KeyListener());
+        
     }
     
     
@@ -303,6 +318,8 @@ public class View implements Observer{
                 case KeyEvent.VK_ENTER:
                     if (menuSelector == 0) {
                     	contr.initiateGame(1);
+                    	//Remove all panels and create a game panel
+                    	frame.getContentPane().removeAll();
                         createGamePanel();
                         gameStarted = true;                        
                     }
@@ -336,6 +353,7 @@ public class View implements Observer{
                 break;                
                 case KeyEvent.VK_ESCAPE:
                     //createStartPanel();
+                    createStartPanel();
                     gameStarted=false;
                     break;
             }

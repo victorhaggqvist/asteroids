@@ -32,7 +32,7 @@ public class Controller extends Observable implements Runnable {
 	private static final int SCREEN_HEIGHT = 600;
 	
 	private static final int NMBR_OF_ASTEROIDS = 10;
-	private static final int EXPLOSION_SIZE = 15;
+	private static final int EXPLOSION_SIZE = 10;
 	private static final int ASTEROID_HEALTH = 3;
 	private static final double ASTEROID_BASE_VELOCITY = 1.5;
 	private static final int ASTEROID_SCORE = 100;
@@ -160,6 +160,8 @@ public class Controller extends Observable implements Runnable {
 		saucerTimer = 0;
 		particles.clear();
 		player.setPosition(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+		if (level == 1)
+		    player = new Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 		gameOver = false;
 		this.level = level;
 
@@ -425,7 +427,7 @@ public class Controller extends Observable implements Runnable {
 			super.notifyObservers();
 
 			try {
-				Thread.sleep(TICK_DELAY - (System.currentTimeMillis() - time));
+				Thread.sleep(TICK_DELAY - (System.currentTimeMillis() - time));				
 			} catch (Exception e) {
 			}
 		}
