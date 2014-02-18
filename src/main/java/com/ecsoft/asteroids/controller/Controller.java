@@ -1,6 +1,7 @@
 package com.ecsoft.asteroids.controller;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Float;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.prefs.Preferences;
@@ -29,6 +30,7 @@ public class Controller extends Observable implements Runnable {
 
 	private static final int SCREEN_WIDTH = 1000;
 	private static final int SCREEN_HEIGHT = 600;
+	
 	private static final int NMBR_OF_ASTEROIDS = 10;
 	private static final int EXPLOSION_SIZE = 15;
 	private static final int ASTEROID_HEALTH = 3;
@@ -36,13 +38,16 @@ public class Controller extends Observable implements Runnable {
 	private static final int ASTEROID_SCORE = 100;
 	private static final int SAUCER_SCORE = 250;
 	private static final int SAUCER_SPAWN_RATE = 10000;
+	private static final int PLAYER_TRAIL_INTENSITY = 10;
 
 	public ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
 	public ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 	public ArrayList<Saucer> saucers = new ArrayList<Saucer>();
 	public long saucerTimer;
 	public ArrayList<Particle> particles = new ArrayList<Particle>();
+	
 	public Player player;
+	private long trailTimer;
 
 	private int level;
 
@@ -55,8 +60,9 @@ public class Controller extends Observable implements Runnable {
 		// Spawns a player at the center of the screen
 		gameStarted = false;
 		saucerTimer = 0;
+		trailTimer = 0;
 		player = new Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-		initiateGame(0);
+		initiateGame(0);		
 
 	}
 
@@ -315,6 +321,8 @@ public class Controller extends Observable implements Runnable {
 							asteroids.get(j).getPolygon().getBounds2D())) {
 						if (Collision.collide(asteroids.get(i).getPolygon(), asteroids.get(j)
 								.getPolygon())) {
+							
+							//Change the direction of the asteroids so that they bounce off each other
 							Point2D.Float velocity = Trigonometry.getVector(asteroids.get(i).getPosition(), asteroids.get(j).getPosition());
 							asteroids.get(i).setVelocity(velocity);
 							velocity = Trigonometry.getVector(asteroids.get(j).getPosition(), asteroids.get(i).getPosition());
@@ -398,6 +406,19 @@ public class Controller extends Observable implements Runnable {
 						break;
 					}
 				}
+			}
+			
+			//Creates a trail of particles if the player is accelerating
+			if (player.accelerating == true) {
+				if (System.currentTimeMillis() - trailTimer > PLAYER_TRAIL_INTENSITY) {
+					trailTimer = System.currentTimeMillis();
+					double x = player.getPosition().getX() - Math.cos(player.rotation)*20;
+			    	double y = player.getPosition().getY() - Math.sin(player.rotation)*20;
+					
+					Point2D.Float pos = new Point2D.Float((float)x, (float)y);
+					particles.add(new Particle(pos));
+				}
+				
 			}
 
 			super.setChanged();

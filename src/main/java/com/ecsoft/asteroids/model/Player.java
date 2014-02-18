@@ -28,7 +28,7 @@ public class Player {
     private static final int SCREEN_HEIGHT = 600;
     
     private double velocity;
-    private double rotation;
+    public double rotation;
     private int health;
     private int score;
     private boolean invincible;
@@ -186,7 +186,6 @@ public class Player {
      */
     public void takeDamage() throws NoHPLeftException{
         if(!invincible) {
-        	System.out.println(health);
             this.health--;
             respawn();
             if (health == 0) {
