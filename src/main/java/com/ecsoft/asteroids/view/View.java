@@ -4,27 +4,25 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.AbstractAction;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import com.ecsoft.asteroids.controller.Controller;
+import com.ecsoft.asteroids.integration.ScoreHandler;
+import com.ecsoft.asteroids.integration.User;
 import com.ecsoft.asteroids.model.Asteroid;
 import com.ecsoft.asteroids.model.Heart;
 import com.ecsoft.asteroids.model.Particle;
 import com.ecsoft.asteroids.model.Projectile;
 import com.ecsoft.asteroids.model.Saucer;
-import com.ecsoft.asteroids.model.SettingBox;
 import com.ecsoft.asteroids.model.SettingsManager;
 
 /**
@@ -47,12 +45,17 @@ public class View implements Observer{
 	private JFrame frame;
 	
 	private SettingsManager settings;
-	private String [] menuItems = {"START GAME", "OPTIONS" , "ABOUT", "QUIT"};
+	private String [] menuItems = {"START GAME", "OPTIONS" , "HISCORE" , "ABOUT", "QUIT"};
 	private String [] optionItems = {"DIFFICULTY", "SHIP COLOR" ,"BACK"};
-	private int menuSelector = 0;
-	private boolean optionScreen;
+	private String [] hiscoreItems = {"BACK"};
 	
 	private boolean gameStarted;
+	
+	private int menuSelector = 0;	
+	private boolean optionScreen;	
+	private boolean hiscoreScreen;
+	public static ArrayList<User> users = new ArrayList<User>();
+	
 	
     public View(Controller contr) {
         settings = new SettingsManager();
@@ -61,6 +64,7 @@ public class View implements Observer{
         frame.addKeyListener(new menuListener());
         gameStarted = false;
         optionScreen = false;
+        hiscoreScreen = false;
     	this.contr = contr;
     	contr.addObserver(this);
     	createStartPanel();
@@ -71,7 +75,7 @@ public class View implements Observer{
     private void createStartPanel() {
     	
     	contr.initiateGame(0);
-    	
+    	menuSelector = 0;
         startPanel = new JPanel(){            
             private static final long serialVersionUID = 1L;
             
@@ -112,18 +116,10 @@ public class View implements Observer{
                 FontMetrics fm = getFontMetrics( g.getFont() );
                 g.setColor(Color.WHITE);
                 
-                //Draws start screen
-                int width = 0;
-                if (!optionScreen) { 
-                    for (int i = 0; i < menuItems.length; i++) {
-                        width = fm.stringWidth(menuItems[i]);
-                        g.drawString(menuItems[i], (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-60)+40*i);
-                    }
-                }
-                
                 //Draws option screen
-                else {
-                    width = fm.stringWidth(optionItems[0]);
+                int width = 0;
+                if (optionScreen) { 
+                	width = fm.stringWidth(optionItems[0]);
                     g.drawString(optionItems[0] + " = " + settings.getDifficulty(), (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-60)+40*0);
                     
                     width = fm.stringWidth(optionItems[1]);
@@ -131,16 +127,58 @@ public class View implements Observer{
                     
                     width = fm.stringWidth(optionItems[2]);
                     g.drawString(optionItems[2], (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-60)+40*2);
+                }
+                
+                //Draw hiscore screen
+                else if (hiscoreScreen) { 
+                	for (int i = 0; i < users.size(); i++) {
+                		String name = users.get(i).getName();
+                		int score = users.get(i).getScore();
+                        g.drawString(name , (SCREEN_WIDTH/2)-200 , 50+45*i);
+                        g.drawString("" + score , (SCREEN_WIDTH/2)+200 , 50+45*i);
+                        g.drawLine((SCREEN_WIDTH/2)-200, 52+45*i , (SCREEN_WIDTH/2)+250, 52+45*i);
+                        
+                        width = fm.stringWidth(hiscoreItems[0]);
+                        g.drawString(hiscoreItems[0], (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT)-60));
+					}
+                	
+                }
+                
+                //Draws start screen
+                else {
+                	 for (int i = 0; i < menuItems.length; i++) {
+                         width = fm.stringWidth(menuItems[i]);
+                         g.drawString(menuItems[i], (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-60)+40*i);
+                     }
+                	
+                    
 
                 }
                 
+               
                 
-                //Draws the marker
+                
+                //Draws the marker                
                     int [] xPoints = new int[3];
                     int [] yPoints = new int[3];
                     
-                    xPoints[0] = (SCREEN_WIDTH/2)-fm.stringWidth(menuItems[menuSelector])/2 - 20;
-                    yPoints[0] = ((SCREEN_HEIGHT/2)-70)+40*menuSelector;
+                  //Marker for optionsScreen
+                    if(optionScreen == true && hiscoreScreen == false) {
+	                    xPoints[0] = (SCREEN_WIDTH/2)-fm.stringWidth(optionItems[menuSelector])/2 - 20;
+	                    yPoints[0] = ((SCREEN_HEIGHT/2)-70)+40*menuSelector;
+                    }
+                    
+                    //Marker for hiscore
+                    else if(optionScreen == false && hiscoreScreen == true) {
+	                    xPoints[0] = (SCREEN_WIDTH/2)-fm.stringWidth(hiscoreItems[menuSelector])/2 - 20;
+	                    yPoints[0] = ((SCREEN_HEIGHT)-70)+40*menuSelector;
+                    }
+                    
+                    else {
+                    	xPoints[0] = (SCREEN_WIDTH/2)-fm.stringWidth(menuItems[menuSelector])/2 - 20;
+	                    yPoints[0] = ((SCREEN_HEIGHT/2)-70)+40*menuSelector;
+                    }
+                    
                     xPoints[1] = xPoints[0]-20;
                     yPoints[1] = yPoints[0]-10;
                     xPoints[2] = xPoints[0]-20;
@@ -195,7 +233,17 @@ public class View implements Observer{
                 
                 if (contr.getGameOver()) {
                 	width = fm.stringWidth("GAME OVER");
-                    g.drawString("GAME OVER", (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-20));
+                    g.drawString("GAME OVER", (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-20));    
+                    frame.repaint();
+                    try {
+						Thread.sleep(250);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+                    gameStarted = false;
+                    createStartPanel();        
+                    
+                                        
                 }
                 
                 //Draw current level
@@ -290,11 +338,23 @@ public class View implements Observer{
                     }
                     else if(menuSelector == 1) {
                         optionScreen = true;
+                        menuSelector = 0;
                     }
                     else if(menuSelector == optionItems.length-1) {
                         optionScreen = false;
+                        menuSelector = 0;
                     }
                     
+                break;
+                }
+            }
+            
+          //hiscore menu
+            else if (hiscoreScreen) {
+                switch (key) {                
+                case KeyEvent.VK_ENTER:
+                    	hiscoreScreen = false;
+                        createGamePanel();
                 break;
                 }
             }
@@ -326,9 +386,21 @@ public class View implements Observer{
                     
                     else if(menuSelector == 1) {
                         optionScreen = true;
+                        menuSelector = 0;
                     }
                     
-                    else if(menuSelector == 3) {
+                    else if(menuSelector == 2) {
+                    	try {
+							users = ScoreHandler.getHiscores();
+							hiscoreScreen = true;
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}                        
+                        menuSelector = 0;
+                    }
+                    
+                    else if(menuSelector == 4) {
                         System.exit(0);
                     }
                     

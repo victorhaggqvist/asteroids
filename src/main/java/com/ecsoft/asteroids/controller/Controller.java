@@ -1,11 +1,13 @@
 package com.ecsoft.asteroids.controller;
 
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Float;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.prefs.Preferences;
 
+import com.ecsoft.asteroids.integration.ScoreHandler;
+import com.ecsoft.asteroids.integration.User;
 import com.ecsoft.asteroids.mathematics.Collision;
 import com.ecsoft.asteroids.mathematics.Trigonometry;
 import com.ecsoft.asteroids.model.Asteroid;
@@ -17,8 +19,6 @@ import com.ecsoft.asteroids.model.Projectile;
 import com.ecsoft.asteroids.model.Saucer;
 import com.ecsoft.asteroids.model.SaucerShootException;
 import com.ecsoft.asteroids.model.SettingsManager;
-
-import org.omg.DynamicAny._DynAnyFactoryStub;
 
 /**
  * Name: Asteroids Description: Controller
@@ -37,7 +37,7 @@ public class Controller extends Observable implements Runnable {
 	private static final double ASTEROID_BASE_VELOCITY = 1.5;
 	private static final int ASTEROID_SCORE = 100;
 	private static final int SAUCER_SCORE = 250;
-	private static final int SAUCER_SPAWN_RATE = 10000;
+	private static final int SAUCER_SPAWN_RATE = 20000;
 	private static final int PLAYER_TRAIL_INTENSITY = 10;
 	private static final int PLAYER_SHOOTING_DELAY = 200;
 
@@ -63,7 +63,6 @@ public class Controller extends Observable implements Runnable {
 	public Controller() {
 		// Spawns a player at the center of the screen
 		gameStarted = false;
-		saucerTimer = 0;
 		trailTimer = 0;
 		shootTimer = 0;
 		player = new Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
@@ -110,7 +109,8 @@ public class Controller extends Observable implements Runnable {
 	}
 
 	/**
-	 * Start firing projectiles
+	 * Start firing projectiles.
+	 * Cannot start firing if already firing (prevents auto spamming caused by the OS)
 	 * @author Albin Karlquist 
 	 */
 	public void startShoot() {
@@ -163,7 +163,16 @@ public class Controller extends Observable implements Runnable {
 	}
 
 	private void gameOver() {
-		gameOver = true;
+		if(!gameOver) {
+			System.out.println("game over");
+			gameOver = true;
+			try {
+				ScoreHandler.addScore(new User("Albin" , player.getScore()));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}
 
 	/**
@@ -176,7 +185,7 @@ public class Controller extends Observable implements Runnable {
 		asteroids.clear();
 		projectiles.clear();
 		saucers.clear();
-		saucerTimer = 0;
+		saucerTimer = System.currentTimeMillis();
 		particles.clear();
 		player.setPosition(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 		if (level == 1)

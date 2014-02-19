@@ -22,7 +22,7 @@ public class Player {
     private final double TURN_SPEED = 0.2;
     private final int SHIP_SIZE = 20;
     private final int RESPAWN_PROTECTION_TIME = 3000;
-    private final int START_HEALTH = 3;
+    private final int START_HEALTH = 1;
     
     private static final int SCREEN_WIDTH = 1000;
     private static final int SCREEN_HEIGHT = 600;
