@@ -18,12 +18,7 @@ import javax.swing.WindowConstants;
 import com.ecsoft.asteroids.controller.Controller;
 import com.ecsoft.asteroids.integration.ScoreHandler;
 import com.ecsoft.asteroids.integration.User;
-import com.ecsoft.asteroids.model.Asteroid;
-import com.ecsoft.asteroids.model.Heart;
-import com.ecsoft.asteroids.model.Particle;
-import com.ecsoft.asteroids.model.Projectile;
-import com.ecsoft.asteroids.model.Saucer;
-import com.ecsoft.asteroids.model.SettingsManager;
+import com.ecsoft.asteroids.model.*;
 
 /**
  * Name: Asteroids
@@ -415,13 +410,13 @@ public class View implements Observer{
         public void keyPressed(KeyEvent e) {            
             int key = e.getKeyCode();
             switch(key){
-                case KeyEvent.VK_LEFT: contr.rotateLeft();
+                case KeyEvent.VK_LEFT: contr.playerAction(PlayerMovement.LEFT);
                 break;
-                case KeyEvent.VK_RIGHT: contr.rotateRight();
+                case KeyEvent.VK_RIGHT: contr.playerAction(PlayerMovement.RIGHT);
                 break;
-                case KeyEvent.VK_UP: contr.moveForward();
+                case KeyEvent.VK_UP: contr.playerAction(PlayerMovement.UP);
                 break;
-                case KeyEvent.VK_SPACE: contr.startShoot();
+                case KeyEvent.VK_SPACE: contr.playerAction(PlayerMovement.SHOOT);
                 break;                
                 case KeyEvent.VK_ESCAPE:
                     //createStartPanel();
@@ -434,13 +429,13 @@ public class View implements Observer{
         public void keyReleased(KeyEvent e) {
             int key = e.getKeyCode();
             switch(key){
-                case KeyEvent.VK_LEFT: contr.stopRotate();
+                case KeyEvent.VK_LEFT: contr.playerAction(PlayerMovement.NO_TURN);
                 break;
-                case KeyEvent.VK_RIGHT: contr.stopRotate();
+                case KeyEvent.VK_RIGHT: contr.playerAction(PlayerMovement.NO_TURN);
                 break;
-                case KeyEvent.VK_UP: contr.stopMove();
+                case KeyEvent.VK_UP: contr.playerAction(PlayerMovement.NO_UP);
                 break;
-                case KeyEvent.VK_SPACE: contr.stopShoot();
+                case KeyEvent.VK_SPACE: contr.playerAction(PlayerMovement.NO_SHOOT);
                 break;
             }
         }

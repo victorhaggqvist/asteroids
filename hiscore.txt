@@ -6,5 +6,5 @@ Albin 3100
 Albin 2950
 Albin 2300
 faso 1500
+Albin 1500
 asd 1000
-Albin 1000

@@ -10,15 +10,7 @@ import com.ecsoft.asteroids.integration.ScoreHandler;
 import com.ecsoft.asteroids.integration.User;
 import com.ecsoft.asteroids.mathematics.Collision;
 import com.ecsoft.asteroids.mathematics.Trigonometry;
-import com.ecsoft.asteroids.model.Asteroid;
-import com.ecsoft.asteroids.model.NoHPLeftException;
-import com.ecsoft.asteroids.model.ObjectExpiredException;
-import com.ecsoft.asteroids.model.Particle;
-import com.ecsoft.asteroids.model.Player;
-import com.ecsoft.asteroids.model.Projectile;
-import com.ecsoft.asteroids.model.Saucer;
-import com.ecsoft.asteroids.model.SaucerShootException;
-import com.ecsoft.asteroids.model.SettingsManager;
+import com.ecsoft.asteroids.model.*;
 
 /**
  * Name: Asteroids Description: Controller
@@ -66,47 +58,40 @@ public class Controller extends Observable implements Runnable {
 		trailTimer = 0;
 		shootTimer = 0;
 		player = new Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-		initiateGame(0);		
-
+		initiateGame(0);
 	}
 
-	/**
-	 * @author Albin Karlquist moves the player forward
-	 */
-	public void moveForward() {
-		player.accelerating = true;
-	}
-
-	/**
-	 * @author Albin Karlquist stops thrusting
-	 */
-	public void stopMove() {
-		player.accelerating = false;
-	}
-
-	/**
-	 * @author Albin Karlquist Begin rotating left
-	 */
-	public void rotateLeft() {
-		player.turningR = false;
-		player.turningL = true;
-	}
-
-	/**
-	 * @author Albin Karlquist Begin rotating right
-	 */
-	public void rotateRight() {
-		player.turningL = false;
-		player.turningR = true;
-	}
-
-	/**
-	 * @author Albin Karlquist Stop rotating
-	 */
-	public void stopRotate() {
-		player.turningL = false;
-		player.turningR = false;
-	}
+    /**
+     * Perform an action related to the player
+     * @param playerMovement Action to perform
+     */
+    public void playerAction(PlayerMovement playerMovement){
+        switch (playerMovement){
+            case UP:
+                player.accelerating = true;
+                break;
+            case LEFT:
+                player.turningL = true;
+                player.turningR = false;
+                break;
+            case RIGHT:
+                player.turningL = false;
+                player.turningR = true;
+                break;
+            case NO_UP:
+                player.accelerating = false;
+                break;
+            case NO_TURN:
+                player.turningL = false;
+                player.turningR = false;
+                break;
+            case SHOOT:
+                startShoot();
+                break;
+            case NO_SHOOT:
+                stopShoot();
+        }
+    }
 
 	/**
 	 * Start firing projectiles.
