@@ -15,9 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import com.ecsoft.asteroids.controller.Controller;
-import com.ecsoft.asteroids.integration.ScoreHandler;
-import com.ecsoft.asteroids.integration.User;
+import com.ecsoft.asteroids.controller.*;
 import com.ecsoft.asteroids.model.*;
 
 /**
@@ -49,11 +47,11 @@ public class View implements Observer{
 	private int menuSelector = 0;	
 	private boolean optionScreen;	
 	private boolean hiscoreScreen;
-	public static ArrayList<User> users = new ArrayList<User>();
+	public static ArrayList<HighScore> highScores = new ArrayList<HighScore>();
 	
 	
     public View(Controller contr) {
-        settings = new SettingsManager();
+        settings = SettingsManager.getInstance();
         frame = new JFrame( "Asteroids" );
         frame.addKeyListener(new KeyListener());
         frame.addKeyListener(new menuListener());
@@ -126,9 +124,9 @@ public class View implements Observer{
                 
                 //Draw hiscore screen
                 else if (hiscoreScreen) { 
-                	for (int i = 0; i < users.size(); i++) {
-                		String name = users.get(i).getName();
-                		int score = users.get(i).getScore();
+                	for (int i = 0; i < highScores.size(); i++) {
+                		String name = highScores.get(i).getName();
+                		int score = highScores.get(i).getScore();
                         g.drawString(name , (SCREEN_WIDTH/2)-200 , 50+45*i);
                         g.drawString("" + score , (SCREEN_WIDTH/2)+200 , 50+45*i);
                         g.drawLine((SCREEN_WIDTH/2)-200, 52+45*i , (SCREEN_WIDTH/2)+250, 52+45*i);
@@ -210,8 +208,8 @@ public class View implements Observer{
 			    super.paintComponent(g);
                 this.setBackground(Color.black);
                 g.setColor(Color.white);
-                
-              	fps = 1000/(System.currentTimeMillis()-time); 		        
+
+              	fps = 1000/(((System.currentTimeMillis()-time)==0)?(1L):(System.currentTimeMillis()-time));
 		        time = System.currentTimeMillis();
 		        
 			    			    
@@ -385,13 +383,8 @@ public class View implements Observer{
                     }
                     
                     else if(menuSelector == 2) {
-                    	try {
-							users = ScoreHandler.getHiscores();
-							hiscoreScreen = true;
-						} catch (IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}                        
+                        highScores = ScoreHandler.getHiscores();
+                        hiscoreScreen = true;
                         menuSelector = 0;
                     }
                     

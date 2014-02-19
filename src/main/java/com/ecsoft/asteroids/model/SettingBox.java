@@ -36,7 +36,7 @@ public class SettingBox extends JFrame {
         save.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Preferences preferences = SettingsManager.getPreferences();
+
             }
         });
     }

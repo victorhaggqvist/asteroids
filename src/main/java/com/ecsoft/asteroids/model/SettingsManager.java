@@ -17,59 +17,47 @@ import java.util.prefs.Preferences;
  * Package: com.ecsoft.asteroids.model
  */
 public class SettingsManager {
-    
+    private static SettingsManager instance;
+    private Preferences preferences;
+
+    // settings keys
+    public static final String KEY_DIFFICULTY = "difficulty";
+
+    public static final int DIFFICULTY_EASY = 1;
+    public static final int DIFFICULTY_MEDIUM = 2;
+    public static final int DIFFICULTY_HARD = 3;
+
     private static final String FILE_NAME = "settings.ini";
      
     private int difficulty;
     private String color;
     
-    public SettingsManager() {       
-        BufferedReader in;
-        try {
-            in = new BufferedReader(new FileReader(FILE_NAME));
-            for (int i = 0; i < 2; i++) {
-                String line = in.readLine();
-                
-                if (line.substring(0 , line.indexOf('=')).equals("difficulty")) {
-                    this.difficulty = Integer.parseInt(line.substring(line.indexOf('=')+1));
-                }
-                
-                else if (line.substring(0 , line.indexOf('=')).equals("color")) {
-                    this.color = line.substring(line.indexOf('=')+1);
-                    
-                }                
-            }
-            
-        } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+    private SettingsManager() {
+          preferences = Preferences.userNodeForPackage(com.ecsoft.asteroids.model.SettingsManager.class);
+    }
+
+    public static SettingsManager getInstance(){
+        if (instance == null){
+            instance = new SettingsManager();
         }
-        
-        
-//        PrintWriter pw;
-//        try {
-//            pw = new PrintWriter(new BufferedWriter(new FileWriter("settings.ini")));
-//            pw.write("asd\nasdasd");
-//            pw.close(); 
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }   
+        return instance;
     }
 
-
-
+    /**
+     * Get difficulty
+     * @return
+     */
     public int getDifficulty() {
-        return difficulty;
+        return preferences.getInt(KEY_DIFFICULTY,DIFFICULTY_MEDIUM);
     }
 
-
-
+    /**
+     * Set difficulty
+     * @param difficulty
+     */
     public void setDifficulty(int difficulty) {
-        this.difficulty = difficulty;
+        preferences.putInt(KEY_DIFFICULTY,difficulty);
     }
-
-
 
     public String getColorString() {
         return color;
@@ -89,15 +77,5 @@ public class SettingsManager {
 
     public void setColor(String color) {
         this.color = color;
-    }
-
-
-
-    /**
-     * Get a Preferences object
-     * @return a Preferences object
-     */
-    public static Preferences getPreferences() {
-        return Preferences.userNodeForPackage(com.ecsoft.asteroids.model.SettingsManager.class);
     }
 }

@@ -4,10 +4,7 @@ import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
-import java.util.prefs.Preferences;
 
-import com.ecsoft.asteroids.integration.ScoreHandler;
-import com.ecsoft.asteroids.integration.User;
 import com.ecsoft.asteroids.mathematics.Collision;
 import com.ecsoft.asteroids.mathematics.Trigonometry;
 import com.ecsoft.asteroids.model.*;
@@ -152,7 +149,7 @@ public class Controller extends Observable implements Runnable {
 			System.out.println("game over");
 			gameOver = true;
 			try {
-				ScoreHandler.addScore(new User("Albin" , player.getScore()));
+				ScoreHandler.addScore(new HighScore("Albin" , player.getScore()));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -215,12 +212,6 @@ public class Controller extends Observable implements Runnable {
 
 	@Override
 	public void run() {
-		// [todo] - remove sample
-		Preferences preferences = SettingsManager.getPreferences();
-		final String SAMPLE_KEY = "sampel_key";
-		preferences.put(SAMPLE_KEY, "saved stuff");
-		System.out
-				.println("Sample setting: " + preferences.get(SAMPLE_KEY, ""));
 
 		while (true) {
 			long time = System.currentTimeMillis();
