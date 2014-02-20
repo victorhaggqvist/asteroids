@@ -148,9 +148,6 @@ public class View implements Observer{
 
                 }
                 
-               
-                
-                
                 //Draws the marker                
                     int [] xPoints = new int[3];
                     int [] yPoints = new int[3];
