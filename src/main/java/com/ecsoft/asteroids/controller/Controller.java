@@ -325,7 +325,7 @@ public class Controller extends Observable implements Runnable {
 						player.takeDamage();
 						// Game Over if NoHPLeftException is catched
 					} catch (NoHPLeftException e) {
-						gameOver();
+						//gameOver();
 					}
 				}
 			}
