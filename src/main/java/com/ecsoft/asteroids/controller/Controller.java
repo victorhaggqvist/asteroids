@@ -222,9 +222,11 @@ public class Controller extends Observable implements Runnable {
 				initiateGame(level);
 			}
 
-			// Update the position of all asteroids
-			for (Asteroid a : asteroids)
-				a.updatePos();
+            synchronized (asteroids){
+                // Update the position of all asteroids
+                for (Asteroid a : asteroids)
+                    a.updatePos();
+            }
 
 			// Spawn a saucer every x second where x = SAUCER_SPAWN_RATE
 			if (System.currentTimeMillis() - saucerTimer > SAUCER_SPAWN_RATE) {
@@ -292,7 +294,7 @@ public class Controller extends Observable implements Runnable {
 
 							// Game Over if NoHPLeftException is catched
 						} catch (NoHPLeftException e) {
-							gameOver();
+							//gameOver();
 						}
 					}
 				}
