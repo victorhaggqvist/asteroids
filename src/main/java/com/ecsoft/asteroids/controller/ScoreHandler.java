@@ -46,6 +46,10 @@ public final class ScoreHandler {
 
 		Gson gson = new Gson();
         highScoreList = gson.fromJson(sb.toString(),HighScoreList.class);
+        if (highScoreList==null){
+            highScoreList = new HighScoreList();
+            highScoreList.getList().add(new HighScore("No highscores yet",0));
+        }
 		return highScoreList.getList();
 	}
 

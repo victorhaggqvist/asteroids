@@ -13,6 +13,10 @@ import java.util.ArrayList;
 public class HighScoreList {
     private ArrayList<HighScore> list;
 
+    public HighScoreList() {
+        list = new ArrayList<HighScore>();
+    }
+
     public ArrayList<HighScore> getList() {
         return list;
     }
