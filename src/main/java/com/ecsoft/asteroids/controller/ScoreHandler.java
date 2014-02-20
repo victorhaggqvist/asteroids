@@ -27,6 +27,7 @@ public final class ScoreHandler {
                 PrintWriter writer = new PrintWriter(FILE_NAME, "UTF-8");
                 writer.println();
                 writer.close();
+                in = new BufferedReader(new FileReader(FILE_NAME));
             } catch (FileNotFoundException e1) {
                 e1.printStackTrace();
             } catch (UnsupportedEncodingException e1) {
@@ -60,6 +61,8 @@ public final class ScoreHandler {
      */
 	public static void addScore(HighScore highScore) throws IOException {
 		getHiscores();
+
+
 
         //Update highScores
         for (int i = 0; i < highScoreList.getList().size(); i++) {

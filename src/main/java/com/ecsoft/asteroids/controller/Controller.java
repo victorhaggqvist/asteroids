@@ -447,5 +447,4 @@ public class Controller extends Observable implements Runnable {
 			}
 		}
 	}
-
 }
