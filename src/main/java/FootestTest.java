@@ -1,11 +1,13 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
+import java.awt.Polygon;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Float;
 
 import org.junit.Test;
 
-import com.ecsoft.asteroids.mathematics.*;
+import com.ecsoft.asteroids.mathematics.Collision;
+import com.ecsoft.asteroids.mathematics.Matrix;
 
 public class FootestTest {
 
@@ -24,6 +26,26 @@ public class FootestTest {
 		Point2D.Float array[] = {new Point2D.Float((float)6,(float)7),new Point2D.Float((float)3,(float)4)};
 		Point2D.Float point = new Point2D.Float(9, 11);
 		assertEquals(point, Matrix.Point2DSum(array));
+	}
+	
+	@Test
+	public void testCollision() {
+    	int [] xpointsp = {0, 3, 3};
+    	int [] ypointsp = {0, 3, -3};
+    	Polygon player = new Polygon(xpointsp, ypointsp, 3);
+    	
+    	int [] xpointsa = {-1, 0, 0};
+    	int [] ypointsa = {0, 0, 1};
+    	Polygon astroid = new Polygon(xpointsa, ypointsa, 3);
+    	
+    	for(int i = 0; i < 5; i++) {
+    		assertEquals("Collision:", true, Collision.collide(player, astroid));
+    		astroid.translate(1, 0);
+    	}
+    	
+    	assertEquals("Collision:", false, Collision.collide(player, astroid));
+    	
+		
 	}
 
 }

@@ -36,8 +36,11 @@ public class Collision {
                     return true;
             }
         }
+        if(!p1.contains(p2.xpoints[0], p2.ypoints[0]))
+        	return false;
+        else
+        	return true;
         
-        return false;
     }
 
 }
