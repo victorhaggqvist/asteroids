@@ -49,12 +49,15 @@ public class View implements Observer{
 	private boolean hiscoreScreen;
 	public static ArrayList<HighScore> highScores = new ArrayList<HighScore>();
 	
+	private String hiscoreName = "";
+	
+	private KeyAdapter keyListener, menuListener;
+	
 	
     public View(Controller contr) {
         settings = SettingsManager.getInstance();
-        frame = new JFrame( "Asteroids" );
-        frame.addKeyListener(new KeyListener());
-        frame.addKeyListener(new menuListener());
+        frame = new JFrame( "Asteroids" );        
+
         gameStarted = false;
         optionScreen = false;
         hiscoreScreen = false;
@@ -66,6 +69,10 @@ public class View implements Observer{
     }
     
     private void createStartPanel() {
+    	//Register key listener
+    	frame.removeKeyListener(keyListener);
+    	menuListener = new menuListener();
+    	frame.addKeyListener(menuListener);
     	
     	contr.initiateGame(0);
     	menuSelector = 0;
@@ -171,9 +178,8 @@ public class View implements Observer{
                     xPoints[2] = xPoints[0]-20;
                     yPoints[2] = yPoints[0]+10;
                     
-                    g.fillPolygon(xPoints, yPoints, xPoints.length);        
-                
-            }
+                    g.fillPolygon(xPoints, yPoints, xPoints.length); 
+            }            
             
             
         };
@@ -186,7 +192,12 @@ public class View implements Observer{
     }
     
     
-    private void createGamePanel() {         
+    private void createGamePanel() {       	
+    	//Register key listener
+    	frame.removeKeyListener(menuListener);
+    	keyListener = new KeyListener();
+    	frame.addKeyListener(keyListener);
+    	hiscoreName = "";
         
         gamePanel = new JPanel(){
         	
@@ -201,36 +212,43 @@ public class View implements Observer{
 			    
 			    super.paintComponent(g);
                 this.setBackground(Color.black);
-                g.setColor(Color.white);
-
-              	fps = 1000/(((System.currentTimeMillis()-time)==0)?(1L):(System.currentTimeMillis()-time));
-		        time = System.currentTimeMillis();
-		        
-			    			    
-				           
-			    //Draw FPS
-			    g.setFont(new Font("Arial", Font.PLAIN, 10));
-                g.drawString("FPS: " + fps, SCREEN_WIDTH/2, SCREEN_HEIGHT-50);
+                g.setColor(Color.white);	        
+                FontMetrics fm;                
 			    
-                //Draws game over text if nescessary
-			    g.setFont(new Font("Arial", Font.BOLD, 20));
-                FontMetrics fm = getFontMetrics( g.getFont() );
                 g.setColor(Color.WHITE); 
                 int width = 0; 			    
                 
+                //Draws game over text if nescessary
                 if (contr.getGameOver()) {
+                	g.setFont(new Font("Courier", Font.BOLD, 20));
+                    fm = getFontMetrics( g.getFont() );
                 	width = fm.stringWidth("GAME OVER");
-                    g.drawString("GAME OVER", (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-20));    
-                    frame.repaint();
-                    try {
-						Thread.sleep(250);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-                    gameStarted = false;
-                    createStartPanel();        
+                    g.drawString("GAME OVER", (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-50));
                     
-                                        
+                  //Draw name prompt
+                    width = fm.stringWidth(hiscoreName);
+                    g.drawString(hiscoreName, (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)+20)); 
+
+                    g.setFont(new Font("Courier", Font.BOLD, 15));
+                    fm = getFontMetrics( g.getFont() );
+                    width = fm.stringWidth("PLEASE ENTER YOUR NAME");
+                    g.drawString("PLEASE ENTER YOUR NAME", (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-20));                   
+                    
+                    
+                    
+                    g.drawRect(SCREEN_WIDTH/2-100, (SCREEN_HEIGHT/2), 200, 25);
+                    
+                    //gameStarted = false;
+                    //createStartPanel(); 
+                }
+                else {
+            		//Draw player
+            		g.drawPolygon(contr.player.getPolygon());
+            		//If player is ininvcible, draw a circle around it
+            		if(contr.player.getInincibility()) {
+            		    g.setColor(Color.blue);
+            		    g.drawOval((int)contr.player.getPosition().getX()-50, (int)contr.player.getPosition().getY()-50, 100, 100);
+            		}
                 }
                 
                 //Draw current level
@@ -246,13 +264,7 @@ public class View implements Observer{
         		}       		
         		
         		
-        		//Draw player
-        		g.drawPolygon(contr.player.getPolygon());
-        		//If player is ininvcible, draw a fabulous circle around it
-        		if(contr.player.getInincibility()) {
-        		    g.setColor(Color.blue);
-        		    g.drawOval((int)contr.player.getPosition().getX()-50, (int)contr.player.getPosition().getY()-50, 100, 100);
-        		}
+        		
         		
         		//Draw saucers
         		g.setColor(Color.red);  
@@ -345,8 +357,7 @@ public class View implements Observer{
             else if (hiscoreScreen) {
                 switch (key) {                
                 case KeyEvent.VK_ENTER:
-                    	hiscoreScreen = false;
-                        createGamePanel();
+                    	hiscoreScreen = false;                        
                 break;
                 }
             }
@@ -409,14 +420,42 @@ public class View implements Observer{
                 case KeyEvent.VK_UP: contr.playerAction(PlayerMovement.UP);
                 break;
                 case KeyEvent.VK_SPACE: contr.playerAction(PlayerMovement.SHOOT);
-                break;  
-                case KeyEvent.VK_K: contr.destroyAsteroids();
+                break;
+                case KeyEvent.VK_F12: contr.destroyAsteroids();
                 break; 
                 case KeyEvent.VK_ESCAPE:
-                    //createStartPanel();
                     createStartPanel();
                     gameStarted=false;
                     break;
+            }            
+            //At the game over screen
+            if(contr.getGameOver()) {
+            	//If a letter is typed
+	            if (hiscoreName.length() < 15) {
+	            	if (e.getKeyChar() >= 'A' && e.getKeyChar() <= 'z')
+	            		hiscoreName += e.getKeyChar();
+	            }
+	            
+	            //Erase a character if backspace is pressed
+	            if (hiscoreName.length() > 0) {
+	            	if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+	            		hiscoreName = hiscoreName.substring(0,hiscoreName.length()-1);
+	            	}
+	            }
+	            
+	            //Submit hiscore
+	            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+	            	try {
+        				ScoreHandler.addScore(new HighScore(hiscoreName , contr.getScore()));
+        			} catch (IOException ex) {
+        				ex.printStackTrace();
+        			}                		
+            		createStartPanel();
+            		gameStarted=false;
+            		highScores = ScoreHandler.getHiscores();
+                    hiscoreScreen = true;
+                    menuSelector = 0;
+	            }
             }
         }
         

@@ -161,12 +161,7 @@ public class Controller extends Observable implements Runnable {
 	private void gameOver() {
 		if(!gameOver) {
 			System.out.println("game over");
-			gameOver = true;
-			try {
-				ScoreHandler.addScore(new HighScore("Albin" , player.getScore()));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			gameOver = true;			
 		}
 		
 	}
