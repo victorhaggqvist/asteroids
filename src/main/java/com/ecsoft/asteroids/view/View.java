@@ -407,7 +407,9 @@ public class View implements Observer{
                 case KeyEvent.VK_UP: contr.playerAction(PlayerMovement.UP);
                 break;
                 case KeyEvent.VK_SPACE: contr.playerAction(PlayerMovement.SHOOT);
-                break;                
+                break;  
+                case KeyEvent.VK_K: contr.destroyAsteroids();
+                break; 
                 case KeyEvent.VK_ESCAPE:
                     //createStartPanel();
                     createStartPanel();
