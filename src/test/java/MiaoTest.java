@@ -1,6 +1,5 @@
 import com.ecsoft.asteroids.model.NoHPLeftException;
 import com.ecsoft.asteroids.model.Player;
-import com.ecsoft.asteroids.model.PlayerProjectile;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
