@@ -123,7 +123,7 @@ public class Player {
             position.setLocation(0, position.getY());
         }
         
-        else if(position.getY() < 0) {
+        if(position.getY() < 0) {
             position.setLocation(position.getX() , SCREEN_HEIGHT);
         }
         
