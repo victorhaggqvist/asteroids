@@ -13,10 +13,6 @@ import static org.junit.Assert.assertEquals;
  * Package: PACKAGE_NAME
  */
 public class MiaoTest {
-    @Test
-    public void wof(){
-        assertEquals(1,1);
-    }
 
     /**
      * Test NoHPLeftExeptions
