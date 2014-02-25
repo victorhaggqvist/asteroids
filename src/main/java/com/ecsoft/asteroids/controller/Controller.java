@@ -152,8 +152,8 @@ public class Controller extends Observable implements Runnable {
 	 */
 	public void destroyAsteroids() {
 		for (int i = 0; i < asteroids.size(); i++) {
-			destroyAsteroid(i);
 			createExplosion((int)asteroids.get(i).getPosition().getX(), (int)asteroids.get(i).getPosition().getY());
+			destroyAsteroid(i);			
 		}
 	}
 	

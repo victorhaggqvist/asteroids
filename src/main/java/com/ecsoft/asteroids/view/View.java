@@ -271,7 +271,7 @@ public class View implements Observer{
         		for(Saucer a : contr.saucers)
                     g.drawPolygon(a.getPolygon());
         		
-        		//Draw plyer projectiles
+        		//Draw player projectiles
                 g.setColor(Color.green);  
                 for(Projectile a : contr.playerProjectiles)
                     g.fillOval((int)a.getPos().getX(), (int)a.getPos().getY(), 5, 5);
@@ -285,6 +285,7 @@ public class View implements Observer{
         		g.setColor(Color.white); 
         		for (int i = 0; i < contr.particles.size(); i++) {
         		    Particle a = contr.particles.get(i);
+        		    //g.setColor(new Color((int)(Math.random()*255), (int)(Math.random()*255) ,(int)(Math.random()*255))); 
                     g.fillOval((int)(a.getPos().getX()+Math.random()), (int)(a.getPos().getY()+Math.random()), a.getSize(), a.getSize());
                 }
         		

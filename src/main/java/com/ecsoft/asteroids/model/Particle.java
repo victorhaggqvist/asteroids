@@ -11,8 +11,8 @@ import java.awt.geom.Point2D;
  */
 public class Particle {
     
-    private static final float MAX_TIME_TO_LIVE = 3000;
-    private static final float MAX_VELOCITY = 2;
+    private static final float MAX_TIME_TO_LIVE = 1000;
+    private static final float MAX_VELOCITY = 4;
     private static final int PARTICLE_SIZE = 4;
     
     private Point2D.Float position, velocity; 
