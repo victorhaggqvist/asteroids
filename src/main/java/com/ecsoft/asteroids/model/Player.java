@@ -22,7 +22,7 @@ public class Player {
     private final double TURN_SPEED = 0.2;
     private final int SHIP_SIZE = 20;
     private final int RESPAWN_PROTECTION_TIME = 3000;
-    private final int START_HEALTH = 3;
+    private final int START_HEALTH = 1;
     
     private static final int SCREEN_WIDTH = 1000;
     private static final int SCREEN_HEIGHT = 600;
@@ -142,10 +142,10 @@ public class Player {
      * @author Albin Karlquist
      * @return Returns a projectile at the ships front
      */
-    public PlayerProjectile shoot() {
+    public Projectile shoot() {
     	double x = position.getX() + Math.cos(rotation)*20;
     	double y = position.getY() + Math.sin(rotation)*20;
-        return new PlayerProjectile((float)x, (float) y,rotation);
+        return new Projectile((float)x, (float) y,rotation);
     }
     
     
