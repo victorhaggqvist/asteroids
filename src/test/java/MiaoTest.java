@@ -19,12 +19,6 @@ public class MiaoTest {
         assertEquals(1,1);
     }
 
-    @Test
-    public void testProjectile(){
-        PlayerProjectile playerProjectile = new PlayerProjectile(0.4f,0.5f,3.0);
-
-    }
-
     /**
      * Test NoHPLeftExeptions
      */
