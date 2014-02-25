@@ -29,7 +29,7 @@ public class Particle {
        this.velocity = new Point2D.Float((float)(MAX_VELOCITY*Math.random()-MAX_VELOCITY/2), ((float)(MAX_VELOCITY*Math.random()-MAX_VELOCITY/2)));
        timeToLive = (float)Math.random()*MAX_TIME_TO_LIVE;
        time = System.currentTimeMillis();
-       this.size = PARTICLE_SIZE;
+       this.size = 0;
     }
     
    /**

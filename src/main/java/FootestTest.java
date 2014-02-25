@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import com.ecsoft.asteroids.mathematics.Collision;
 import com.ecsoft.asteroids.mathematics.Matrix;
+import com.ecsoft.asteroids.mathematics.Trigonometry;
 
 public class FootestTest {
 
@@ -46,6 +47,20 @@ public class FootestTest {
     	assertEquals("Collision:", false, Collision.collide(player, astroid));
     	
 		
+	}
+	
+	
+	@Test
+	public void testTrigonometry() {
+		assertEquals("Angle should be " + 0 + ":", 0,  Math.toDegrees(Trigonometry.angle( new Point2D.Double(1, 0), new Point2D.Double(1, 0))), 0.1);
+		assertEquals("Angle should be " + 135 + ":", 135, Math.toDegrees(Trigonometry.angle(new Point2D.Double(1, 0), new Point2D.Double(0, 1))), 0.1);
+		assertEquals("Angle should be " + 180 + ":", 180,  Math.toDegrees(Trigonometry.angle(new Point2D.Double(1, 0), new Point2D.Double(-1, 0))), 0.1);
+		assertEquals("Angle should be " + 225 + ":", 225,  Math.toDegrees(Trigonometry.angle(new Point2D.Double(1, 0), new Point2D.Double(0, -1))), 0.1);
+		
+		assertEquals("Angle should be " + 0 + ":", 0,  Math.toDegrees(Trigonometry.angle( new Point2D.Double(1, 0), new Point2D.Double(1, 0))), 0.1);
+		assertEquals("Angle should be " + -45 + ":", -45, Math.toDegrees(Trigonometry.angle(new Point2D.Double(0, 1), new Point2D.Double(1, 0))), 0.1);
+		assertEquals("Angle should be " + 0 + ":", 0,  Math.toDegrees(Trigonometry.angle(new Point2D.Double(-1, 0), new Point2D.Double(1, 0))), 0.1);
+		assertEquals("Angle should be " + 45 + ":", 45,  Math.toDegrees(Trigonometry.angle(new Point2D.Double(0, -1), new Point2D.Double(1, 0))), 0.1);
 	}
 
 }

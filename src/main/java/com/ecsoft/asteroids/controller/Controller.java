@@ -143,7 +143,20 @@ public class Controller extends Observable implements Runnable {
 	public int getLevel() {
 		return this.level;
 	}
-
+	
+	
+	/**
+	 * @author Albin Karlquist
+	 * Destroys all current asteroids
+	 */
+	public void destroyAsteroids() {
+		for (int i = 0; i < asteroids.size(); i++) {
+			destroyAsteroid(i);
+			createExplosion((int)asteroids.get(i).getPosition().getX(), (int)asteroids.get(i).getPosition().getY());
+		}
+	}
+	
+	
 	private void gameOver() {
 		if(!gameOver) {
 			System.out.println("game over");
@@ -361,12 +374,8 @@ public class Controller extends Observable implements Runnable {
 							.contains(projectiles.get(j).getPos())) {
 
 						
-						// Creates particles for explosion effect
-						for (int k = 0; k < EXPLOSION_SIZE; k++) {
-							particles.add(new Particle(new Point2D.Float(
-									((int) projectiles.get(j).getPos().getX()),
-									(int) projectiles.get(j).getPos().getY())));
-						}
+						createExplosion((int)projectiles.get(j).getPos().getX(), (int)projectiles.get(j).getPos().getY());
+						
 						
 						projectiles.remove(j);
 						// Removes the bullet and asteroid. Then creates two new
@@ -374,22 +383,7 @@ public class Controller extends Observable implements Runnable {
 						
 						int size = asteroids.get(i).getSize();
 
-						if (size > 1) {
-							asteroids.add(new Asteroid(
-									new Point2D.Float((int) asteroids.get(i)
-											.getPosition().getX()+10*size,
-											(int) asteroids.get(i)
-													.getPosition().getY()),
-									size - 1, ASTEROID_BASE_VELOCITY+(level*0.2)));
-							asteroids.add(new Asteroid(
-									new Point2D.Float((int) asteroids.get(i)
-											.getPosition().getX()-10*size,
-											(int) asteroids.get(i)
-													.getPosition().getY()),
-									size - 1, ASTEROID_BASE_VELOCITY+(level*0.2)));
-						}
-						asteroids.remove(i);
-
+						destroyAsteroid(i);
 						player.increaseScore(ASTEROID_SCORE);
 
 						// Break to prevent IndexOutOfBoundsException
@@ -445,6 +439,29 @@ public class Controller extends Observable implements Runnable {
 				Thread.sleep(TICK_DELAY - (System.currentTimeMillis() - time));				
 			} catch (Exception e) {
 			}
+		}
+	}
+	
+	private void destroyAsteroid(int i) {
+
+		int size = asteroids.get(i).getSize();
+
+		if (size > 1) {
+			asteroids.add(new Asteroid(new Point2D.Float((int) asteroids.get(i)
+					.getPosition().getX()
+					+ 10 * size, (int) asteroids.get(i).getPosition().getY()),
+					size - 1, ASTEROID_BASE_VELOCITY + (level * 0.2)));
+			asteroids.add(new Asteroid(new Point2D.Float((int) asteroids.get(i)
+					.getPosition().getX()
+					- 10 * size, (int) asteroids.get(i).getPosition().getY()),
+					size - 1, ASTEROID_BASE_VELOCITY + (level * 0.2)));
+		}
+		asteroids.remove(i);
+	}
+	
+	public void createExplosion (int x, int y) {
+		for (int k = 0; k < EXPLOSION_SIZE; k++) {
+			particles.add(new Particle(new Point2D.Float(x,y)));
 		}
 	}
 }

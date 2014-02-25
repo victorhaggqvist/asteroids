@@ -13,18 +13,23 @@ public class Trigonometry {
 
 	/**
 	 * @author Albin Karlquist
+	 * @edited Peter Lundberg
 	 * Returns the angle between two points in radians
 	 * @param p1 First point
 	 * @param p2 Second point
-	 * @return returns the degree in radians
+	 * @return returns the angle in radians
 	 */
-	public static double angle (Point2D.Float p1, Point2D.Float p2) {
-		
+	public static double angle (Point2D p1, Point2D p2) {
+			
 		double angle = 0;
 		
 		//Calculates distance in the x-axis and y-axis
-		float xDist = (float)p1.getX()-(float)p2.getX();
-		float yDist = (float)p1.getY()-(float)p2.getY();
+		double xDist = p1.getX()-p2.getX();
+		double yDist = p1.getY()-p2.getY();
+		
+		if(xDist == 0) {
+			xDist = 0.1;
+		}
 		
 		//Math stuff
 		if (p1.getX() > p2.getX()) {
