@@ -238,6 +238,8 @@ public class Player {
     public void increaseScore(int score) {
         this.score += score;
     }
-    
 
+    public void setInvincible(boolean invincible) {
+        this.invincible = invincible;
+    }
 }
