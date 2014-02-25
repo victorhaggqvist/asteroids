@@ -26,16 +26,16 @@ public class Controller extends Observable implements Runnable {
 	private static final double ASTEROID_BASE_VELOCITY = 1.5;
 	private static final int ASTEROID_SCORE = 100;
 	private static final int SAUCER_SCORE = 250;
-	private static final int SAUCER_SPAWN_RATE = 5000;
+	private static final int SAUCER_SPAWN_RATE = 20000;
 	private static final int PLAYER_TRAIL_INTENSITY = 10;
 	private static final int PLAYER_SHOOTING_DELAY = 200;
 
 	public ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
-	public ArrayList<PlayerProjectile> playerProjectiles = new ArrayList<PlayerProjectile>();
-	public ArrayList<SaucerProjectile> saucerProjectiles = new ArrayList<SaucerProjectile>();
+	public ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 	public ArrayList<Saucer> saucers = new ArrayList<Saucer>();
 	public long saucerTimer;
 	public ArrayList<Particle> particles = new ArrayList<Particle>();
+	
 	public Player player;	
 	private long trailTimer;
 	private long shootTimer;
@@ -97,7 +97,7 @@ public class Controller extends Observable implements Runnable {
 	 */
 	public void startShoot() {
 		if (!shooting) {
-			playerProjectiles.add(player.shoot());
+			projectiles.add(player.shoot());
 			shootTimer = System.currentTimeMillis();	
 			shooting = true;
 		}
@@ -165,7 +165,7 @@ public class Controller extends Observable implements Runnable {
 	 */
 	public void initiateGame(int level) {
 		asteroids.clear();
-		playerProjectiles.clear();
+		projectiles.clear();
 		saucers.clear();
 		saucerTimer = System.currentTimeMillis();
 		particles.clear();
@@ -245,7 +245,7 @@ public class Controller extends Observable implements Runnable {
 					// towards the player
 					double angle = Trigonometry.angle(a.getPosition(),
 							player.getPosition());
-					saucerProjectiles.add(new SaucerProjectile((float) e.getSaucerPos()
+					projectiles.add(new Projectile((float) e.getSaucerPos()
 							.getX(), (float) e.getSaucerPos().getY(), angle));
 				}
 			}
@@ -257,29 +257,18 @@ public class Controller extends Observable implements Runnable {
 			if (shootTimer != 0) {
 				if (System.currentTimeMillis()-shootTimer > PLAYER_SHOOTING_DELAY) {
 					shootTimer = System.currentTimeMillis();
-					playerProjectiles.add(player.shoot());
+					projectiles.add(player.shoot());
 				}				
 			}
 			
 
 			// Updates projectiles
-			// Player projectiles
-			for (int i = 0; i < playerProjectiles.size(); i++) {
+			for (int i = 0; i < projectiles.size(); i++) {
 				try {
-					playerProjectiles.get(i).updatePos();
+					projectiles.get(i).updatePos();
 					// Removes the projectile if it catches Exception
 				} catch (ObjectExpiredException e) {
-					playerProjectiles.remove(i);
-				}
-			}
-			
-			//Saucer projectiles
-			for (int i = 0; i < saucerProjectiles.size(); i++) {
-				try {
-					saucerProjectiles.get(i).updatePos();
-					// Removes the projectile if it catches Exception
-				} catch (ObjectExpiredException e) {
-					saucerProjectiles.remove(i);
+					projectiles.remove(i);
 				}
 			}
 
@@ -330,10 +319,9 @@ public class Controller extends Observable implements Runnable {
 			}
 			
 			//Check for collision between player and projectiles
-			for (int j = 0; j < saucerProjectiles.size(); j++) {
-				if (player.getPolygon().contains(saucerProjectiles.get(j).getPos())) {
+			for (int j = 0; j < projectiles.size(); j++) {
+				if (player.getPolygon().contains(projectiles.get(j).getPos())) {
 					try {
-						saucerProjectiles.remove(j);
 						player.takeDamage();
 						// Game Over if NoHPLeftException is catched
 					} catch (NoHPLeftException e) {
@@ -361,77 +349,73 @@ public class Controller extends Observable implements Runnable {
 					}
 				}				
 			}
+			
+			
 
 			// Checks for collision between projectiles and asteroids
 			for (int i = 0; i < asteroids.size(); i++) {
-				for (int j = 0; j < playerProjectiles.size(); j++) {
+				for (int j = 0; j < projectiles.size(); j++) {
 
 					// Checks if a bullet has collided with an asteroid
 					if (asteroids.get(i).getPolygon()
-							.contains(playerProjectiles.get(j).getPos())) {
+							.contains(projectiles.get(j).getPos())) {
 
 						
 						// Creates particles for explosion effect
 						for (int k = 0; k < EXPLOSION_SIZE; k++) {
 							particles.add(new Particle(new Point2D.Float(
-									((int) playerProjectiles.get(j).getPos().getX()),
-									(int) playerProjectiles.get(j).getPos().getY())));
+									((int) projectiles.get(j).getPos().getX()),
+									(int) projectiles.get(j).getPos().getY())));
 						}
 						
+						projectiles.remove(j);
 						// Removes the bullet and asteroid. Then creates two new
 						// smaller asteroids next to each other.
-						playerProjectiles.remove(j);
-						destroyAsteroid(i);
-						// Break to prevent IndexOutOfBoundsException
-						break;
-					}
-				}
-				
-				for (int j = 0; j < saucerProjectiles.size(); j++) {
+						
+						int size = asteroids.get(i).getSize();
 
-					// Checks if a bullet has collided with an asteroid
-					if (asteroids.get(i).getPolygon()
-							.contains(saucerProjectiles.get(j).getPos())) {
-						
-						// Creates particles for explosion effect
-						for (int k = 0; k < EXPLOSION_SIZE; k++) {
-							particles.add(new Particle(new Point2D.Float(
-									((int) saucerProjectiles.get(j).getPos().getX()),
-									(int) saucerProjectiles.get(j).getPos().getY())));
+						if (size > 1) {
+							asteroids.add(new Asteroid(
+									new Point2D.Float((int) asteroids.get(i)
+											.getPosition().getX()+10*size,
+											(int) asteroids.get(i)
+													.getPosition().getY()),
+									size - 1, ASTEROID_BASE_VELOCITY+(level*0.2)));
+							asteroids.add(new Asteroid(
+									new Point2D.Float((int) asteroids.get(i)
+											.getPosition().getX()-10*size,
+											(int) asteroids.get(i)
+													.getPosition().getY()),
+									size - 1, ASTEROID_BASE_VELOCITY+(level*0.2)));
 						}
-						
-						// Removes the bullet and asteroid. Then creates two new
-						// smaller asteroids next to each other.
-						saucerProjectiles.remove(j);
-						destroyAsteroid(i);
+						asteroids.remove(i);
+
+						player.increaseScore(ASTEROID_SCORE);
+
 						// Break to prevent IndexOutOfBoundsException
 						break;
 					}
 				}
-				
 			}
-			
-			
-			
 
 			// Checks for collisions between projectiles and saucers
 			for (int i = 0; i < saucers.size(); i++) {
-				for (int j = 0; j < playerProjectiles.size(); j++) {
+				for (int j = 0; j < projectiles.size(); j++) {
 
 					// Checks if a bullet has collided with an asteroid
 					// [BUG] : Causes IndexOutOfBoundsException in some cases
 					if (saucers.get(i).getPolygon()
-							.contains(playerProjectiles.get(j).getPos())) {
+							.contains(projectiles.get(j).getPos())) {
 
 						// Creates particles for explosion effect
 						for (int k = 0; k < EXPLOSION_SIZE; k++) {
 							particles.add(new Particle(new Point2D.Float(
-									((int) playerProjectiles.get(j).getPos().getX()),
-									(int) playerProjectiles.get(j).getPos().getY())));
+									((int) projectiles.get(j).getPos().getX()),
+									(int) projectiles.get(j).getPos().getY())));
 						}
 						// Removes the saucer
 						saucers.remove(i);
-						playerProjectiles.remove(j);
+						projectiles.remove(j);
 
 						player.increaseScore(SAUCER_SCORE);
 
@@ -462,27 +446,5 @@ public class Controller extends Observable implements Runnable {
 			} catch (Exception e) {
 			}
 		}
-	}
-	
-	private void destroyAsteroid(int i) {
-
-					int size = asteroids.get(i).getSize();
-
-					if (size > 1) {
-						asteroids.add(new Asteroid(
-								new Point2D.Float((int) asteroids.get(i)
-										.getPosition().getX()+10*size,
-										(int) asteroids.get(i)
-												.getPosition().getY()),
-								size - 1, ASTEROID_BASE_VELOCITY+(level*0.2)));
-						asteroids.add(new Asteroid(
-								new Point2D.Float((int) asteroids.get(i)
-										.getPosition().getX()-10*size,
-										(int) asteroids.get(i)
-												.getPosition().getY()),
-								size - 1, ASTEROID_BASE_VELOCITY+(level*0.2)));
-					}
-					asteroids.remove(i);
-					player.increaseScore(ASTEROID_SCORE);
 	}
 }

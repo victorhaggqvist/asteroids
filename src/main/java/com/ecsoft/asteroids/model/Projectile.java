@@ -1,6 +1,5 @@
 package com.ecsoft.asteroids.model;
 
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 
 /**
@@ -12,10 +11,12 @@ import java.awt.geom.Point2D;
  * Package: com.ecsoft.asteroids.model
  */
 
-public abstract class Projectile {
+public class Projectile {
 
-    protected double velocity = 25;
-    protected int timeToLive = 1000;
+    private static double velocity = 25;
+    private static int screenWidth = 1000;
+    private static int screenHeight = 600;
+    private static int timeToLive = 1000;
    
     private Point2D.Float position;
     private double direction;
@@ -47,7 +48,8 @@ public abstract class Projectile {
         
         double x = position.getX() + Math.cos(direction)*velocity;
         double y = position.getY() + Math.sin(direction)*velocity;
-        position.setLocation(x,y);
+        position.setLocation(x,y);       
+        
     }
     
     /**
@@ -56,14 +58,4 @@ public abstract class Projectile {
     public Point2D.Float getPos() {
         return position;
     }
-    
-    /**
-     * @author Albin Karlquist
-     * 
-     * Get a drawable object representing the projectile
-     * @return An ellipse
-     */
-    public abstract Ellipse2D getDrawable();
-    	
-    
 }

@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -75,10 +74,8 @@ public class View implements Observer{
             
 
             @Override
-            protected void paintComponent(Graphics graphics) {
-                super.paintComponent(graphics);
-                
-                Graphics2D g = (Graphics2D) graphics;
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
                 this.setBackground(Color.black);
                 g.setColor(Color.white);    
     
@@ -92,10 +89,10 @@ public class View implements Observer{
                 for(Saucer a : contr.saucers)
                     g.drawPolygon(a.getPolygon());
                 
-                //Draw projectiles                
+                //Draw projectiles
                 g.setColor(Color.green);  
-                for(PlayerProjectile a : contr.playerProjectiles)
-                    g.draw(a.getDrawable());                
+                for(Projectile a : contr.projectiles)
+                    g.fillOval((int)a.getPos().getX(), (int)a.getPos().getY(), 5, 5);
                 
                 //Draw particles
                 g.setColor(Color.white); 
@@ -203,11 +200,9 @@ public class View implements Observer{
 			long fps = 0;
 			
 			@Override
-        	protected void paintComponent(Graphics graphics) {			    
-			    super.paintComponent(graphics);
+        	protected void paintComponent(Graphics g) {
 			    
-			    Graphics2D g = (Graphics2D) graphics;
-			    
+			    super.paintComponent(g);
                 this.setBackground(Color.black);
                 g.setColor(Color.white);
 
@@ -269,11 +264,8 @@ public class View implements Observer{
         		
         		//Draw projectiles
         		g.setColor(Color.green);  
-        		for(PlayerProjectile a : contr.playerProjectiles)
+        		for(Projectile a : contr.projectiles)
                     g.fillOval((int)a.getPos().getX(), (int)a.getPos().getY(), 5, 5);
-        		g.setColor(Color.red);
-                for(SaucerProjectile a : contr.saucerProjectiles)
-                    g.draw(a.getDrawable());
         		
         		//Draw particles
         		g.setColor(Color.white); 
