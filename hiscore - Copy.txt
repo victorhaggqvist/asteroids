@@ -1,0 +1,10 @@
+albin 100000
+asder 20000
+asd 10000
+faso 1500
+asd 1000
+faso 999
+asd 998
+faso 997
+asd 500
+faso 100
