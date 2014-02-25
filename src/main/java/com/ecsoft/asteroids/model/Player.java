@@ -142,10 +142,10 @@ public class Player {
      * @author Albin Karlquist
      * @return Returns a projectile at the ships front
      */
-    public Projectile shoot() {
+    public PlayerProjectile shoot() {
     	double x = position.getX() + Math.cos(rotation)*20;
     	double y = position.getY() + Math.sin(rotation)*20;
-        return new Projectile((float)x, (float) y,rotation);
+        return new PlayerProjectile((float)x, (float) y,rotation);
     }
     
     

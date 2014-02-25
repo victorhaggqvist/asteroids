@@ -11,12 +11,12 @@ import java.awt.geom.Point2D;
  * Package: com.ecsoft.asteroids.model
  */
 
-public class Projectile {
+public abstract class Projectile {
 
-    private static double velocity = 25;
+    protected double velocity = 25;
+    protected int timeToLive = 1000;
     private static int screenWidth = 1000;
-    private static int screenHeight = 600;
-    private static int timeToLive = 1000;
+    private static int screenHeight = 600;    
    
     private Point2D.Float position;
     private double direction;
