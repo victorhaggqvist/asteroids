@@ -1,8 +1,13 @@
+import com.ecsoft.asteroids.controller.Controller;
 import com.ecsoft.asteroids.model.NoHPLeftException;
 import com.ecsoft.asteroids.model.Player;
+import com.ecsoft.asteroids.model.SettingsManager;
 import org.junit.Test;
 
+import java.awt.*;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Name: Asteroids
@@ -30,6 +35,13 @@ public class MiaoTest {
         } catch (NoHPLeftException e) {
             noHPleft = true;
         }
-        assertEquals("Test NoHPLeftExeption",true,noHPleft);
+        assertTrue("Test NoHPLeftExeption",noHPleft);
+    }
+
+    @Test
+    public void testGameInitiation(){
+        Controller ctrl = new Controller();
+        ctrl.initiateGame(SettingsManager.getInstance().getDifficulty());
+        assertTrue("If there is asteroids, we are good",ctrl.asteroids.size()>0);
     }
 }
