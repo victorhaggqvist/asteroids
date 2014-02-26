@@ -16,9 +16,9 @@ import com.ecsoft.asteroids.mathematics.Matrix;
 public class Player {
     
     //Deacceleration of the ship
-    private final double friction = 0.90;
+    private final double friction = 0.92;
     private final double MAX_SPEED = 15;
-    private final double ACC = 0.3;
+    private final double ACC = 0.9;
     private final double TURN_SPEED = 0.2;
     private final int SHIP_SIZE = 20;
     private final int RESPAWN_PROTECTION_TIME = 3000;
@@ -97,10 +97,10 @@ public class Player {
     	    vx += Math.cos(rotation) * ACC;
     	    vy += Math.sin(rotation) * ACC;
     	}    		
-    	else {
+    	
     	    vy *= friction;
     	    vx *= friction;
-    	}    		
+    	    		
     	
     	//rotates left
     	if(turningL) {
