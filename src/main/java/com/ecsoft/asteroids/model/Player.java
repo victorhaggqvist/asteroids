@@ -28,6 +28,7 @@ public class Player {
     private static final int SCREEN_HEIGHT = 600;
     
     private double velocity;
+    private Point2D.Float velDirection;
     public double rotation;
     private int health;
     private int score;
@@ -67,11 +68,14 @@ public class Player {
      * @param size Length between points
      */
     private void createPlayerPoints(double size) {
-    	corners = new Point2D.Float[3];
+    	corners = new Point2D.Float[4];
     	
     	corners[0] = new Point2D.Float(0,0);
     	corners[1] = new Point2D.Float((float)(-2.5*size), (float)(size));
-    	corners[2] = new Point2D.Float((float)(-2.5*size), (float)(-size));
+    	corners[2] = new Point2D.Float((float)(-2*size), 0);
+    	corners[3] = new Point2D.Float((float)(-2.5*size), (float)(-size));
+    	
+    	
     	
     	Point2D.Float sum = Matrix.Point2DSum(this.corners);
         Point2D.Float center = new Point2D.Float((float)sum.getX()/this.corners.length,(float)sum.getY()/this.corners.length);
@@ -108,11 +112,11 @@ public class Player {
     	
     	rotation %= 2*Math.PI;
     	
-    	
     	//Updates the position
-    	double xMov = Math.cos(rotation)*velocity;
-    	double yMov = Math.sin(rotation)*velocity;
-    	position.setLocation((float)position.getX()+xMov, (float)position.getY()+yMov);
+    	double dX = Math.cos(rotation)*velocity;
+    	double dy = Math.sin(rotation)*velocity;
+    	position.setLocation((float)position.getX()+dX, (float)position.getY()+dy);
+    	
     	
     	//If the player moves out of bounds
         if(position.getX()<0) {
@@ -155,22 +159,18 @@ public class Player {
      * @return Polygon based on the ships corners.
      */
     public Polygon getPolygon() {    	
-    	int[] x = new int[3];
-    	int[] y = new int[3];
+    	int[] x = new int[corners.length];
+    	int[] y = new int[corners.length];
     	
-    	x[0] = (int)(position.getX() + corners[0].getX());
-    	x[1] = (int)(position.getX() + corners[1].getX());
-    	x[2] = (int)(position.getX() + corners[2].getX());
-    	y[0] = (int)(position.getY() + corners[0].getY());
-    	y[1] = (int)(position.getY() + corners[1].getY());
-    	y[2] = (int)(position.getY() + corners[2].getY());
-
+    	for (int i = 0; i < corners.length; i++) {
+            x[i] = (int)(position.getX() + corners[i].getX());
+            y[i] = (int)(position.getY() + corners[i].getY());
+        }
+    	
     	return new Polygon(x, y, x.length);
     }
     
     public Point2D.Float getPosition() {
-        Point2D.Float sum = Matrix.Point2DSum(this.corners);
-        //Point2D.Float center = new Point2D.Float((float)sum.getX()/this.corners.length,(float)sum.getY()/this.corners.length);
     	return this.position;
     }
     
