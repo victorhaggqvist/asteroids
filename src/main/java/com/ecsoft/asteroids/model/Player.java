@@ -16,9 +16,9 @@ import com.ecsoft.asteroids.mathematics.Matrix;
 public class Player {
     
     //Deacceleration of the ship
-    private final double friction = 0.95;
-    private final double MAX_SPEED = 10;
-    private final double ACC = 0.2;
+    private final double friction = 0.90;
+    private final double MAX_SPEED = 15;
+    private final double ACC = 0.3;
     private final double TURN_SPEED = 0.2;
     private final int SHIP_SIZE = 20;
     private final int RESPAWN_PROTECTION_TIME = 3000;
@@ -27,8 +27,9 @@ public class Player {
     private static final int SCREEN_WIDTH = 1000;
     private static final int SCREEN_HEIGHT = 600;
     
-    private double velocity;
-    private Point2D.Float velDirection;
+    
+    private double vx;
+    private double vy;
     public double rotation;
     private int health;
     private int score;
@@ -54,7 +55,8 @@ public class Player {
     	position = new Point2D.Float(x,y);
     	health = START_HEALTH;
     	score = 0;
-        velocity = 0;
+        vx = 0;
+        vy = 0;
         rotation = 0;
         turningL = false;
         turningR = false;
@@ -75,8 +77,6 @@ public class Player {
     	corners[2] = new Point2D.Float((float)(-2*size), 0);
     	corners[3] = new Point2D.Float((float)(-2.5*size), (float)(-size));
     	
-    	
-    	
     	Point2D.Float sum = Matrix.Point2DSum(this.corners);
         Point2D.Float center = new Point2D.Float((float)sum.getX()/this.corners.length,(float)sum.getY()/this.corners.length);
         System.out.println(center);
@@ -91,10 +91,16 @@ public class Player {
      */
     public void updatePos() { 
   
-    	if(accelerating && velocity < MAX_SPEED) 
-    		velocity += ACC;
-    	else 
-    		velocity *= friction;
+        double totalVelocity = Math.abs(vx) + Math.abs(vy);
+        
+    	if(accelerating && totalVelocity < MAX_SPEED) {
+    	    vx += Math.cos(rotation) * ACC;
+    	    vy += Math.sin(rotation) * ACC;
+    	}    		
+    	else {
+    	    vy *= friction;
+    	    vx *= friction;
+    	}    		
     	
     	//rotates left
     	if(turningL) {
@@ -113,9 +119,10 @@ public class Player {
     	rotation %= 2*Math.PI;
     	
     	//Updates the position
-    	double dX = Math.cos(rotation)*velocity;
-    	double dy = Math.sin(rotation)*velocity;
-    	position.setLocation((float)position.getX()+dX, (float)position.getY()+dy);
+    	position.setLocation((float)position.getX()+vx, (float)position.getY()+vy);
+    	
+    	
+    	       
     	
     	
     	//If the player moves out of bounds
@@ -201,7 +208,8 @@ public class Player {
     private void respawn() {    	
         this.invincible = true;
     	this.position.setLocation(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
-    	this.velocity = 0;
+    	this.vx = 0;
+    	this.vy = 0;
     	this.respawnTime = System.currentTimeMillis();
     	    	   	
     }
