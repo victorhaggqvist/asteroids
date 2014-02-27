@@ -22,15 +22,24 @@ public class SettingsManager {
 
     // settings keys
     public static final String KEY_DIFFICULTY = "difficulty";
+    public static final String KEY_COLOR = "color";
 
-    public static final int DIFFICULTY_EASY = 1;
-    public static final int DIFFICULTY_MEDIUM = 2;
-    public static final int DIFFICULTY_HARD = 3;
+    public static final int DIFFICULTY_EASY = 0;
+    public static final int DIFFICULTY_MEDIUM = 1;
+    public static final int DIFFICULTY_HARD = 2;
+    
+    public static final String [] DIFFICULTIES = {"EASY", "MEDIUM", "HARD"};
+    
+    public static final int COLOR_WHITE = 0;
+    public static final int COLOR_YELLOW = 1;
+    public static final int COLOR_PINK = 2;
+    
+    public static final String [] COLORS = {"WHITE", "YELLOW", "PINK"};
 
     private static final String FILE_NAME = "settings.ini";
      
     private int difficulty;
-    private String color;
+    private int color;
     
     private SettingsManager() {
           preferences = Preferences.userNodeForPackage(com.ecsoft.asteroids.model.SettingsManager.class);
@@ -57,25 +66,17 @@ public class SettingsManager {
      */
     public void setDifficulty(int difficulty) {
         preferences.putInt(KEY_DIFFICULTY,difficulty);
+
     }
 
-    public String getColorString() {
-        return color;
-    }
     
-    public Color getColor() {
-        if (color.equals("WHITE")) 
-            return Color.white;
-        else if (color.equals("GREEN")) 
-            return Color.green;
-        else if (color.equals("BLUE")) 
-            return Color.blue;
-        return Color.white;
+    public int getColorNmbr() {
+        return preferences.getInt(KEY_COLOR ,COLOR_WHITE);
     }
 
 
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setColor(int color) {
+        preferences.putInt(KEY_COLOR, color);
     }
 }

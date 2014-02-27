@@ -53,7 +53,6 @@ public class View implements Observer{
 	
 	private KeyAdapter keyListener, menuListener;
 	
-	
     public View(Controller contr) {
         settings = SettingsManager.getInstance();
         frame = new JFrame( "Asteroids" );        
@@ -117,10 +116,10 @@ public class View implements Observer{
                 int width = 0;
                 if (optionScreen) { 
                 	width = fm.stringWidth(optionItems[0]);
-                    g.drawString(optionItems[0] + " = " + settings.getDifficulty(), (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-60)+40*0);
+                    g.drawString(optionItems[0] + " = " + settings.DIFFICULTIES[settings.getDifficulty()], (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-60)+40*0);
                     
                     width = fm.stringWidth(optionItems[1]);
-                    g.drawString(optionItems[1] + " = " + settings.getColorString(), (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-60)+40*1);
+                    g.drawString(optionItems[1] + " = " + settings.COLORS[settings.getColorNmbr()], (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-60)+40*1);
                     
                     width = fm.stringWidth(optionItems[2]);
                     g.drawString(optionItems[2], (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-60)+40*2);
@@ -339,16 +338,27 @@ public class View implements Observer{
                     else
                         menuSelector = 0;
                     break;
+                case KeyEvent.VK_RIGHT:
+                    if (menuSelector == 0 && settings.getDifficulty() < 2) {
+                        settings.setDifficulty(settings.getDifficulty() + 1);
+                    }
+                    if (menuSelector == 1 && settings.getColorNmbr() < 2) {
+                        settings.setColor(settings.getColorNmbr() + 1);
+                    }
+                    break;
+                
+                case KeyEvent.VK_LEFT:
+                    if (menuSelector == 0 && settings.getDifficulty() > 0) {
+                        settings.setDifficulty(settings.getDifficulty() - 1);
+                    }
+                    if (menuSelector == 1 && settings.getColorNmbr() > 0) {
+                        settings.setColor(settings.getColorNmbr() - 1);
+                    }
+                    break;
+                    
                 case KeyEvent.VK_ENTER:
-                    if (menuSelector == 0) {
-                        createGamePanel();
-                        gameStarted = true;
-                    }
-                    else if(menuSelector == 1) {
-                        optionScreen = true;
-                        menuSelector = 0;
-                    }
-                    else if(menuSelector == optionItems.length-1) {
+               
+                    if(menuSelector == optionItems.length-1) {
                         optionScreen = false;
                         menuSelector = 0;
                     }

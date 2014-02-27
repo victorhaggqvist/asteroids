@@ -41,7 +41,7 @@ public class Controller extends Observable implements Runnable {
 	private long trailTimer;
 	private long shootTimer;
 
-	private SettingsManager sm;
+	private SettingsManager settings;
 	private int level;
 
 	public boolean gameStarted;
@@ -52,7 +52,7 @@ public class Controller extends Observable implements Runnable {
 	private final int TICK_DELAY = 33;
 
 	public Controller() {
-	    sm = SettingsManager.getInstance();
+	    settings = SettingsManager.getInstance();
 		// Spawns a player at the center of the screen
 		gameStarted = false;
 		trailTimer = 0;
