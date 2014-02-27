@@ -163,7 +163,7 @@ public class View implements Observer{
                     
                   //Marker for optionsScreen
                     if(optionScreen == true && hiscoreScreen == false) {
-	                    xPoints[0] = (SCREEN_WIDTH/2)-fm.stringWidth(optionItems[menuSelector])/2 - 20;
+	                    xPoints[0] = (SCREEN_WIDTH/2)-fm.stringWidth(optionItems[menuSelector]) - 5;
 	                    yPoints[0] = ((SCREEN_HEIGHT/2)-70)+40*menuSelector;
                     }
                     
@@ -381,7 +381,7 @@ public class View implements Observer{
                     break;
                     
                 case KeyEvent.VK_ENTER:
-               
+                case KeyEvent.VK_SPACE:
                     if(menuSelector == optionItems.length-1) {
                         optionScreen = false;
                         menuSelector = 0;
@@ -395,6 +395,7 @@ public class View implements Observer{
             else if (hiscoreScreen) {
                 switch (key) {                
                 case KeyEvent.VK_ENTER:
+                case KeyEvent.VK_SPACE:
                     	hiscoreScreen = false;                        
                 break;
                 }
@@ -417,7 +418,7 @@ public class View implements Observer{
                     break;
                     
                 case KeyEvent.VK_ENTER:
-                	
+                case KeyEvent.VK_SPACE:
                     if (menuSelector == 0) {
                     	contr.initiateGame(1);
                     	//Remove all panels and create a game panel
