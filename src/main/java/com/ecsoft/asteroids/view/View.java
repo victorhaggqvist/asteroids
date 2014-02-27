@@ -119,7 +119,7 @@ public class View implements Observer{
                     g.drawString(optionItems[0] + " = " + settings.DIFFICULTIES[settings.getDifficulty()], (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-60)+40*0);
                     
                     width = fm.stringWidth(optionItems[1]);
-                    g.drawString(optionItems[1] + " = " + settings.COLORS[settings.getColorNmbr()], (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-60)+40*1);
+                    g.drawString(optionItems[1] + " = " + settings.COLOR_NAMES[settings.getColor()], (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-60)+40*1);
                     
                     width = fm.stringWidth(optionItems[2]);
                     g.drawString(optionItems[2], (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-60)+40*2);
@@ -242,6 +242,7 @@ public class View implements Observer{
                 }
                 else {
             		//Draw player
+                    g.setColor(settings.COLORS[settings.getColor()]);
             		g.drawPolygon(contr.player.getPolygon());
             		//If player is ininvcible, draw a circle around it
             		if(contr.player.getInincibility()) {
@@ -250,6 +251,7 @@ public class View implements Observer{
             		}
                 }
                 
+                g.setColor(Color.white);
                 //Draw current level
                 g.setFont(new Font("Arial", Font.BOLD, 15));
                 fm = getFontMetrics( g.getFont() );
@@ -342,8 +344,8 @@ public class View implements Observer{
                     if (menuSelector == 0 && settings.getDifficulty() < 2) {
                         settings.setDifficulty(settings.getDifficulty() + 1);
                     }
-                    if (menuSelector == 1 && settings.getColorNmbr() < 2) {
-                        settings.setColor(settings.getColorNmbr() + 1);
+                    if (menuSelector == 1 && settings.getColor() < 2) {
+                        settings.setColor(settings.getColor() + 1);
                     }
                     break;
                 
@@ -351,8 +353,8 @@ public class View implements Observer{
                     if (menuSelector == 0 && settings.getDifficulty() > 0) {
                         settings.setDifficulty(settings.getDifficulty() - 1);
                     }
-                    if (menuSelector == 1 && settings.getColorNmbr() > 0) {
-                        settings.setColor(settings.getColorNmbr() - 1);
+                    if (menuSelector == 1 && settings.getColor() > 0) {
+                        settings.setColor(settings.getColor() - 1);
                     }
                     break;
                     
