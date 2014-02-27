@@ -56,7 +56,8 @@ public class View implements Observer{
     public View(Controller contr) {
         settings = SettingsManager.getInstance();
         frame = new JFrame( "Asteroids" );        
-
+        frame.setResizable(false);
+        frame.setUndecorated(true);
         gameStarted = false;
         optionScreen = false;
         hiscoreScreen = false;
