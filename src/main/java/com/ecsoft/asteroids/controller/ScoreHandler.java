@@ -67,19 +67,16 @@ public final class ScoreHandler {
                 highScoreList.getList().remove(0);
 
             //Update highScores
-            // if new score is lower than the lowes, just add
-            if (highScore.getScore()<highScoreList.getList().get(highScoreList.getList().size()-1).getScore())
-                highScoreList.getList().add(highScore);
-            else // add new score at approptiate position
-                for (int i = 0; i < highScoreList.getList().size(); i++) {
-                    // if new score is better than score at i insert it at i
-                    if (highScore.getScore()>highScoreList.getList().get(i).getScore()){
-                        highScoreList.getList().add(i,highScore);
-                        break;
-                    }
+            for (int i = 0; i < highScoreList.getList().size(); i++) {
+                // if new score is better than score at i insert it at i
+                if (highScore.getScore()>highScoreList.getList().get(i).getScore()){
+                    highScoreList.getList().add(i,highScore);
+                    break;
                 }
+            }
 
-            if (highScoreList.getList().size()<1)
+            // if it is new item or a bad score just add it
+            if (highScoreList.getList().size()<1 || highScore.getScore()<highScoreList.getList().get(highScoreList.getList().size()-1).getScore())
                 highScoreList.getList().add(highScore);
 
             highScoreList.getList().trimToSize();
