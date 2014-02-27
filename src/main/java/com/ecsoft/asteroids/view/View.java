@@ -15,8 +15,17 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import com.ecsoft.asteroids.controller.*;
-import com.ecsoft.asteroids.model.*;
+import com.ecsoft.asteroids.controller.Controller;
+import com.ecsoft.asteroids.controller.ScoreHandler;
+import com.ecsoft.asteroids.controller.Sound;
+import com.ecsoft.asteroids.model.Asteroid;
+import com.ecsoft.asteroids.model.Heart;
+import com.ecsoft.asteroids.model.HighScore;
+import com.ecsoft.asteroids.model.Particle;
+import com.ecsoft.asteroids.model.PlayerMovement;
+import com.ecsoft.asteroids.model.Projectile;
+import com.ecsoft.asteroids.model.Saucer;
+import com.ecsoft.asteroids.model.SettingsManager;
 
 /**
  * Name: Asteroids
@@ -52,6 +61,8 @@ public class View implements Observer{
 	private String hiscoreName = "";
 	
 	private KeyAdapter keyListener, menuListener;
+	
+	private Sound sound = new Sound();
 	
     public View(Controller contr) {
         settings = SettingsManager.getInstance();
@@ -199,7 +210,9 @@ public class View implements Observer{
     }
     
     
-    private void createGamePanel() {       	
+    private void createGamePanel() {   
+    	sound.startMusic();
+    	
     	//Register key listener
     	frame.removeKeyListener(menuListener);
     	keyListener = new KeyListener();
@@ -377,6 +390,7 @@ public class View implements Observer{
                     }
                     
                     if (menuSelector == 3) {
+                    	sound.stopMusic();
                         settings.setMusic(false);
                     }
                     

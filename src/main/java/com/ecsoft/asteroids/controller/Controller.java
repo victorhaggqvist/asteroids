@@ -179,7 +179,7 @@ public class Controller extends Observable implements Runnable {
 	 * @param level
 	 *            The current level. 0 for menu.
 	 */
-	public void initiateGame(int level) {
+	public void initiateGame(int level) {		
 		asteroids.clear();
 		playerProjectiles.clear();
 		saucerProjectiles.clear();

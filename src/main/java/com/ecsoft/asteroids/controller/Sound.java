@@ -15,8 +15,11 @@ public class Sound {
 			"src/audio/bom.wav",
 			"src/audio/pang.wav",
 			"src/audio/pew.wav",
-			"src/audio/vroom.wav"
+			"src/audio/vroom.wav",
+			"src/audio/metroid.wav"
 	};
+	
+	private static AudioStream as;
 	
 	public void startSound(final int i) {
 	    SettingsManager settings = SettingsManager.getInstance();
@@ -41,6 +44,26 @@ public class Sound {
             }
         }).start();
     }
+	}
+	
+	public void startMusic() {	
+		SettingsManager settings = SettingsManager.getInstance();
+	    if(settings.getMusic()) {	 
+	    	AudioPlayer.player.stop(as);
+			try {
+				InputStream in = new FileInputStream(url[4]);
+				as = new AudioStream(in);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			AudioPlayer.player.start(as);
+
+	    }
+	}
+	
+	public void stopMusic() {
+		AudioPlayer.player.stop(as);
 	}
 	
 }
