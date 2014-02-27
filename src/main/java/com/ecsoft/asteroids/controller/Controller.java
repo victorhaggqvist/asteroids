@@ -71,6 +71,8 @@ public class Controller extends Observable implements Runnable {
             case UP:
             	if(!player.accelerating)
             		sound.startSound(3);
+            	 
+            	
                 player.accelerating = true;
                 break;
             case LEFT:

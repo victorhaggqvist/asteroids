@@ -23,6 +23,8 @@ public class SettingsManager {
     // settings keys
     public static final String KEY_DIFFICULTY = "difficulty";
     public static final String KEY_COLOR = "color";
+    public static final String KEY_SOUND = "sound";
+    public static final String KEY_MUSIC = "music";
 
     public static final int DIFFICULTY_EASY = 0;
     public static final int DIFFICULTY_MEDIUM = 1;
@@ -79,5 +81,21 @@ public class SettingsManager {
 
     public void setColor(int color) {
         preferences.putInt(KEY_COLOR, color);
+    }
+    
+    public boolean getSound () {
+        return preferences.getBoolean(KEY_SOUND ,true);
+    }
+    
+    public void setSound(boolean b) {
+        preferences.putBoolean(KEY_SOUND, b);
+    }
+    
+    public boolean getMusic () {
+        return preferences.getBoolean(KEY_MUSIC ,true);
+    }
+    
+    public void setMusic(boolean b) {
+        preferences.putBoolean(KEY_MUSIC, b);
     }
 }

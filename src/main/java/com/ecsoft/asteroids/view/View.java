@@ -39,7 +39,7 @@ public class View implements Observer{
 	
 	private SettingsManager settings;
 	private String [] menuItems = {"START GAME", "OPTIONS" , "HISCORE" , "ABOUT", "QUIT"};
-	private String [] optionItems = {"DIFFICULTY", "SHIP COLOR" ,"BACK"};
+	private String [] optionItems = {"DIFFICULTY", "SHIP COLOR", "SOUND", "MUSIC" ,"BACK"};
 	private String [] hiscoreItems = {"BACK"};
 	
 	private boolean gameStarted;
@@ -115,14 +115,20 @@ public class View implements Observer{
                 //Draws option screen
                 int width = 0;
                 if (optionScreen) { 
-                	width = fm.stringWidth(optionItems[0]);
+                	width = fm.stringWidth(optionItems[0] + " = " + settings.DIFFICULTIES[settings.getDifficulty()]);
                     g.drawString(optionItems[0] + " = " + settings.DIFFICULTIES[settings.getDifficulty()], (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-60)+40*0);
                     
-                    width = fm.stringWidth(optionItems[1]);
+                    width = fm.stringWidth(optionItems[1] + " = " + settings.COLOR_NAMES[settings.getColor()]);
                     g.drawString(optionItems[1] + " = " + settings.COLOR_NAMES[settings.getColor()], (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-60)+40*1);
                     
-                    width = fm.stringWidth(optionItems[2]);
-                    g.drawString(optionItems[2], (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-60)+40*2);
+                    width = fm.stringWidth(optionItems[2] + " = " + settings.getSound());
+                    g.drawString(optionItems[2] + " = " + settings.getSound(), (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-60)+40*2);
+                    
+                    width = fm.stringWidth(optionItems[3] + " = " + settings.getMusic());
+                    g.drawString(optionItems[3] + " = " + settings.getMusic(), (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-60)+40*3);
+                    
+                    width = fm.stringWidth(optionItems[4]);
+                    g.drawString(optionItems[4], (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-60)+40*4);
                 }
                 
                 //Draw hiscore screen
@@ -346,6 +352,13 @@ public class View implements Observer{
                     }
                     if (menuSelector == 1 && settings.getColor() < 2) {
                         settings.setColor(settings.getColor() + 1);
+                    }                    
+                    if (menuSelector == 2) {
+                        settings.setSound(true);
+                    }
+                    
+                    if (menuSelector == 3) {
+                        settings.setMusic(true);
                     }
                     break;
                 
@@ -356,6 +369,15 @@ public class View implements Observer{
                     if (menuSelector == 1 && settings.getColor() > 0) {
                         settings.setColor(settings.getColor() - 1);
                     }
+                    
+                    if (menuSelector == 2) {
+                        settings.setSound(false);
+                    }
+                    
+                    if (menuSelector == 3) {
+                        settings.setMusic(false);
+                    }
+                    
                     break;
                     
                 case KeyEvent.VK_ENTER:
