@@ -41,6 +41,7 @@ public class Controller extends Observable implements Runnable {
 	public Player player;	
 	private long trailTimer;
 	private long shootTimer;
+	
 
 	private SettingsManager settings;
 	private int level;
@@ -70,10 +71,8 @@ public class Controller extends Observable implements Runnable {
         switch (playerMovement){
             case UP:
             	if(!player.accelerating)
-            		sound.startSound(3);
-            	 
-            	
-                player.accelerating = true;
+            		sound.startSound(3);  
+                	player.accelerating = true;
                 break;
             case LEFT:
                 player.turningL = true;
@@ -261,6 +260,7 @@ public class Controller extends Observable implements Runnable {
 				} catch (SaucerShootException e) {
 					// Add a projectile at the location of the saucer going
 					// towards the player
+					sound.startSound(2);
 					double angle = Trigonometry.angle(a.getPosition(),
 							player.getPosition());
 					saucerProjectiles.add(new SaucerProjectile((float) e.getSaucerPos()

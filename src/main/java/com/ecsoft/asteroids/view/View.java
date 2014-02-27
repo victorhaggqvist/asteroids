@@ -76,8 +76,7 @@ public class View implements Observer{
     	this.contr = contr;
     	contr.addObserver(this);
     	createStartPanel();
-    	//createGamePanel();
-    	
+    	//createGamePanel();    	
     }
     
     private void createStartPanel() {

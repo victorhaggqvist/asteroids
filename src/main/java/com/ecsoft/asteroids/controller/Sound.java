@@ -16,7 +16,7 @@ public class Sound {
 			"src/audio/pang.wav",
 			"src/audio/pew.wav",
 			"src/audio/vroom.wav",
-			"src/audio/metroid.wav"
+			"src/audio/bgmusic.wav"
 	};
 	
 	private static AudioStream as;
