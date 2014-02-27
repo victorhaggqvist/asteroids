@@ -483,7 +483,7 @@ public class View implements Observer{
 	            }
 	            
 	            //Submit hiscore
-	            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+	            if (e.getKeyCode() == KeyEvent.VK_ENTER && !hiscoreName.equals("")) {
 	            	try {
         				ScoreHandler.addScore(new HighScore(hiscoreName , contr.getScore()));
         			} catch (IOException ex) {
