@@ -14,8 +14,7 @@ public final class ScoreHandler {
 
     /**
      * Get highscorelist
-     * @return
-     * @throws IOException
+     * @return ArrayList of HighScore-objects
      */
 	public static ArrayList<HighScore> getHiscores(){
         StringBuilder sb = new StringBuilder();
@@ -34,7 +33,7 @@ public final class ScoreHandler {
                 e1.printStackTrace();
             }
         }
-        String line = null;
+        String line;
         try {
             line = in.readLine();
             while (line!=null){
@@ -43,6 +42,8 @@ public final class ScoreHandler {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (NullPointerException e){
+            // woop
         }
 
 		Gson gson = new Gson();
@@ -56,7 +57,7 @@ public final class ScoreHandler {
 
     /**
      * Add score to list
-     * @param highScore
+     * @param highScore a highScore object
      * @throws IOException
      */
 	public static void addScore(HighScore highScore) throws IOException {
@@ -81,7 +82,7 @@ public final class ScoreHandler {
 
             highScoreList.getList().trimToSize();
             if (highScoreList.getList().size()>10)
-                highScoreList.setList(new ArrayList<HighScore>(highScoreList.getList().subList(0, 10)));
+                highScoreList.setList(new ArrayList<>(highScoreList.getList().subList(0, 10)));
 
             //Writes to file
             PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(FILE_NAME)));
