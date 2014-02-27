@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.ecsoft.asteroids.model.SettingsManager;
+
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
 
@@ -17,6 +19,8 @@ public class Sound {
 	};
 	
 	public void startSound(final int i) {
+	    SettingsManager settings = SettingsManager.getInstance();
+	    if(settings.getSound()) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -37,5 +41,6 @@ public class Sound {
             }
         }).start();
     }
+	}
 	
 }
