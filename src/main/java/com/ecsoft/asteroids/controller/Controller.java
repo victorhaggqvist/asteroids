@@ -22,7 +22,7 @@ public class Controller extends Observable implements Runnable {
 	
 	private static final int NMBR_OF_ASTEROIDS = 10;
 	private static final int EXPLOSION_SIZE = 10;
-	private static final int ASTEROID_HEALTH = 3;
+	private static final int ASTEROID_HEALTH = 2;
 	private static final double ASTEROID_BASE_VELOCITY = 1.5;
 	private static final int ASTEROID_SCORE = 100;
 	private static final int SAUCER_SCORE = 250;
@@ -217,7 +217,7 @@ public class Controller extends Observable implements Runnable {
 					y = (int) (Math.random() * SCREEN_HEIGHT);
 				}
 				asteroids.add(new Asteroid(new Point2D.Float(x, y),
-						ASTEROID_HEALTH, ASTEROID_BASE_VELOCITY+(level*0.2)));
+						ASTEROID_HEALTH + settings.getDifficulty(), ASTEROID_BASE_VELOCITY+(level*0.2)));
 			}
 		}
 	}
