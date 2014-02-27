@@ -342,7 +342,7 @@ public class Controller extends Observable implements Runnable {
 			
 			//Check for collision between player and projectiles
 			for (int j = 0; j < saucerProjectiles.size(); j++) {
-				if (player.getPolygon().contains(saucerProjectiles.get(j).getPos())) {
+			    if (player.getPolygon().contains(saucerProjectiles.get(j).getPos())) {
 					try {
 						player.takeDamage();
 						// Game Over if NoHPLeftException is catched
@@ -379,9 +379,8 @@ public class Controller extends Observable implements Runnable {
 				for (int j = 0; j < playerProjectiles.size(); j++) {
 
 					// Checks if a bullet has collided with an asteroid
-					if (asteroids.get(i).getPolygon()
-							.contains(playerProjectiles.get(j).getPos())) {
-
+				    //if (Collision.projectileCollision(playerProjectiles.get(j), player.getPolygon())) {
+				    if (asteroids.get(i).getPolygon().contains(playerProjectiles.get(j).getPos())) {
 						
 						createExplosion((int)playerProjectiles.get(j).getPos().getX(), (int)playerProjectiles.get(j).getPos().getY());
 						

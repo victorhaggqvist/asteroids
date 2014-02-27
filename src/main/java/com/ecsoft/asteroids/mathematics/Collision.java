@@ -3,6 +3,8 @@ package com.ecsoft.asteroids.mathematics;
 import java.awt.Polygon;
 import java.awt.geom.Line2D;
 
+import com.ecsoft.asteroids.model.Projectile;
+
 /**
  * @author Albin Karlquist
  * This class contains static methods handling collisions
@@ -39,8 +41,30 @@ public class Collision {
         if(!p1.contains(p2.xpoints[0], p2.ypoints[0]))
         	return false;
         else
-        	return true;
+        	return true;        
+    }
+    
+    /**
+     * @author Albin Karlquist
+     * Accurately checks for collisions between a projectile and a polygon.
+     * @param proj 
+     * @param pol
+     * @return True if colliding
+     */
+    public static boolean projectileCollision(Projectile proj, Polygon pol) {
+        Line2D.Float line = new Line2D.Float(proj.getPos().x, proj.getPos().y, proj.getPos().x + proj.getPos().x*(float)Math.cos(proj.getDirection())*500, proj.getPos().y + proj.getPos().y*(float)Math.sin(proj.getDirection())*500);
+
+        Line2D.Float p1lines [] = new Line2D.Float[pol.xpoints.length];
         
+        for (int i = 0; i < pol.xpoints.length; i++) {
+            p1lines[i] = new Line2D.Float(pol.xpoints[i],pol.ypoints[i], pol.xpoints[(i+1)%pol.xpoints.length],pol.ypoints[(i+1)%pol.ypoints.length]);
+        }
+        
+        for (int i = 0; i < p1lines.length; i++) {
+            if (p1lines[i].intersectsLine(line))
+                return true;
+        }
+        return false;
     }
 
 }

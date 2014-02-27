@@ -58,4 +58,8 @@ public abstract class Projectile {
     public Point2D.Float getPos() {
         return position;
     }
+    
+    public double getDirection() {
+        return this.direction;
+    }
 }
