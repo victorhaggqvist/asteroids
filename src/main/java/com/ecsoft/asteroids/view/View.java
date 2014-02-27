@@ -273,13 +273,16 @@ public class View implements Observer{
         		
         		//Draw player projectiles
                 g.setColor(Color.green);  
-                for(Projectile a : contr.playerProjectiles)
+                for(Projectile a : contr.playerProjectiles) {
                     g.fillOval((int)a.getPos().getX(), (int)a.getPos().getY(), 5, 5);
+                    //g.drawLine((int)a.getPos().getX(), (int)a.getPos().getY() ,(int)( a.getPos().getX() * Math.cos(a.getDirection())),(int) (a.getPos().getY()  * Math.sin(a.getDirection())));
+                }
                 
               //Draw saucer projectiles
                 g.setColor(Color.red);  
                 for(Projectile a : contr.saucerProjectiles)
                     g.fillOval((int)a.getPos().getX(), (int)a.getPos().getY(), 5, 5);
+                
         		
         		//Draw particles
         		g.setColor(Color.white); 
