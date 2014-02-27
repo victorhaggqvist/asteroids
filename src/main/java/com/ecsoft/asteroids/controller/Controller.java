@@ -36,6 +36,7 @@ public class Controller extends Observable implements Runnable {
 	public ArrayList<Saucer> saucers = new ArrayList<Saucer>();
 	public long saucerTimer;
 	public ArrayList<Particle> particles = new ArrayList<Particle>();
+	private Sound sound = new Sound();
 	
 	public Player player;	
 	private long trailTimer;
@@ -68,6 +69,8 @@ public class Controller extends Observable implements Runnable {
     public void playerAction(PlayerMovement playerMovement){
         switch (playerMovement){
             case UP:
+            	if(!player.accelerating)
+            		sound.startSound(3);
                 player.accelerating = true;
                 break;
             case LEFT:
@@ -226,6 +229,7 @@ public class Controller extends Observable implements Runnable {
 	public void run() {
 
 		while (true) {
+			
 			long time = System.currentTimeMillis();
 
 			// Check if level is completed
@@ -270,6 +274,7 @@ public class Controller extends Observable implements Runnable {
 				if (System.currentTimeMillis()-shootTimer > PLAYER_SHOOTING_DELAY) {
 					shootTimer = System.currentTimeMillis();
 					playerProjectiles.add(player.shoot());
+					
 				}				
 			}
 			
@@ -497,7 +502,14 @@ public class Controller extends Observable implements Runnable {
 	}
 	
 	public void createExplosion (int x, int y) {
+		if(Math.random() < 0.5) {
+			sound.startSound(1);
+		}else {
+			sound.startSound(0);
+		}
+		
 		for (int k = 0; k < EXPLOSION_SIZE; k++) {
+
 			particles.add(new Particle(new Point2D.Float(x,y)));
 		}
 	}

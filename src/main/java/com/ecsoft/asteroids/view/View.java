@@ -395,6 +395,7 @@ public class View implements Observer{
                     break;
                     
                 case KeyEvent.VK_ENTER:
+                	
                     if (menuSelector == 0) {
                     	contr.initiateGame(1);
                     	//Remove all panels and create a game panel

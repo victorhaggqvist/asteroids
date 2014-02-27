@@ -3,6 +3,7 @@ package com.ecsoft.asteroids.model;
 import java.awt.Polygon;
 import java.awt.geom.Point2D;
 
+import com.ecsoft.asteroids.controller.Sound;
 import com.ecsoft.asteroids.mathematics.Matrix;
 
 /**
@@ -27,6 +28,7 @@ public class Player {
     private static final int SCREEN_WIDTH = 1000;
     private static final int SCREEN_HEIGHT = 600;
     
+    private Sound sound = new Sound();
     
     private double vx;
     private double vy;
@@ -154,6 +156,7 @@ public class Player {
      * @return Returns a projectile at the ships front
      */
     public PlayerProjectile shoot() {
+    	sound.startSound(2);
     	double x = position.getX() + Math.cos(rotation)*20;
     	double y = position.getY() + Math.sin(rotation)*20;
         return new PlayerProjectile((float)x, (float) y,rotation);
