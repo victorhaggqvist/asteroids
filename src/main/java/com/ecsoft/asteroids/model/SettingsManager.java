@@ -34,7 +34,8 @@ public class SettingsManager {
     public static final int COLOR_YELLOW = 1;
     public static final int COLOR_PINK = 2;
     
-    public static final String [] COLORS = {"WHITE", "YELLOW", "PINK"};
+    public static final String [] COLOR_NAMES = {"WHITE", "YELLOW", "PINK"};
+    public static final Color [] COLORS = {Color.WHITE, Color.YELLOW, Color.PINK};
 
     private static final String FILE_NAME = "settings.ini";
      
@@ -70,7 +71,7 @@ public class SettingsManager {
     }
 
     
-    public int getColorNmbr() {
+    public int getColor() {
         return preferences.getInt(KEY_COLOR ,COLOR_WHITE);
     }
 
