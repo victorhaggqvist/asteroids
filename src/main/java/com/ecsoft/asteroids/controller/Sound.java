@@ -1,6 +1,7 @@
 package com.ecsoft.asteroids.controller;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 import sun.audio.AudioPlayer;
@@ -15,15 +16,26 @@ public class Sound {
 			"src/audio/vroom.wav"
 	};
 	
-	public void startSound(int i) {
-		AudioStream as = null;
-		try {
-			InputStream in = new FileInputStream(url[i]);
-			as = new AudioStream(in);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		AudioPlayer.player.start(as);
-	}
+	public void startSound(final int i) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                AePlayWave apw = new AePlayWave(url[i]);
+                apw.start();
+
+                try{
+                    boolean alive = apw.isAlive();
+                    while(alive){
+                        //check periodically if the thread is alive
+                        alive = apw.isAlive();
+                        Thread.currentThread().sleep(500);
+                    }
+                }catch(InterruptedException e){
+                    System.out.println("Interrupted");
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
 	
 }
