@@ -81,7 +81,7 @@ public class Player {
     	
     	Point2D.Float sum = Matrix.Point2DSum(this.corners);
         Point2D.Float center = new Point2D.Float((float)sum.getX()/this.corners.length,(float)sum.getY()/this.corners.length);
-        System.out.println(center);
+        //System.out.println(center);
         for (Point2D.Float corner : this.corners) {
             corner.x -= center.x;
             corner.y -= center.y;
