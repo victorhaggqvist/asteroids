@@ -50,12 +50,14 @@ public class View implements Observer{
 	private String [] menuItems = {"START GAME", "OPTIONS" , "HISCORE" , "ABOUT", "QUIT"};
 	private String [] optionItems = {"DIFFICULTY", "SHIP COLOR", "SOUND", "MUSIC" ,"BACK"};
 	private String [] hiscoreItems = {"BACK"};
+    private final String aboutText = "Created by EC Softwase";
 	
 	private boolean gameStarted;
 	
 	private int menuSelector = 0;	
 	private boolean optionScreen;	
 	private boolean hiscoreScreen;
+    private boolean aboutScreen;
 	public static ArrayList<HighScore> highScores = new ArrayList<HighScore>();
 	
 	private String hiscoreName = "";
@@ -406,13 +408,21 @@ public class View implements Observer{
                 }
             }
             
-          //hiscore menu
+            //hiscore menu
             else if (hiscoreScreen) {
                 switch (key) {                
                 case KeyEvent.VK_ENTER:
                 case KeyEvent.VK_SPACE:
                     	hiscoreScreen = false;                        
                 break;
+                }
+            }
+
+            else if(aboutScreen){
+                switch (key){
+                    case KeyEvent.VK_ESCAPE:
+                        aboutScreen = false;
+                        break;
                 }
             }
             
@@ -434,6 +444,7 @@ public class View implements Observer{
                     
                 case KeyEvent.VK_ENTER:
                 case KeyEvent.VK_SPACE:
+                    // start game
                     if (menuSelector == 0) {
                     	contr.initiateGame(1);
                     	//Remove all panels and create a game panel
@@ -441,18 +452,23 @@ public class View implements Observer{
                         createGamePanel();
                         gameStarted = true;                        
                     }
-                    
+                    // game options
                     else if(menuSelector == 1) {
                         optionScreen = true;
                         menuSelector = 0;
                     }
-                    
+                    // highscore display
                     else if(menuSelector == 2) {
                         highScores = ScoreHandler.getHiscores();
                         hiscoreScreen = true;
                         menuSelector = 0;
                     }
-                    
+                    // about screen
+                    else if (menuSelector == 3){
+                        aboutScreen = true;
+                        menuSelector = 0;
+                    }
+                    // quit game
                     else if(menuSelector == 4) {
                         System.exit(0);
                     }
