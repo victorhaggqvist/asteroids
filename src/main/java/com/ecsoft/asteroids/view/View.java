@@ -50,7 +50,8 @@ public class View implements Observer{
 	private String [] menuItems = {"START GAME", "OPTIONS" , "HISCORE" , "ABOUT", "QUIT"};
 	private String [] optionItems = {"DIFFICULTY", "SHIP COLOR", "SOUND", "MUSIC" ,"BACK"};
 	private String [] hiscoreItems = {"BACK"};
-    private final String aboutText = "Created by EC Softwase";
+	private String [] aboutItems = {"BACK"};
+    private final String aboutText = "Created by EC Software";
 	
 	private boolean gameStarted;
 	
@@ -158,6 +159,13 @@ public class View implements Observer{
                         g.drawString(hiscoreItems[0], (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT)-60));
 					}
                 	
+                }
+                
+                else if (aboutScreen){
+                	width = fm.stringWidth(aboutText);
+                	g.drawString(aboutText, (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-120));
+                	width = fm.stringWidth(hiscoreItems[0]);
+                	g.drawString(aboutItems[0], (SCREEN_WIDTH/2)-width/2 , ((SCREEN_HEIGHT/2)-60));
                 }
                 
                 //Draws start screen
@@ -420,6 +428,7 @@ public class View implements Observer{
 
             else if(aboutScreen){
                 switch (key){
+                	case KeyEvent.VK_ENTER:
                     case KeyEvent.VK_ESCAPE:
                         aboutScreen = false;
                         break;
